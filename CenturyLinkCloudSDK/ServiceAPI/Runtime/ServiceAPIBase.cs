@@ -1,4 +1,4 @@
-﻿using CenturyLinkCloudSDK.ServiceModels;
+﻿using CenturyLinkCloudSDK.ServiceModels.V2.Interfaces;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -10,7 +10,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.Runtime
     {
         protected async Task<TResponse> Invoke<TRequest, TResponse>(TRequest request) 
             where TRequest : ServiceRequest 
-            where TResponse : IServiceModel
+            where TResponse : IServiceResponseModel
         {
             using (var client = new HttpClient())
             {

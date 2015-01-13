@@ -34,13 +34,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ServiceModels\IServiceModel.cs" />
+    <Compile Include="ServiceModels\V2\Interfaces\IServiceRequestModel.cs" />
+    <Compile Include="ServiceModels\V2\Interfaces\IServiceResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceAPI\Runtime\ServiceAPIBase.cs" />
     <Compile Include="ServiceAPI\V2\Authentication.cs" />
-    <Compile Include="ServiceModels\V2\Account.cs" />
-    <Compile Include="ServiceModels\V2\Credentials.cs" />
+    <Compile Include="ServiceModels\V2\Common\AlertPolicy.cs" />
+    <Compile Include="ServiceModels\V2\Common\ChangeInfo.cs" />
+    <Compile Include="ServiceModels\V2\Common\CustomField.cs" />
+    <Compile Include="ServiceModels\V2\Common\IpAddress.cs" />
+    <Compile Include="ServiceModels\V2\Common\Link.cs" />
+    <Compile Include="ServiceModels\V2\Authentication\Responses\LoginResponse.cs" />
+    <Compile Include="ServiceModels\V2\Authentication\Requests\LoginRequest.cs" />
     <Compile Include="ServiceAPI\Runtime\ServiceRequest.cs" />
+    <Compile Include="ServiceModels\V2\Common\Port.cs" />
+    <Compile Include="ServiceModels\V2\Servers\Requests\UpdatePublicIpAddressRequest.cs" />
+    <Compile Include="ServiceModels\V2\Servers\Responses\GetServerResponse.cs" />
+    <Compile Include="ServiceModels\V2\Servers\Requests\GetServerRequest.cs" />
+    <Compile Include="ServiceModels\V2\Common\ServerDetail.cs" />
+    <Compile Include="ServiceModels\V2\Servers\Responses\UpdatePublicIpAddressResponse.cs" />
+    <Compile Include="ServiceModels\V2\Common\Snapshot.cs" />
+    <Compile Include="ServiceModels\V2\Common\SourceRestriction.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">

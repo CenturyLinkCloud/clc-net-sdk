@@ -1,8 +1,9 @@
-﻿using System;
+﻿using CenturyLinkCloudSDK.ServiceModels.V2.Interfaces;
+using System;
 
-namespace CenturyLinkCloudSDK.ServiceModels.V2
+namespace CenturyLinkCloudSDK.ServiceModels.V2.Authentication.Responses
 {
-    public class Account: IServiceModel
+    public class LoginResponse: IServiceResponseModel
     {
         public string UserName { get; set; }
         public string AccountAlias { get; set; }
