@@ -13,20 +13,23 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
     {
         public async Task<LoginResponse> Login(string username, string password)
         {
-            var loginRequest = new LoginRequest(){ UserName = username, Password = password };
+            var requestModel = new LoginRequest(){ UserName = username, Password = password };
 
-            //var req = new GetServerRequest() { Parameters = new GetServerRequest.UriParameters { AccountAlias = "", ServerId = "" } };
-
-            var request = new ServiceRequest()
+            var serviceRequest = new ServiceRequest()
             {
                 BaseAddress = "https://api.tier3.com/",
                 ServiceUri = "v2/authentication/login",
                 MediaType = "application/json",
-                RequestModel = loginRequest,
+                RequestModel = requestModel,
                 HttpMethod = HttpMethod.Post
             };
 
-            var result = await Invoke<ServiceRequest, LoginResponse>(request);
+            var result = await Invoke<ServiceRequest, LoginResponse>(serviceRequest);
+
+            Persistence.UserInfo = new LoginResponse();
+            Persistence.UserInfo.BearerToken = result.BearerToken;
+            Persistence.UserInfo.AccountAlias = result.AccountAlias;
+            Persistence.UserInfo.Roles = result.Roles;
 
             return result;
 

@@ -18,6 +18,11 @@ namespace CenturyLinkCloudSDK.ServiceAPI.Runtime
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(request.MediaType));
 
+                if (Persistence.IsUserAuthenticated)
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Persistence.UserInfo.BearerToken);
+                }
+
                 HttpResponseMessage response = null;
 
                 if (request.HttpMethod == HttpMethod.Get)

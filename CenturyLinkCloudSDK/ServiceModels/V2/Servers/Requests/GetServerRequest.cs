@@ -10,13 +10,13 @@ namespace CenturyLinkCloudSDK.ServiceModels.V2.Servers.Requests
 {
     public class GetServerRequest: IServiceRequestModel
     {
-        public UriParameters Parameters { get; set; }
+        //public UriParameters Parameters { get; set; }
 
-        public class UriParameters
-        {
-            public string AccountAlias { get; set; }
+        //public class UriParameters
+        //{
+        //    public string AccountAlias { get; set; }
 
-            public string ServerId { get; set; }
-        }
+        //    public string ServerId { get; set; }
+        //}
     }
 }

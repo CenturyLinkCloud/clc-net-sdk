@@ -34,6 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ServiceAPI\Runtime\Persistence.cs" />
+    <Compile Include="ServiceAPI\V2\Server.cs" />
     <Compile Include="ServiceModels\V2\Interfaces\IServiceRequestModel.cs" />
     <Compile Include="ServiceModels\V2\Interfaces\IServiceResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
