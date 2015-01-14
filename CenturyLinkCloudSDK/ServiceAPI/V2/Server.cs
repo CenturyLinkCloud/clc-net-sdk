@@ -23,7 +23,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetServerResponse>(serviceRequest);
+            var result = await Invoke<ServiceRequest, GetServerResponse>(serviceRequest).ConfigureAwait(false);
 
             return result;
         }

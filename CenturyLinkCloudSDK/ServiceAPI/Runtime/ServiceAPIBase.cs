@@ -27,19 +27,19 @@ namespace CenturyLinkCloudSDK.ServiceAPI.Runtime
 
                 if (request.HttpMethod == HttpMethod.Get)
                 {
-                    response = await client.GetAsync(request.ServiceUri);
+                    response = await client.GetAsync(request.ServiceUri).ConfigureAwait(false);
                 }
                 else if (request.HttpMethod == HttpMethod.Post)
                 {                   
-                    response = await client.PostAsJsonAsync(request.ServiceUri, request.RequestModel);
+                    response = await client.PostAsJsonAsync(request.ServiceUri, request.RequestModel).ConfigureAwait(false);
                 }
                 else if (request.HttpMethod == HttpMethod.Put)
                 {
-                    response = await client.PutAsJsonAsync(request.ServiceUri, request.RequestModel);
+                    response = await client.PutAsJsonAsync(request.ServiceUri, request.RequestModel).ConfigureAwait(false);
                 }
                 else if (request.HttpMethod == HttpMethod.Delete)
                 {
-                    response = await client.DeleteAsync(request.ServiceUri);
+                    response = await client.DeleteAsync(request.ServiceUri).ConfigureAwait(false);
                 }
 
                 if (response.IsSuccessStatusCode)

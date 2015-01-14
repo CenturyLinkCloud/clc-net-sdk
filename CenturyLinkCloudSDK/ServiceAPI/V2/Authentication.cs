@@ -24,7 +24,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
                 HttpMethod = HttpMethod.Post
             };
 
-            var result = await Invoke<ServiceRequest, LoginResponse>(serviceRequest);
+            var result = await Invoke<ServiceRequest, LoginResponse>(serviceRequest).ConfigureAwait(false);
 
             Persistence.UserInfo = new LoginResponse();
             Persistence.UserInfo.BearerToken = result.BearerToken;
