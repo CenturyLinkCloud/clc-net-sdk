@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using CenturyLinkCloudSDK.ServiceModels.V2.Authentication.Responses;
 using CenturyLinkCloudSDK.ServiceModels.V2.Authentication.Requests;
-using CenturyLinkCloudSDK.ServiceModels.V2.Servers.Requests;
+using CenturyLinkCloudSDK.ServiceModels.V2.Server.Requests;
 
 
 namespace CenturyLinkCloudSDK.ServiceAPI.V2

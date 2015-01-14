@@ -2,7 +2,7 @@
 using CenturyLinkCloudSDK.ServiceModels.V2.Interfaces;
 using System.Collections.Generic;
 
-namespace CenturyLinkCloudSDK.ServiceModels.V2.Servers.Requests
+namespace CenturyLinkCloudSDK.ServiceModels.V2.Server.Requests
 {
     public class UpdatePublicIpAddressRequest: IServiceRequestModel
     {

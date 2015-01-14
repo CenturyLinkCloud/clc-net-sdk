@@ -50,10 +50,10 @@
     <Compile Include="ServiceModels\V2\Authentication\Requests\LoginRequest.cs" />
     <Compile Include="ServiceAPI\Runtime\ServiceRequest.cs" />
     <Compile Include="ServiceModels\V2\Common\Port.cs" />
-    <Compile Include="ServiceModels\V2\Servers\Requests\UpdatePublicIpAddressRequest.cs" />
-    <Compile Include="ServiceModels\V2\Servers\Responses\GetServerResponse.cs" />
+    <Compile Include="ServiceModels\V2\Server\Requests\UpdatePublicIpAddressRequest.cs" />
+    <Compile Include="ServiceModels\V2\Server\Responses\GetServerResponse.cs" />
     <Compile Include="ServiceModels\V2\Common\ServerDetail.cs" />
-    <Compile Include="ServiceModels\V2\Servers\Responses\UpdatePublicIpAddressResponse.cs" />
+    <Compile Include="ServiceModels\V2\Server\Responses\UpdatePublicIpAddressResponse.cs" />
     <Compile Include="ServiceModels\V2\Common\Snapshot.cs" />
     <Compile Include="ServiceModels\V2\Common\SourceRestriction.cs" />
   </ItemGroup>

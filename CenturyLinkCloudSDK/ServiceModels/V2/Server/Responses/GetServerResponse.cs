@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CenturyLinkCloudSDK.ServiceModels.V2.Servers.Responses
+namespace CenturyLinkCloudSDK.ServiceModels.V2.Server.Responses
 {
     public class GetServerResponse: IServiceResponseModel
     {
