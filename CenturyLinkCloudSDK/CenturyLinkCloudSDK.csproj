@@ -52,7 +52,6 @@
     <Compile Include="ServiceModels\V2\Common\Port.cs" />
     <Compile Include="ServiceModels\V2\Servers\Requests\UpdatePublicIpAddressRequest.cs" />
     <Compile Include="ServiceModels\V2\Servers\Responses\GetServerResponse.cs" />
-    <Compile Include="ServiceModels\V2\Servers\Requests\GetServerRequest.cs" />
     <Compile Include="ServiceModels\V2\Common\ServerDetail.cs" />
     <Compile Include="ServiceModels\V2\Servers\Responses\UpdatePublicIpAddressResponse.cs" />
     <Compile Include="ServiceModels\V2\Common\Snapshot.cs" />
