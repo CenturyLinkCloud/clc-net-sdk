@@ -154,3 +154,6 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+/CenturyLinkCloudSDK.Unit.Tests/app.config
+/packages/Microsoft.Net.Http.2.2.28/lib
+/packages/Microsoft.Net.Http.2.2.28/Microsoft.Net.Http.2.2.28.nupkg

@@ -26,25 +26,26 @@ namespace CenturyLinkCloudSDK.Unit.Tests
         public async Task GetServerReturnValidData()
         {
             var serverContext = new Server();
-            var result = await serverContext.GetServer(Persistence.UserInfo.AccountAlias, "CA1P2O2DF2TST01");  //VA1P2O2JAMMU01
+            var result = await serverContext.GetServer(Persistence.UserInfo.AccountAlias, "CA1P2O2DF2TST01");
 
             Assert.IsNotNull(result);
             Assert.IsTrue(!String.IsNullOrEmpty(result.Id));
         }
 
         [TestMethod]
-        public async Task PauseServer()
+        public async Task PauseServerReturnPauseOperationIsQueuedIfRunning()
         {
             var serverIds = new List<string>() { "CA1P2O2DF2TST01" };
 
             var serverContext = new Server();
-            var result = await serverContext.PauseServer(Persistence.UserInfo.AccountAlias, serverIds);  //VA1P2O2JAMMU01
+            var serverOperationResponse = await serverContext.PauseServer(Persistence.UserInfo.AccountAlias, serverIds);
 
-            Assert.IsNotNull(result);
-
-            foreach(var server in result.Response)
+            if (serverOperationResponse != null)
             {
-                Assert.IsTrue(server.IsQueued);
+                foreach (var server in serverOperationResponse.Response)
+                {
+                    Assert.IsTrue(server.IsQueued);
+                }
             }
         }
 

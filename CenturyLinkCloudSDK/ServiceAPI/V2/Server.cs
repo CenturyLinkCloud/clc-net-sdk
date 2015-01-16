@@ -26,21 +26,38 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
 
         public async Task<PauseServerResponse> PauseServer(string accountAlias, List<string> serverIds)
         {
-            //var requestModel = new PauseServerRequest() { serverIds = serverIds };
-            var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
+            var serversToBePaused = new List<string>();
 
-            var serviceRequest = new ServiceRequest()
+            //Ensure pausing only those servers that are PoweredOn.
+            foreach(var serverId in serverIds)
             {
-                BaseAddress = "https://api.tier3.com/",
-                ServiceUri = string.Format("v2/operations/{0}/servers/pause", accountAlias),
-                MediaType = "application/json",
-                RequestModel = requestModel,
-                HttpMethod = HttpMethod.Post
-            };
+                var server = await GetServer(Persistence.UserInfo.AccountAlias, serverId).ConfigureAwait(false);
 
-            var result = await Invoke<ServiceRequest, PauseServerResponse>(serviceRequest).ConfigureAwait(false);
+                if(server.Details.PowerState == "started")
+                {
+                    serversToBePaused.Add(serverId);
+                }
+            }
 
-            return result;
+            if (serversToBePaused.Count > 0)
+            {
+                var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
+
+                var serviceRequest = new ServiceRequest()
+                {
+                    BaseAddress = "https://api.tier3.com/",
+                    ServiceUri = string.Format("v2/operations/{0}/servers/pause", accountAlias),
+                    MediaType = "application/json",
+                    RequestModel = requestModel,
+                    HttpMethod = HttpMethod.Post
+                };
+
+                var response = await Invoke<ServiceRequest, PauseServerResponse>(serviceRequest).ConfigureAwait(false);
+
+                return response;
+            }
+
+            return default(PauseServerResponse);
         }
     }
 }
