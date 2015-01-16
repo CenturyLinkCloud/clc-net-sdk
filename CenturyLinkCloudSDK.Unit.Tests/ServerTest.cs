@@ -33,9 +33,9 @@ namespace CenturyLinkCloudSDK.Unit.Tests
         }
 
         [TestMethod]
-        public async Task PauseServerReturnPauseOperationIsQueuedIfRunning()
+        public async Task PauseServersReturnPauseOperationIsQueuedIfRunning()
         {
-            var serverIds = new List<string>() { "CA1P2O2DF2TST01" };
+            var serverIds = new List<string>() { "CA1P2O2DF2TST01", "CA1P2O2TEST01" };
 
             var serverContext = new Server();
             var serverOperationResponse = await serverContext.PauseServer(Persistence.UserInfo.AccountAlias, serverIds);
@@ -44,15 +44,18 @@ namespace CenturyLinkCloudSDK.Unit.Tests
             {
                 foreach (var server in serverOperationResponse.Response)
                 {
-                    Assert.IsTrue(server.IsQueued);
+                    if (string.IsNullOrEmpty(server.ErrorMessage))
+                    {
+                        Assert.IsTrue(server.IsQueued);
+                    }
                 }
             }
         }
 
         [TestMethod]
-        public async Task PowerOnServerReturnPowerOnOperationIsQueuedIfRunning()
+        public async Task PowerOnServersReturnPowerOnOperationIsQueuedIfRunning()
         {
-            var serverIds = new List<string>() { "CA1P2O2DF2TST01" };
+            var serverIds = new List<string>() { "CA1P2O2DF2TST01", "CA1P2O2TEST01" };
 
             var serverContext = new Server();
             var serverOperationResponse = await serverContext.PowerOnServer(Persistence.UserInfo.AccountAlias, serverIds);
@@ -61,7 +64,10 @@ namespace CenturyLinkCloudSDK.Unit.Tests
             {
                 foreach (var server in serverOperationResponse.Response)
                 {
-                    Assert.IsTrue(server.IsQueued);
+                    if(string.IsNullOrEmpty(server.ErrorMessage))
+                    {
+                        Assert.IsTrue(server.IsQueued);
+                    }
                 }
             }
         }

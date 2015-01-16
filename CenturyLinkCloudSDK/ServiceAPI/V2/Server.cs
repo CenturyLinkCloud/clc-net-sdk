@@ -19,82 +19,45 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetServerResponse>(serviceRequest).ConfigureAwait(false);
+            var response = await Invoke<ServiceRequest, GetServerResponse>(serviceRequest).ConfigureAwait(false);
 
-            return result;
+            return response;
         }
 
         public async Task<PauseServerResponse> PauseServer(string accountAlias, List<string> serverIds)
         {
-            var serversToBePaused = new List<string>();
+            var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
 
-            //Ensure pausing only those servers that are PoweredOn.
-            foreach(var serverId in serverIds)
+            var serviceRequest = new ServiceRequest()
             {
-                var server = await GetServer(accountAlias, serverId).ConfigureAwait(false);
+                BaseAddress = "https://api.tier3.com/",
+                ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/pause", accountAlias),
+                MediaType = "application/json",
+                RequestModel = requestModel,
+                HttpMethod = HttpMethod.Post
+            };
 
-                if(server.Details.PowerState == "started")
-                {
-                    serversToBePaused.Add(serverId);
-                }
-            }
+            var response = await Invoke<ServiceRequest, PauseServerResponse>(serviceRequest).ConfigureAwait(false);
 
-            if (serversToBePaused.Count > 0)
-            {
-                var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
-
-                var serviceRequest = new ServiceRequest()
-                {
-                    BaseAddress = "https://api.tier3.com/",
-                    ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/pause", accountAlias),
-                    MediaType = "application/json",
-                    RequestModel = requestModel,
-                    HttpMethod = HttpMethod.Post
-                };
-
-                var response = await Invoke<ServiceRequest, PauseServerResponse>(serviceRequest).ConfigureAwait(false);
-
-                return response;
-            }
-
-            return default(PauseServerResponse);
+            return response;
         }
 
         public async Task<PowerOnServerResponse> PowerOnServer(string accountAlias, List<string> serverIds)
         {
-            var serversToBePoweredOn = new List<string>();
+            var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
 
-            //Ensure powering only those servers that are PoweredOn and...
-            //TODO: We need to find out from what power state we can go to what power state and what the power state strings are.
-            foreach (var serverId in serverIds)
+            var serviceRequest = new ServiceRequest()
             {
-                var server = await GetServer(accountAlias, serverId).ConfigureAwait(false);
+                BaseAddress = "https://api.tier3.com/",
+                ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/powerOn", accountAlias),
+                MediaType = "application/json",
+                RequestModel = requestModel,
+                HttpMethod = HttpMethod.Post
+            };
 
-                if (server.Details.PowerState == "paused")
-                {
-                    serversToBePoweredOn.Add(serverId);
-                }
-            }
+            var response = await Invoke<ServiceRequest, PowerOnServerResponse>(serviceRequest).ConfigureAwait(false);
 
-            if (serversToBePoweredOn.Count > 0)
-            {
-                var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
-
-                var serviceRequest = new ServiceRequest()
-                {
-                    BaseAddress = "https://api.tier3.com/",
-                    ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/powerOn", accountAlias),
-                    MediaType = "application/json",
-                    RequestModel = requestModel,
-                    HttpMethod = HttpMethod.Post
-                };
-
-                var response = await Invoke<ServiceRequest, PowerOnServerResponse>(serviceRequest).ConfigureAwait(false);
-
-                return response;
-            }
-
-            return default(PowerOnServerResponse);
+            return response;
         }
     }
 }

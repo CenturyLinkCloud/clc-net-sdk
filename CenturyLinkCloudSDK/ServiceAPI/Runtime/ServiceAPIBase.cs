@@ -58,28 +58,28 @@ namespace CenturyLinkCloudSDK.ServiceAPI.Runtime
                     response = await client.DeleteAsync(request.ServiceUri).ConfigureAwait(false);
                 }
 
-                if (response.IsSuccessStatusCode)
+                //if (response.IsSuccessStatusCode)
+                //{
+                var responseDeserialized = false;
+                Uri authenticationURL = response.Headers.Location;
+
+                try
                 {
-                    var responseDeserialized = false;
-                    Uri authenticationURL = response.Headers.Location;
-
-                    try
-                    {
-                        var result = await response.Content.ReadAsAsync<TResponse>().ConfigureAwait(false);
-                        return result;                    
-                    }
-                    catch(JsonSerializationException)
-                    {
-                        responseDeserialized = false;
-                    }
-
-                    if(!responseDeserialized)
-                    {
-                        var namedJsonArray = await RetryReadWithNamedArray(response).ConfigureAwait(false);
-                        var result = JsonConvert.DeserializeObject<TResponse>(namedJsonArray);
-                        return result;
-                    }
+                    var result = await response.Content.ReadAsAsync<TResponse>().ConfigureAwait(false);
+                    return result;                    
                 }
+                catch(JsonSerializationException)
+                {
+                    responseDeserialized = false;
+                }
+
+                if(!responseDeserialized)
+                {
+                    var namedJsonArray = await RetryReadWithNamedArray(response).ConfigureAwait(false);
+                    var result = JsonConvert.DeserializeObject<TResponse>(namedJsonArray);
+                    return result;
+                }
+                //}
 
                 return default(TResponse);              
             }
