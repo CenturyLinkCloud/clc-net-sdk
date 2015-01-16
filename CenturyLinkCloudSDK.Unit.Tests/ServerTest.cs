@@ -49,5 +49,22 @@ namespace CenturyLinkCloudSDK.Unit.Tests
             }
         }
 
+        [TestMethod]
+        public async Task PowerOnServerReturnPowerOnOperationIsQueuedIfRunning()
+        {
+            var serverIds = new List<string>() { "CA1P2O2DF2TST01" };
+
+            var serverContext = new Server();
+            var serverOperationResponse = await serverContext.PowerOnServer(Persistence.UserInfo.AccountAlias, serverIds);
+
+            if (serverOperationResponse != null)
+            {
+                foreach (var server in serverOperationResponse.Response)
+                {
+                    Assert.IsTrue(server.IsQueued);
+                }
+            }
+        }
+
     }
 }

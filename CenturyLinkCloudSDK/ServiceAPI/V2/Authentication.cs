@@ -16,7 +16,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
             var serviceRequest = new ServiceRequest()
             {
                 BaseAddress = "https://api.tier3.com/",
-                ServiceUri = "v2/authentication/login",
+                ServiceUri = "https://api.tier3.com/v2/authentication/login",
                 MediaType = "application/json",
                 RequestModel = requestModel,
                 HttpMethod = HttpMethod.Post
