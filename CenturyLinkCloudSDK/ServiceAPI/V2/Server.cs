@@ -31,7 +31,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
             //Ensure pausing only those servers that are PoweredOn.
             foreach(var serverId in serverIds)
             {
-                var server = await GetServer(Persistence.UserInfo.AccountAlias, serverId).ConfigureAwait(false);
+                var server = await GetServer(accountAlias, serverId).ConfigureAwait(false);
 
                 if(server.Details.PowerState == "started")
                 {
