@@ -1,6 +1,4 @@
-﻿using CenturyLinkCloudSDK.ServiceModels.V2.Interfaces;
-using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 
 namespace CenturyLinkCloudSDK.ServiceAPI.Runtime
 {
@@ -12,7 +10,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.Runtime
 
         public string MediaType { get; set; }
 
-        public IServiceRequestModel RequestModel { get; set; }
+        public ServiceRequestModel RequestModel { get; set; }
 
         public HttpMethod HttpMethod { get; set; }
     }

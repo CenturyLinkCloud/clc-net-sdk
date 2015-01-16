@@ -34,9 +34,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="ServiceAPI\Runtime\Persistence.cs" />
+    <Compile Include="ServiceAPI\Runtime\ServiceRequestModel.cs" />
     <Compile Include="ServiceAPI\V2\Server.cs" />
-    <Compile Include="ServiceModels\V2\Interfaces\IServiceRequestModel.cs" />
+    <Compile Include="ServiceModels\V2\Common\ServerOperationResponse.cs" />
     <Compile Include="ServiceModels\V2\Interfaces\IServiceResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceAPI\Runtime\ServiceAPIBase.cs" />
@@ -50,10 +52,10 @@
     <Compile Include="ServiceModels\V2\Authentication\Requests\LoginRequest.cs" />
     <Compile Include="ServiceAPI\Runtime\ServiceRequest.cs" />
     <Compile Include="ServiceModels\V2\Common\Port.cs" />
-    <Compile Include="ServiceModels\V2\Server\Requests\UpdatePublicIpAddressRequest.cs" />
     <Compile Include="ServiceModels\V2\Server\Responses\GetServerResponse.cs" />
     <Compile Include="ServiceModels\V2\Common\ServerDetail.cs" />
-    <Compile Include="ServiceModels\V2\Server\Responses\UpdatePublicIpAddressResponse.cs" />
+    <Compile Include="ServiceModels\V2\Server\Responses\PauseServerResponse.cs" />
+    <Compile Include="ServiceModels\V2\Server\Responses\PowerOnServerResponse.cs" />
     <Compile Include="ServiceModels\V2\Common\Snapshot.cs" />
     <Compile Include="ServiceModels\V2\Common\SourceRestriction.cs" />
   </ItemGroup>
@@ -81,6 +83,7 @@
     <Folder Include="ServiceAPI\V1\" />
     <Folder Include="ServiceManagers\" />
     <Folder Include="ServiceModels\V1\" />
+    <Folder Include="ServiceModels\V2\Server\Requests\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />

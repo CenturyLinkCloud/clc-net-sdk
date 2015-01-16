@@ -1,5 +1,4 @@
 ﻿using CenturyLinkCloudSDK.ServiceModels.V2.Interfaces;
-using System;
 
 namespace CenturyLinkCloudSDK.ServiceModels.V2.Authentication.Responses
 {
