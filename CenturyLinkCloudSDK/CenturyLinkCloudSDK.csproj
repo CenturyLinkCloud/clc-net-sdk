@@ -38,7 +38,7 @@
     <Compile Include="ServiceAPI\Runtime\Persistence.cs" />
     <Compile Include="ServiceAPI\Runtime\ServiceRequestModel.cs" />
     <Compile Include="ServiceAPI\V2\Server.cs" />
-    <Compile Include="ServiceModels\V2\Common\ServerOperationResponse.cs" />
+    <Compile Include="ServiceModels\V2\Common\ServerOperation.cs" />
     <Compile Include="ServiceModels\V2\Interfaces\IServiceResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceAPI\Runtime\ServiceAPIBase.cs" />
@@ -54,10 +54,9 @@
     <Compile Include="ServiceModels\V2\Common\Port.cs" />
     <Compile Include="ServiceModels\V2\Server\Responses\GetServerResponse.cs" />
     <Compile Include="ServiceModels\V2\Common\ServerDetail.cs" />
-    <Compile Include="ServiceModels\V2\Server\Responses\PauseServerResponse.cs" />
-    <Compile Include="ServiceModels\V2\Server\Responses\PowerOnServerResponse.cs" />
     <Compile Include="ServiceModels\V2\Common\Snapshot.cs" />
     <Compile Include="ServiceModels\V2\Common\SourceRestriction.cs" />
+    <Compile Include="ServiceModels\V2\Server\Responses\ServerPowerOpsResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">

@@ -2,7 +2,7 @@
 
 namespace CenturyLinkCloudSDK.ServiceModels.V2.Common
 {
-    public class ServerOperationResponse
+    public class ServerOperation
     {
         public string Server { get; set; }
 

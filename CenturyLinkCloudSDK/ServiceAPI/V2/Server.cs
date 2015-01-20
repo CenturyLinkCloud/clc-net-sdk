@@ -24,7 +24,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
             return response;
         }
 
-        public async Task<PauseServerResponse> PauseServer(string accountAlias, List<string> serverIds)
+        public async Task<ServerPowerOpsResponse> PauseServer(string accountAlias, List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
 
@@ -37,12 +37,12 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
                 HttpMethod = HttpMethod.Post
             };
 
-            var response = await Invoke<ServiceRequest, PauseServerResponse>(serviceRequest).ConfigureAwait(false);
+            var response = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest).ConfigureAwait(false);
 
             return response;
         }
 
-        public async Task<PowerOnServerResponse> PowerOnServer(string accountAlias, List<string> serverIds)
+        public async Task<ServerPowerOpsResponse> PowerOnServer(string accountAlias, List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
 
@@ -55,7 +55,79 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
                 HttpMethod = HttpMethod.Post
             };
 
-            var response = await Invoke<ServiceRequest, PowerOnServerResponse>(serviceRequest).ConfigureAwait(false);
+            var response = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest).ConfigureAwait(false);
+
+            return response;
+        }
+
+        public async Task<ServerPowerOpsResponse> PowerOffServer(string accountAlias, List<string> serverIds)
+        {
+            var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
+
+            var serviceRequest = new ServiceRequest()
+            {
+                BaseAddress = "https://api.tier3.com/",
+                ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/powerOff", accountAlias),
+                MediaType = "application/json",
+                RequestModel = requestModel,
+                HttpMethod = HttpMethod.Post
+            };
+
+            var response = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest).ConfigureAwait(false);
+
+            return response;
+        }
+
+        public async Task<ServerPowerOpsResponse> RebootServer(string accountAlias, List<string> serverIds)
+        {
+            var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
+
+            var serviceRequest = new ServiceRequest()
+            {
+                BaseAddress = "https://api.tier3.com/",
+                ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/reboot", accountAlias),
+                MediaType = "application/json",
+                RequestModel = requestModel,
+                HttpMethod = HttpMethod.Post
+            };
+
+            var response = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest).ConfigureAwait(false);
+
+            return response;
+        }
+
+        public async Task<ServerPowerOpsResponse> ShutDownServer(string accountAlias, List<string> serverIds)
+        {
+            var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
+
+            var serviceRequest = new ServiceRequest()
+            {
+                BaseAddress = "https://api.tier3.com/",
+                ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/shutDown", accountAlias),
+                MediaType = "application/json",
+                RequestModel = requestModel,
+                HttpMethod = HttpMethod.Post
+            };
+
+            var response = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest).ConfigureAwait(false);
+
+            return response;
+        }
+
+        public async Task<ServerPowerOpsResponse> ResetServer(string accountAlias, List<string> serverIds)
+        {
+            var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
+
+            var serviceRequest = new ServiceRequest()
+            {
+                BaseAddress = "https://api.tier3.com/",
+                ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/reset", accountAlias),
+                MediaType = "application/json",
+                RequestModel = requestModel,
+                HttpMethod = HttpMethod.Post
+            };
+
+            var response = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest).ConfigureAwait(false);
 
             return response;
         }

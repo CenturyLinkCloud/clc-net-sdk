@@ -33,7 +33,7 @@ namespace CenturyLinkCloudSDK.Unit.Tests
         }
 
         [TestMethod]
-        public async Task PauseServersReturnPauseOperationIsQueuedIfRunning()
+        public async Task PauseServersReturnPauseOperationIsQueuedIfValidState()
         {
             var serverIds = new List<string>() { "CA1P2O2DF2TST01", "CA1P2O2TEST01" };
 
@@ -53,7 +53,7 @@ namespace CenturyLinkCloudSDK.Unit.Tests
         }
 
         [TestMethod]
-        public async Task PowerOnServersReturnPowerOnOperationIsQueuedIfRunning()
+        public async Task PowerOnServersReturnPowerOnOperationIsQueuedIfValidState()
         {
             var serverIds = new List<string>() { "CA1P2O2DF2TST01", "CA1P2O2TEST01" };
 
@@ -72,5 +72,85 @@ namespace CenturyLinkCloudSDK.Unit.Tests
             }
         }
 
+        [TestMethod]
+        public async Task PowerOffServersReturnPowerOffOperationIsQueuedIfValidState()
+        {
+            var serverIds = new List<string>() { "CA1P2O2DF2TST01", "CA1P2O2TEST01" };
+
+            var serverContext = new Server();
+            var serverOperationResponse = await serverContext.PowerOffServer(Persistence.UserInfo.AccountAlias, serverIds);
+
+            if (serverOperationResponse != null)
+            {
+                foreach (var server in serverOperationResponse.Response)
+                {
+                    if (string.IsNullOrEmpty(server.ErrorMessage))
+                    {
+                        Assert.IsTrue(server.IsQueued);
+                    }
+                }
+            }
+        }
+
+
+        [TestMethod]
+        public async Task RebootServersReturnRebootOperationIsQueuedIfValidState()
+        {
+            var serverIds = new List<string>() { "CA1P2O2DF2TST01", "CA1P2O2TEST01" };
+
+            var serverContext = new Server();
+            var serverOperationResponse = await serverContext.RebootServer(Persistence.UserInfo.AccountAlias, serverIds);
+
+            if (serverOperationResponse != null)
+            {
+                foreach (var server in serverOperationResponse.Response)
+                {
+                    if (string.IsNullOrEmpty(server.ErrorMessage))
+                    {
+                        Assert.IsTrue(server.IsQueued);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public async Task ShutDownServersReturnShutDownOperationIsQueuedIfValidState()
+        {
+            var serverIds = new List<string>() { "CA1P2O2DF2TST01", "CA1P2O2TEST01" };
+
+            var serverContext = new Server();
+            var serverOperationResponse = await serverContext.ShutDownServer(Persistence.UserInfo.AccountAlias, serverIds);
+
+            if (serverOperationResponse != null)
+            {
+                foreach (var server in serverOperationResponse.Response)
+                {
+                    if (string.IsNullOrEmpty(server.ErrorMessage))
+                    {
+                        Assert.IsTrue(server.IsQueued);
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public async Task ResetServersReturnResetOperationIsQueuedIfValidState()
+        {
+            var serverIds = new List<string>() { "CA1P2O2DF2TST01", "CA1P2O2TEST01" };
+
+            var serverContext = new Server();
+            var serverOperationResponse = await serverContext.ResetServer(Persistence.UserInfo.AccountAlias, serverIds);
+
+            if (serverOperationResponse != null)
+            {
+                foreach (var server in serverOperationResponse.Response)
+                {
+                    if (string.IsNullOrEmpty(server.ErrorMessage))
+                    {
+                        Assert.IsTrue(server.IsQueued);
+                    }
+                }
+            }
+        }
     }
 }
