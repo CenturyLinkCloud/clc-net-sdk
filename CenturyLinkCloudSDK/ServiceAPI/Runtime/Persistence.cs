@@ -17,9 +17,17 @@ namespace CenturyLinkCloudSDK.ServiceAPI.Runtime
             get { return userInfo.Value; }
 
             set 
-            { 
+            {
                 userInfo = new Lazy<LoginResponse>(() => value);
-                isUserAuthenticated = new Lazy<bool>(() => true);
+
+                if (value != null)
+                {
+                    isUserAuthenticated = new Lazy<bool>(() => true);
+                }
+                else
+                {
+                    isUserAuthenticated = new Lazy<bool>(() => false);                    
+                }
             }
         }
 

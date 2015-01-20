@@ -24,16 +24,24 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
 
             var result = await Invoke<ServiceRequest, LoginResponse>(serviceRequest).ConfigureAwait(false);
 
-            if (result != null)
+            if (result == null)
             {
-                Persistence.UserInfo = new LoginResponse();
-                Persistence.UserInfo.BearerToken = result.BearerToken;
-                Persistence.UserInfo.AccountAlias = result.AccountAlias;
-                Persistence.UserInfo.Roles = result.Roles;
+                Persistence.UserInfo = null;
+                return result;
             }
 
-            return result;
+            if (result.BearerToken == null)
+            {
+                Persistence.UserInfo = null;
+                return result;
+            }
 
+            Persistence.UserInfo = new LoginResponse();
+            Persistence.UserInfo.BearerToken = result.BearerToken;
+            Persistence.UserInfo.AccountAlias = result.AccountAlias;
+            Persistence.UserInfo.Roles = result.Roles;
+
+            return result;
         }
     }
 }
