@@ -27,13 +27,25 @@ namespace CenturyLinkCloudSDK.Unit.Tests
         }
 
         [TestMethod]
-        public async Task GetDataCenterGroupsReturnValidData()
+        public async Task GetDataCenterGroupReturnValidData()
         {
             var dataCenterContext = new DataCenters();
-            var result = await dataCenterContext.GetDataCenterGroups(Persistence.UserInfo.AccountAlias, "CA1", true);
+            var result = await dataCenterContext.GetDataCenterGroup(Persistence.UserInfo.AccountAlias, "ca1");
 
             Assert.IsNotNull(result);
             Assert.IsTrue(!string.IsNullOrEmpty(result.Id));
+            Assert.IsTrue(result.Id == "ca1");
+        }
+
+        [TestMethod]
+        public async Task GetDataCenterGroupByHyperlinkReturnValidData()
+        {
+            var dataCenterContext = new DataCenters();
+            var result = await dataCenterContext.GetDataCenterGroup("/v2/datacenters/p2o2/ca1");
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(!string.IsNullOrEmpty(result.Id));
+            Assert.IsTrue(result.Id == "ca1");
         }
     }
 }

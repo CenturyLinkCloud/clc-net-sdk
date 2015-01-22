@@ -47,6 +47,7 @@
     <Compile Include="ServiceModels\V2\Common\Server.cs" />
     <Compile Include="ServiceModels\V2\Common\ServerOperation.cs" />
     <Compile Include="ServiceModels\V2\Common\UserInfo.cs" />
+    <Compile Include="ServiceModels\V2\DataCenters\Responses\GetDataCenterResponse.cs" />
     <Compile Include="ServiceModels\V2\Groups\Responses\GetGroupResponse.cs" />
     <Compile Include="ServiceModels\V2\Interfaces\IServiceResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
