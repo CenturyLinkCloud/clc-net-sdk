@@ -8,7 +8,7 @@ namespace CenturyLinkCloudSDK.ServiceModels.V2.Common
 
         public bool IsQueued { get; set; }
 
-        public List<Link> Links { get; set; }
+        public IEnumerable<Link> Links { get; set; }
 
         public string ErrorMessage { get; set; }
     }

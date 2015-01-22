@@ -1,14 +1,15 @@
 ﻿using CenturyLinkCloudSDK.ServiceAPI.Runtime;
-using CenturyLinkCloudSDK.ServiceModels.V2.Server.Responses;
+using CenturyLinkCloudSDK.ServiceModels.V2.Common;
+using CenturyLinkCloudSDK.ServiceModels.V2.Servers.Responses;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.ServiceAPI.V2
 {
-    public class Server: ServiceAPIBase
+    public class Servers: ServiceAPIBase
     {
-        public async Task<GetServerResponse> GetServer(string accountAlias, string serverId)
+        public async Task<Server> GetServer(string accountAlias, string serverId)
         {
             var serviceRequest = new ServiceRequest()
             {
@@ -19,12 +20,18 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
                 HttpMethod = HttpMethod.Get
             };
 
-            var response = await Invoke<ServiceRequest, GetServerResponse>(serviceRequest).ConfigureAwait(false);
+            var result = await Invoke<ServiceRequest, GetServerResponse>(serviceRequest).ConfigureAwait(false);
 
-            return response;
+            if (result != null)
+            {
+                var response = result.Response as Server;
+                return response;
+            }
+
+            return null;
         }
 
-        public async Task<ServerPowerOpsResponse> PauseServer(string accountAlias, List<string> serverIds)
+        public async Task<IEnumerable<ServerOperation>> PauseServer(string accountAlias, List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
 
@@ -37,12 +44,18 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
                 HttpMethod = HttpMethod.Post
             };
 
-            var response = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest).ConfigureAwait(false);
+            var result = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest).ConfigureAwait(false);
 
-            return response;
+            if (result != null)
+            {
+                var response = result.Response as IEnumerable<ServerOperation>;
+                return response;
+            }
+
+            return null;
         }
 
-        public async Task<ServerPowerOpsResponse> PowerOnServer(string accountAlias, List<string> serverIds)
+        public async Task<IEnumerable<ServerOperation>> PowerOnServer(string accountAlias, List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
 
@@ -55,12 +68,18 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
                 HttpMethod = HttpMethod.Post
             };
 
-            var response = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest).ConfigureAwait(false);
+            var result = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest).ConfigureAwait(false);
 
-            return response;
+            if (result != null)
+            {
+                var response = result.Response as IEnumerable<ServerOperation>;
+                return response;
+            }
+
+            return null;
         }
 
-        public async Task<ServerPowerOpsResponse> PowerOffServer(string accountAlias, List<string> serverIds)
+        public async Task<IEnumerable<ServerOperation>> PowerOffServer(string accountAlias, List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
 
@@ -73,12 +92,18 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
                 HttpMethod = HttpMethod.Post
             };
 
-            var response = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest).ConfigureAwait(false);
+            var result = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest).ConfigureAwait(false);
 
-            return response;
+            if (result != null)
+            {
+                var response = result.Response as IEnumerable<ServerOperation>;
+                return response;
+            }
+
+            return null;
         }
 
-        public async Task<ServerPowerOpsResponse> RebootServer(string accountAlias, List<string> serverIds)
+        public async Task<IEnumerable<ServerOperation>> RebootServer(string accountAlias, List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
 
@@ -91,12 +116,18 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
                 HttpMethod = HttpMethod.Post
             };
 
-            var response = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest).ConfigureAwait(false);
+            var result = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest).ConfigureAwait(false);
 
-            return response;
+            if (result != null)
+            {
+                var response = result.Response as IEnumerable<ServerOperation>;
+                return response;
+            }
+
+            return null;
         }
 
-        public async Task<ServerPowerOpsResponse> ShutDownServer(string accountAlias, List<string> serverIds)
+        public async Task<IEnumerable<ServerOperation>> ShutDownServer(string accountAlias, List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
 
@@ -109,12 +140,18 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
                 HttpMethod = HttpMethod.Post
             };
 
-            var response = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest).ConfigureAwait(false);
+            var result = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest).ConfigureAwait(false);
 
-            return response;
+            if (result != null)
+            {
+                var response = result.Response as IEnumerable<ServerOperation>;
+                return response;
+            }
+
+            return null;
         }
 
-        public async Task<ServerPowerOpsResponse> ResetServer(string accountAlias, List<string> serverIds)
+        public async Task<IEnumerable<ServerOperation>> ResetServer(string accountAlias, List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
 
@@ -127,9 +164,15 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
                 HttpMethod = HttpMethod.Post
             };
 
-            var response = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest).ConfigureAwait(false);
+            var result = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest).ConfigureAwait(false);
 
-            return response;
+            if (result != null)
+            {
+                var response = result.Response as IEnumerable<ServerOperation>;
+                return response;
+            }
+
+            return null;
         }
     }
 }

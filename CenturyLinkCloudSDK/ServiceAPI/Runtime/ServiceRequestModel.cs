@@ -1,5 +1,4 @@
-﻿
-namespace CenturyLinkCloudSDK.ServiceAPI.Runtime
+﻿namespace CenturyLinkCloudSDK.ServiceAPI.Runtime
 {
     public class ServiceRequestModel
     {

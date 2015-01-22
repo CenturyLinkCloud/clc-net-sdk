@@ -37,9 +37,14 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="ServiceAPI\Runtime\Persistence.cs" />
     <Compile Include="ServiceAPI\Runtime\ServiceRequestModel.cs" />
-    <Compile Include="ServiceAPI\V2\Server.cs" />
+    <Compile Include="ServiceAPI\V2\DataCenters.cs" />
+    <Compile Include="ServiceAPI\V2\Servers.cs" />
+    <Compile Include="ServiceModels\V2\Common\DataCenter.cs" />
+    <Compile Include="ServiceModels\V2\Common\ServerGroup.cs" />
+    <Compile Include="ServiceModels\V2\Common\Server.cs" />
     <Compile Include="ServiceModels\V2\Common\ServerOperation.cs" />
-    <Compile Include="ServiceModels\V2\Interfaces\IServiceResponseModel.cs" />
+    <Compile Include="ServiceModels\V2\Common\UserInfo.cs" />
+    <Compile Include="ServiceModels\V2\Interfaces\IServiceResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceAPI\Runtime\ServiceAPIBase.cs" />
     <Compile Include="ServiceAPI\V2\Authentication.cs" />
@@ -52,11 +57,13 @@
     <Compile Include="ServiceModels\V2\Authentication\Requests\LoginRequest.cs" />
     <Compile Include="ServiceAPI\Runtime\ServiceRequest.cs" />
     <Compile Include="ServiceModels\V2\Common\Port.cs" />
-    <Compile Include="ServiceModels\V2\Server\Responses\GetServerResponse.cs" />
+    <Compile Include="ServiceModels\V2\DataCenters\Responses\GetDataCenterGroupsResponse.cs" />
+    <Compile Include="ServiceModels\V2\DataCenters\Responses\GetDataCentersResponse.cs" />
+    <Compile Include="ServiceModels\V2\Servers\Responses\GetServerResponse.cs" />
     <Compile Include="ServiceModels\V2\Common\ServerDetail.cs" />
     <Compile Include="ServiceModels\V2\Common\Snapshot.cs" />
     <Compile Include="ServiceModels\V2\Common\SourceRestriction.cs" />
-    <Compile Include="ServiceModels\V2\Server\Responses\ServerPowerOpsResponse.cs" />
+    <Compile Include="ServiceModels\V2\Servers\Responses\ServerPowerOpsResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -82,7 +89,7 @@
     <Folder Include="ServiceAPI\V1\" />
     <Folder Include="ServiceManagers\" />
     <Folder Include="ServiceModels\V1\" />
-    <Folder Include="ServiceModels\V2\Server\Requests\" />
+    <Folder Include="ServiceModels\V2\Servers\Requests\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />

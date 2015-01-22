@@ -10,7 +10,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.Runtime
 {
     public abstract class ServiceAPIBase
     {
-        protected async Task<TResponse> Invoke<TRequest, TResponse>(TRequest request) 
+        internal async Task<TResponse> Invoke<TRequest, TResponse>(TRequest request) 
             where TRequest : ServiceRequest 
             where TResponse : IServiceResponseModel
         {
@@ -58,38 +58,19 @@ namespace CenturyLinkCloudSDK.ServiceAPI.Runtime
                     response = await client.DeleteAsync(request.ServiceUri).ConfigureAwait(false);
                 }
 
-                //if (response.IsSuccessStatusCode)
-                //{
-                var responseDeserialized = false;
                 Uri authenticationURL = response.Headers.Location;
 
-                try
-                {
-                    var result = await response.Content.ReadAsAsync<TResponse>().ConfigureAwait(false);
-                    return result;                    
-                }
-                catch(JsonSerializationException)
-                {
-                    responseDeserialized = false;
-                }
+                var jsonString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                if(!responseDeserialized)
+                if(!string.IsNullOrEmpty(jsonString))
                 {
-                    var namedJsonArray = await RetryReadWithNamedArray(response).ConfigureAwait(false);
-                    var result = JsonConvert.DeserializeObject<TResponse>(namedJsonArray);
+                    var namedObject = jsonString.CreateDeserializableJsonString();
+                    var result = JsonConvert.DeserializeObject<TResponse>(namedObject);
                     return result;
                 }
-                //}
 
                 return default(TResponse);              
             }
-        }
-
-        private async Task<string> RetryReadWithNamedArray(HttpResponseMessage response)
-        {
-            var stringResult = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-            return stringResult.CreateDeserializableJsonString();
         }
     }
 }

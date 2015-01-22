@@ -1,17 +1,24 @@
-﻿using CenturyLinkCloudSDK.ServiceModels.V2.Interfaces;
+﻿using CenturyLinkCloudSDK.ServiceModels.V2.Common;
+using CenturyLinkCloudSDK.ServiceModels.V2.Interfaces;
 
 namespace CenturyLinkCloudSDK.ServiceModels.V2.Authentication.Responses
 {
-    public class LoginResponse: IServiceResponseModel
+    internal class LoginResponse: IServiceResponseModel
     {
-        public string UserName { get; set; }
+        private UserInfo response = new UserInfo();
 
-        public string AccountAlias { get; set; }
+        public object Response 
+        {           
+            get
+            {
+                return response;
+            }
+            
+            set
+            {
+                response = value as UserInfo;
+            }
+        }
 
-        public string LocationAlias { get; set; }
-
-        public string[] Roles { get; set; }
-
-        public string BearerToken { get; set; }
     }
 }

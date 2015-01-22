@@ -1,10 +1,8 @@
-﻿using CenturyLinkCloudSDK.ServiceModels.V2.Common;
-using CenturyLinkCloudSDK.ServiceModels.V2.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace CenturyLinkCloudSDK.ServiceModels.V2.Server.Responses
+namespace CenturyLinkCloudSDK.ServiceModels.V2.Common
 {
-    public class GetServerResponse: IServiceResponseModel
+    public class Server
     {
         public string Id { get; set; }
 

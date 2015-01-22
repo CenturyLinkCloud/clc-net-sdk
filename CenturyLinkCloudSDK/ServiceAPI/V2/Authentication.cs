@@ -1,15 +1,15 @@
-﻿using System;
-using CenturyLinkCloudSDK.ServiceAPI.Runtime;
+﻿using CenturyLinkCloudSDK.ServiceAPI.Runtime;
+using CenturyLinkCloudSDK.ServiceModels.V2.Authentication.Requests;
+using CenturyLinkCloudSDK.ServiceModels.V2.Authentication.Responses;
+using CenturyLinkCloudSDK.ServiceModels.V2.Common;
 using System.Net.Http;
 using System.Threading.Tasks;
-using CenturyLinkCloudSDK.ServiceModels.V2.Authentication.Responses;
-using CenturyLinkCloudSDK.ServiceModels.V2.Authentication.Requests;
 
 namespace CenturyLinkCloudSDK.ServiceAPI.V2
 {
     public class Authentication : ServiceAPIBase
     {
-        public async Task<LoginResponse> Login(string username, string password)
+        public async Task<UserInfo> Login(string username, string password)
         {
             var requestModel = new LoginRequest(){ UserName = username, Password = password };
 
@@ -27,21 +27,23 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
             if (result == null)
             {
                 Persistence.UserInfo = null;
-                return result;
+                return null;
             }
 
-            if (result.BearerToken == null)
+            var response = result.Response as UserInfo;
+
+            if (response.BearerToken == null)
             {
                 Persistence.UserInfo = null;
-                return result;
+                return null;
             }
 
-            Persistence.UserInfo = new LoginResponse();
-            Persistence.UserInfo.BearerToken = result.BearerToken;
-            Persistence.UserInfo.AccountAlias = result.AccountAlias;
-            Persistence.UserInfo.Roles = result.Roles;
+            Persistence.UserInfo = new UserInfo();
+            Persistence.UserInfo.BearerToken = response.BearerToken;
+            Persistence.UserInfo.AccountAlias = response.AccountAlias;
+            Persistence.UserInfo.Roles = response.Roles;
 
-            return result;
+            return response;
         }
     }
 }

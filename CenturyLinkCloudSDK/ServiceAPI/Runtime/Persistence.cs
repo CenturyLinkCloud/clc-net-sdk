@@ -1,24 +1,20 @@
-﻿using CenturyLinkCloudSDK.ServiceModels.V2.Authentication.Responses;
+﻿using CenturyLinkCloudSDK.ServiceModels.V2.Common;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.ServiceAPI.Runtime
 {
     public static class Persistence
     {
         private static Lazy<bool> isUserAuthenticated = new Lazy<bool>(() => false);
-        private static Lazy<LoginResponse> userInfo = null;
+        private static Lazy<UserInfo> userInfo = null;
 
-        public static LoginResponse UserInfo 
+        public static UserInfo UserInfo 
         {
             get { return userInfo.Value; }
 
             set 
             {
-                userInfo = new Lazy<LoginResponse>(() => value);
+                userInfo = new Lazy<UserInfo>(() => value);
 
                 if (value != null)
                 {
