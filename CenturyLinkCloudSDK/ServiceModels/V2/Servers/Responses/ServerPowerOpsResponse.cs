@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CenturyLinkCloudSDK.ServiceModels.V2.Servers.Responses
 {
-    internal class ServerPowerOpsResponse: IServiceResponseModel
+    internal class ServerPowerOpsResponse: IServiceResponse
     {
         private IEnumerable<ServerOperation> response = new List<ServerOperation>();
 

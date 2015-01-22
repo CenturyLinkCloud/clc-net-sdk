@@ -1,12 +1,16 @@
 ﻿using CenturyLinkCloudSDK.ServiceModels.V2.Common;
 using CenturyLinkCloudSDK.ServiceModels.V2.Interfaces;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace CenturyLinkCloudSDK.ServiceModels.V2.DataCenters.Responses
+namespace CenturyLinkCloudSDK.ServiceModels.V2.Groups.Responses
 {
-    internal class GetDataCentersResponse: IServiceResponse
+    internal class GetGroupResponse: IServiceResponse
     {
-        private IEnumerable<DataCenter> response = new List<DataCenter>();
+        private Group response = new Group();
 
         public object Response
         {
@@ -17,7 +21,7 @@ namespace CenturyLinkCloudSDK.ServiceModels.V2.DataCenters.Responses
 
             set
             {
-                response = value as IEnumerable<DataCenter>;
+                response = value as Group;
             }
         }
     }

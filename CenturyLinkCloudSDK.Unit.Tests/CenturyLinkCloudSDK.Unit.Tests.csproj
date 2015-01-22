@@ -60,9 +60,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AuthenticationTest.cs" />
-    <Compile Include="ServerTest.cs" />
-    <Compile Include="DataCenterTest.cs" />
+    <Compile Include="AuthenticationTests.cs" />
+    <Compile Include="ServersTests.cs" />
+    <Compile Include="DataCentersTests.cs" />
+    <Compile Include="GroupsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CenturyLinkCloudSDK\CenturyLinkCloudSDK.csproj">

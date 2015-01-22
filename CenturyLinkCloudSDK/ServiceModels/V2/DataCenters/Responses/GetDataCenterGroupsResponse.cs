@@ -3,9 +3,9 @@ using CenturyLinkCloudSDK.ServiceModels.V2.Interfaces;
 
 namespace CenturyLinkCloudSDK.ServiceModels.V2.DataCenters.Responses
 {
-    internal class GetDataCenterGroupsResponse : IServiceResponseModel
+    internal class GetDataCenterGroupsResponse : IServiceResponse
     {
-        private ServerGroup response = new ServerGroup();
+        private DataCenterGroup response = new DataCenterGroup();
 
         public object Response
         {
@@ -16,7 +16,7 @@ namespace CenturyLinkCloudSDK.ServiceModels.V2.DataCenters.Responses
 
             set
             {
-                response = value as ServerGroup;
+                response = value as DataCenterGroup;
             }
         }
     }

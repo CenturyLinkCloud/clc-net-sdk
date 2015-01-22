@@ -3,7 +3,7 @@ using CenturyLinkCloudSDK.ServiceModels.V2.Interfaces;
 
 namespace CenturyLinkCloudSDK.ServiceModels.V2.Servers.Responses
 {
-    internal class GetServerResponse: IServiceResponseModel
+    internal class GetServerResponse: IServiceResponse
     {
         private Server response = new Server();
 

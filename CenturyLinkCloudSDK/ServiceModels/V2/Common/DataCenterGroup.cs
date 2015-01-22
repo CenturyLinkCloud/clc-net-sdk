@@ -2,7 +2,7 @@
 
 namespace CenturyLinkCloudSDK.ServiceModels.V2.Common
 {
-    public class ServerGroup
+    public class DataCenterGroup
     {
         public string Id { get; set; }
 

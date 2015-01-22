@@ -1,52 +1,51 @@
 ﻿using CenturyLinkCloudSDK.ServiceAPI.Runtime;
 using CenturyLinkCloudSDK.ServiceModels.V2.Common;
-using CenturyLinkCloudSDK.ServiceModels.V2.DataCenters.Responses;
-using System.Collections.Generic;
+using CenturyLinkCloudSDK.ServiceModels.V2.Groups.Responses;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.ServiceAPI.V2
 {
-    public class DataCenters: ServiceAPIBase
+    public class Groups : ServiceAPIBase
     {
-        public async Task<IEnumerable<DataCenter>> GetDataCenters(string accountAlias)
+        public async Task<Group> GetGroup(string accountAlias, string groupId)
         {
             var serviceRequest = new ServiceRequest()
             {
                 BaseAddress = "https://api.tier3.com/",
-                ServiceUri = string.Format("https://api.tier3.com/v2/datacenters/{0}", accountAlias),
+                ServiceUri = string.Format("https://api.tier3.com/v2/groups/{0}/{1}", accountAlias, groupId),
                 MediaType = "application/json",
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetDataCentersResponse>(serviceRequest).ConfigureAwait(false);
+            var result = await Invoke<ServiceRequest, GetGroupResponse>(serviceRequest).ConfigureAwait(false);
 
             if (result != null)
             {
-                var response = result.Response as IEnumerable<DataCenter>;
+                var response = result.Response as Group;
                 return response;
             }
 
             return null;
         }
 
-        public async Task<DataCenterGroup> GetDataCenterGroups(string accountAlias, string dataCenter, bool includeGroups)
+        public async Task<Group> GetGroup(string hypermediaLink)
         {
             var serviceRequest = new ServiceRequest()
             {
                 BaseAddress = "https://api.tier3.com/",
-                ServiceUri = string.Format("https://api.tier3.com/v2/datacenters/{0}/{1}?groupLinks={2}", accountAlias, dataCenter, includeGroups.ToString()),
+                ServiceUri = hypermediaLink,
                 MediaType = "application/json",
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetDataCenterGroupsResponse>(serviceRequest).ConfigureAwait(false);
+            var result = await Invoke<ServiceRequest, GetGroupResponse>(serviceRequest).ConfigureAwait(false);
 
             if (result != null)
             {
-                var response = result.Response as DataCenterGroup;
+                var response = result.Response as Group;
                 return response;
             }
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace CenturyLinkCloudSDK.Unit.Tests
 {
     [TestClass]
-    public class ServerTest
+    public class ServersTests
     {
         [TestInitialize]
         public void Login()

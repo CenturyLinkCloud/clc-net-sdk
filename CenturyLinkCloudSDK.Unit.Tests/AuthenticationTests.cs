@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CenturyLinkCloudSDK.Unit.Tests
 {
     [TestClass]
-    public class AuthenticationTest
+    public class AuthenticationTests
     {
         [TestMethod]
         public async Task LoginReturnTokenWhenValid()

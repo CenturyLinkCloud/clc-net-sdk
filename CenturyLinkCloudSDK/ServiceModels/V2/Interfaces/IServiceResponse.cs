@@ -1,7 +1,7 @@
 ﻿
 namespace CenturyLinkCloudSDK.ServiceModels.V2.Interfaces
 {
-    internal interface IServiceResponseModel
+    internal interface IServiceResponse
     {
         object Response { get; set; }
     }

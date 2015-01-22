@@ -3,7 +3,7 @@ using CenturyLinkCloudSDK.ServiceModels.V2.Interfaces;
 
 namespace CenturyLinkCloudSDK.ServiceModels.V2.Authentication.Responses
 {
-    internal class LoginResponse: IServiceResponseModel
+    internal class LoginResponse: IServiceResponse
     {
         private UserInfo response = new UserInfo();
 

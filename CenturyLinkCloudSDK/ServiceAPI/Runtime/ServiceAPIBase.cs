@@ -12,7 +12,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.Runtime
     {
         internal async Task<TResponse> Invoke<TRequest, TResponse>(TRequest request) 
             where TRequest : ServiceRequest 
-            where TResponse : IServiceResponseModel
+            where TResponse : IServiceResponse
         {
             using (var client = new HttpClient())
             {

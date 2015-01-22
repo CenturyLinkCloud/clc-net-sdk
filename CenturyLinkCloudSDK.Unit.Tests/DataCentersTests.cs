@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CenturyLinkCloudSDK.Unit.Tests
 {
     [TestClass]
-    public class DataCenterTest
+    public class DataCentersTests
     {
         [TestInitialize]
         public void Login()
@@ -30,7 +30,7 @@ namespace CenturyLinkCloudSDK.Unit.Tests
         public async Task GetDataCenterGroupsReturnValidData()
         {
             var dataCenterContext = new DataCenters();
-            var result = await dataCenterContext.GetDataCenterGroups(Persistence.UserInfo.AccountAlias, "CA2", true);
+            var result = await dataCenterContext.GetDataCenterGroups(Persistence.UserInfo.AccountAlias, "CA1", true);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(!string.IsNullOrEmpty(result.Id));

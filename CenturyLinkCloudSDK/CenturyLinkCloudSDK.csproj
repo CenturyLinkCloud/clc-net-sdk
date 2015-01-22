@@ -38,12 +38,16 @@
     <Compile Include="ServiceAPI\Runtime\Persistence.cs" />
     <Compile Include="ServiceAPI\Runtime\ServiceRequestModel.cs" />
     <Compile Include="ServiceAPI\V2\DataCenters.cs" />
+    <Compile Include="ServiceAPI\V2\Groups.cs" />
     <Compile Include="ServiceAPI\V2\Servers.cs" />
     <Compile Include="ServiceModels\V2\Common\DataCenter.cs" />
-    <Compile Include="ServiceModels\V2\Common\ServerGroup.cs" />
+    <Compile Include="ServiceModels\V2\Common\DataCenterGroup.cs" />
+    <Compile Include="ServiceModels\V2\Common\Group.cs" />
+    <Compile Include="ServiceModels\V2\Common\Limit.cs" />
     <Compile Include="ServiceModels\V2\Common\Server.cs" />
     <Compile Include="ServiceModels\V2\Common\ServerOperation.cs" />
     <Compile Include="ServiceModels\V2\Common\UserInfo.cs" />
+    <Compile Include="ServiceModels\V2\Groups\Responses\GetGroupResponse.cs" />
     <Compile Include="ServiceModels\V2\Interfaces\IServiceResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceAPI\Runtime\ServiceAPIBase.cs" />
