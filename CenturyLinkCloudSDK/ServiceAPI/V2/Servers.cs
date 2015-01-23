@@ -31,6 +31,28 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
             return null;
         }
 
+        public async Task<Server> GetServer(string hypermediaLink)
+        {
+            var serviceRequest = new ServiceRequest()
+            {
+                BaseAddress = "https://api.tier3.com/",
+                ServiceUri = hypermediaLink,
+                MediaType = "application/json",
+                RequestModel = null,
+                HttpMethod = HttpMethod.Get
+            };
+
+            var result = await Invoke<ServiceRequest, GetServerResponse>(serviceRequest).ConfigureAwait(false);
+
+            if (result != null)
+            {
+                var response = result.Response as Server;
+                return response;
+            }
+
+            return null;
+        }
+
         public async Task<IEnumerable<ServerOperation>> PauseServer(string accountAlias, List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };

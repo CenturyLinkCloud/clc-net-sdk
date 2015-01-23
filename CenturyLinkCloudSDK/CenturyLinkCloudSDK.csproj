@@ -39,11 +39,13 @@
     <Compile Include="ServiceAPI\Runtime\ServiceRequestModel.cs" />
     <Compile Include="ServiceAPI\V2\DataCenters.cs" />
     <Compile Include="ServiceAPI\V2\Groups.cs" />
+    <Compile Include="ServiceAPI\V2\Queues.cs" />
     <Compile Include="ServiceAPI\V2\Servers.cs" />
     <Compile Include="ServiceModels\V2\Common\DataCenter.cs" />
     <Compile Include="ServiceModels\V2\Common\DataCenterGroup.cs" />
     <Compile Include="ServiceModels\V2\Common\Group.cs" />
     <Compile Include="ServiceModels\V2\Common\Limit.cs" />
+    <Compile Include="ServiceModels\V2\Common\Queue.cs" />
     <Compile Include="ServiceModels\V2\Common\Server.cs" />
     <Compile Include="ServiceModels\V2\Common\ServerOperation.cs" />
     <Compile Include="ServiceModels\V2\Common\UserInfo.cs" />
@@ -64,6 +66,7 @@
     <Compile Include="ServiceModels\V2\Common\Port.cs" />
     <Compile Include="ServiceModels\V2\DataCenters\Responses\GetDataCenterGroupsResponse.cs" />
     <Compile Include="ServiceModels\V2\DataCenters\Responses\GetDataCentersResponse.cs" />
+    <Compile Include="ServiceModels\V2\Queues\Responses\GetStatusResponse.cs" />
     <Compile Include="ServiceModels\V2\Servers\Responses\GetServerResponse.cs" />
     <Compile Include="ServiceModels\V2\Common\ServerDetail.cs" />
     <Compile Include="ServiceModels\V2\Common\Snapshot.cs" />

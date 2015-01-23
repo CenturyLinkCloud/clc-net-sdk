@@ -19,6 +19,5 @@ namespace CenturyLinkCloudSDK.ServiceModels.V2.Servers.Responses
                 response = value as Server;
             }
         }
-
     }
 }

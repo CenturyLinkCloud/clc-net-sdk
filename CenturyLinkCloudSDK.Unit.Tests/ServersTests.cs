@@ -28,6 +28,17 @@ namespace CenturyLinkCloudSDK.Unit.Tests
         }
 
         [TestMethod]
+        public async Task GetServerByHyperlinkReturnValidData()
+        {
+            var serverContext = new Servers();
+            var result = await serverContext.GetServer("/v2/servers/p2o2/ca1p2o2df2tst01");
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(!String.IsNullOrEmpty(result.Id));
+            Assert.IsTrue(result.Id == "ca1p2o2df2tst01");
+        }
+
+        [TestMethod]
         public async Task PauseServersReturnPauseOperationIsQueuedIfValidState()
         {
             var serverIds = new List<string>() { "CA1P2O2DF2TST01", "CA1P2O2TEST01" };
@@ -142,10 +153,14 @@ namespace CenturyLinkCloudSDK.Unit.Tests
                 {
                     if (string.IsNullOrEmpty(server.ErrorMessage))
                     {
+
+
+
                         Assert.IsTrue(server.IsQueued);
                     }
                 }
             }
         }
+
     }
 }
