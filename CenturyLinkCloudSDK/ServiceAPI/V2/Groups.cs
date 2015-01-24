@@ -6,8 +6,17 @@ using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.ServiceAPI.V2
 {
+    /// <summary>
+    /// This class contains operations associated with server groups.
+    /// </summary>
     public class Groups : ServiceAPIBase
     {
+        /// <summary>
+        /// Gets the details for a individual server group and any sub-groups and servers that it contains. 
+        /// </summary>
+        /// <param name="accountAlias"></param>
+        /// <param name="groupId"></param>
+        /// <returns>An asynchronous Task of Group.</returns>
         public async Task<Group> GetGroup(string accountAlias, string groupId)
         {
             var serviceRequest = new ServiceRequest()
@@ -30,6 +39,11 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
             return null;
         }
 
+        /// <summary>
+        /// Gets the details for a individual server group and any sub-groups and servers that it contains by hypermedia link.
+        /// </summary>
+        /// <param name="hypermediaLink"></param>
+        /// <returns>An asynchronous Task of Group.</returns>
         public async Task<Group> GetGroup(string hypermediaLink)
         {
             var serviceRequest = new ServiceRequest()

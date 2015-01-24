@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.ServiceModels.V2.Groups.Responses
 {
+    /// <summary>
+    /// This class contains the response from the GetGroup operation.
+    /// </summary>
     internal class GetGroupResponse: IServiceResponse
     {
         private Group response = new Group();

@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace CenturyLinkCloudSDK.ServiceModels.V2.Servers.Responses
 {
+    /// <summary>
+    /// This class contains the response from the GetServer operation.
+    /// </summary>
     internal class ServerPowerOpsResponse: IServiceResponse
     {
         private IEnumerable<ServerOperation> response = new List<ServerOperation>();

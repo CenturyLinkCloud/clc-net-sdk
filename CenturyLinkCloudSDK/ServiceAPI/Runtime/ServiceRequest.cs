@@ -2,6 +2,9 @@
 
 namespace CenturyLinkCloudSDK.ServiceAPI.Runtime
 {
+    /// <summary>
+    /// This is the base class all service requests must inherit from.
+    /// </summary>
     public class ServiceRequest
     {
         public string BaseAddress { get; set; }

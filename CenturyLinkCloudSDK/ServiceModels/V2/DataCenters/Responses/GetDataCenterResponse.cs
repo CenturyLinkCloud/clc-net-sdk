@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.ServiceModels.V2.DataCenters.Responses
 {
+    /// <summary>
+    /// This class contains the response from the GetDataCenter operation.
+    /// </summary>
     public class GetDataCenterResponse: IServiceResponse
     {
         private DataCenter response = new DataCenter();

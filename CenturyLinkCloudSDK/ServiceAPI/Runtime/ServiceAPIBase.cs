@@ -8,8 +8,19 @@ using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.ServiceAPI.Runtime
 {
+    /// <summary>
+    /// This class is the base class that all service api classes must inherit from.
+    /// </summary>
     public abstract class ServiceAPIBase
     {
+        /// <summary>
+        /// This is the main method through which all api requests are made. It serializes the data to JSON before making the api call,
+        /// determines the appropriate Http method to call, and deserializes the response to a response class that it returns to the caller. 
+        /// </summary>
+        /// <typeparam name="TRequest"></typeparam>
+        /// <typeparam name="TResponse"></typeparam>
+        /// <param name="request"></param>
+        /// <returns>An asynchronous Task of the generic TResponse which must implement IServiceRequest</returns>
         internal async Task<TResponse> Invoke<TRequest, TResponse>(TRequest request) 
             where TRequest : ServiceRequest 
             where TResponse : IServiceResponse

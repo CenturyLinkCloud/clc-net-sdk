@@ -97,7 +97,6 @@
     <Folder Include="ServiceAPI\V1\" />
     <Folder Include="ServiceManagers\" />
     <Folder Include="ServiceModels\V1\" />
-    <Folder Include="ServiceModels\V2\Servers\Requests\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />

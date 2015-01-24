@@ -7,8 +7,19 @@ using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.ServiceAPI.V2
 {
+    /// <summary>
+    /// This class contains operations associated with servers.
+    /// </summary>
     public class Servers: ServiceAPIBase
     {
+        /// <summary>
+        /// Gets the details for a individual server.
+        /// Use this operation when you want to find out all the details for a server. 
+        /// It can be used to look for changes, its status, or to retrieve links to associated resources.
+        /// </summary>
+        /// <param name="accountAlias"></param>
+        /// <param name="serverId"></param>
+        /// <returns>An asynchronous Task of Server.</returns>
         public async Task<Server> GetServer(string accountAlias, string serverId)
         {
             var serviceRequest = new ServiceRequest()
@@ -31,6 +42,13 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
             return null;
         }
 
+        /// <summary>
+        /// Gets the details for a individual server by hypermedia link.
+        /// Use this operation when you want to find out all the details for a server. 
+        /// It can be used to look for changes, its status, or to retrieve links to associated resources. 
+        /// </summary>
+        /// <param name="hypermediaLink"></param>
+        /// <returns>An asynchronous Task of Server.</returns>
         public async Task<Server> GetServer(string hypermediaLink)
         {
             var serviceRequest = new ServiceRequest()
@@ -53,6 +71,14 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
             return null;
         }
 
+        /// <summary>
+        /// Sends the pause operation to a list of servers and adds operation to queue.
+        /// Use this operation when you want to pause a single server or group of servers. 
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the pause command.
+        /// </summary>
+        /// <param name="accountAlias"></param>
+        /// <param name="serverIds"></param>
+        /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
         public async Task<IEnumerable<ServerOperation>> PauseServer(string accountAlias, List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
@@ -77,6 +103,14 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
             return null;
         }
 
+        /// <summary>
+        /// Sends the power on operation to a list of servers and adds operation to queue.
+        /// Use this operation when you want to power on a single server or group of servers. 
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the power on command.
+        /// </summary>
+        /// <param name="accountAlias"></param>
+        /// <param name="serverIds"></param>
+        /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
         public async Task<IEnumerable<ServerOperation>> PowerOnServer(string accountAlias, List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
@@ -101,6 +135,14 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
             return null;
         }
 
+        /// <summary>
+        /// Sends the power off operation to a list of servers and adds operation to queue. 
+        /// Use this operation when you want to power off a single server or group of servers. 
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the power off command.
+        /// </summary>
+        /// <param name="accountAlias"></param>
+        /// <param name="serverIds"></param>
+        /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
         public async Task<IEnumerable<ServerOperation>> PowerOffServer(string accountAlias, List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
@@ -125,6 +167,14 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
             return null;
         }
 
+        /// <summary>
+        /// Sends the reboot operation to a list of servers and adds operation to queue.
+        /// Use this operation when you want to reboot a single server or group of servers. 
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the reboot command.
+        /// </summary>
+        /// <param name="accountAlias"></param>
+        /// <param name="serverIds"></param>
+        /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
         public async Task<IEnumerable<ServerOperation>> RebootServer(string accountAlias, List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
@@ -149,6 +199,14 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
             return null;
         }
 
+        /// <summary>
+        /// Sends the shut down operation to a list of servers and adds operation to queue.
+        /// Use this operation when you want to shut down a single server or group of servers. 
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the shut down command.
+        /// </summary>
+        /// <param name="accountAlias"></param>
+        /// <param name="serverIds"></param>
+        /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
         public async Task<IEnumerable<ServerOperation>> ShutDownServer(string accountAlias, List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
@@ -173,6 +231,14 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
             return null;
         }
 
+        /// <summary>
+        /// Sends the reset operation to a list of servers and adds operation to queue.
+        /// Use this operation when you want to reset a single server or group of servers. 
+        /// It should be used in conjunction with the  Queue GetStatus operation to check the result of the reset command.
+        /// </summary>
+        /// <param name="accountAlias"></param>
+        /// <param name="serverIds"></param>
+        /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
         public async Task<IEnumerable<ServerOperation>> ResetServer(string accountAlias, List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };

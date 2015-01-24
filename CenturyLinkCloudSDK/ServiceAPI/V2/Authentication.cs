@@ -7,8 +7,18 @@ using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.ServiceAPI.V2
 {
+    /// <summary>
+    /// This class contains operations associated with user authentication.
+    /// </summary>
     public class Authentication : ServiceAPIBase
     {
+        /// <summary>
+        /// Use this operation before you call any other API operation. It authenticates a user and  
+        /// returns the account alias a user's roles, the primary data center, and a valid bearer token.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns>An asynchronous Task of UserInfo object.</returns>
         public async Task<UserInfo> Login(string username, string password)
         {
             var requestModel = new LoginRequest(){ UserName = username, Password = password };

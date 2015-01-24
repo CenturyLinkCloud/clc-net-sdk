@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.ServiceModels.V2.Queues.Responses
 {
-    [JsonObjectAttribute]
+    /// <summary>
+    /// This class contains the response from the GetStatus operation.
+    /// </summary>
     internal class GetStatusResponse : IServiceResponse
     {
         private Queue response = new Queue();

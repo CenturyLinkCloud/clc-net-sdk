@@ -2,6 +2,9 @@
 
 namespace CenturyLinkCloudSDK.Extensions
 {
+    /// <summary>
+    /// This class contains extension methods.
+    /// </summary>
     public static class StringExtensions
     {
         public static string CreateDeserializableJsonString(this String jsonString)
