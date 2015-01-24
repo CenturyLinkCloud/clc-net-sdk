@@ -6,8 +6,8 @@
     <ProjectGuid>{97C04A3B-CB00-471A-9F78-1AFC1939AD8B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CenturyLinkCloudSDK.Unit.Tests</RootNamespace>
-    <AssemblyName>CenturyLinkCloudSDK.Unit.Tests</AssemblyName>
+    <RootNamespace>CenturyLinkCloudSDK.Integration.Tests</RootNamespace>
+    <AssemblyName>CenturyLinkCloudSDK.Integration.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CenturyLinkCloudSDK", "CenturyLinkCloudSDK\CenturyLinkCloudSDK.csproj", "{2C618193-0304-4EC6-B27E-E712F505C5AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CenturyLinkCloudSDK.Integration.Tests", "CenturyLinkCloudSDK.Unit.Tests\CenturyLinkCloudSDK.Integration.Tests.csproj", "{97C04A3B-CB00-471A-9F78-1AFC1939AD8B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CenturyLinkCloudSDK.Integration.Tests", "CenturyLinkCloudSDK.Integration.Tests\CenturyLinkCloudSDK.Integration.Tests.csproj", "{97C04A3B-CB00-471A-9F78-1AFC1939AD8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
