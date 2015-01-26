@@ -9,7 +9,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
     /// <summary>
     /// This class contains operations associated with queues.
     /// </summary>
-    public class Queues : ServiceAPIBase
+    public class QueueService : ServiceBase
     {
         /// <summary>
         /// Gets the status of a particular job in the queue, which keeps track of any long-running 
@@ -25,7 +25,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
         {
             var serviceRequest = new ServiceRequest()
             {
-                BaseAddress = "https://api.tier3.com/",
+                BaseAddress = Constants.API_BASE_ADDRESS,
                 ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/status/{1}", accountAlias, statusId),
                 MediaType = "application/json",
                 RequestModel = null,
@@ -56,8 +56,8 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
         {
             var serviceRequest = new ServiceRequest()
             {
-                BaseAddress = "https://api.tier3.com/",
-                ServiceUri = hypermediaLink,
+                BaseAddress = Constants.API_BASE_ADDRESS,
+                ServiceUri = Constants.API_BASE_ADDRESS + hypermediaLink,
                 MediaType = "application/json",
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get

@@ -10,7 +10,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
     /// <summary>
     /// This class contains operations associated with servers.
     /// </summary>
-    public class Servers: ServiceAPIBase
+    public class ServerService: ServiceBase
     {
         /// <summary>
         /// Gets the details for a individual server.
@@ -24,7 +24,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
         {
             var serviceRequest = new ServiceRequest()
             {
-                BaseAddress = "https://api.tier3.com/",
+                BaseAddress = Constants.API_BASE_ADDRESS,
                 ServiceUri = string.Format("https://api.tier3.com/v2/servers/{0}/{1}", accountAlias, serverId),
                 MediaType = "application/json",
                 RequestModel = null,
@@ -53,8 +53,8 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
         {
             var serviceRequest = new ServiceRequest()
             {
-                BaseAddress = "https://api.tier3.com/",
-                ServiceUri = hypermediaLink,
+                BaseAddress = Constants.API_BASE_ADDRESS,
+                ServiceUri = Constants.API_BASE_ADDRESS + hypermediaLink,
                 MediaType = "application/json",
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
@@ -85,7 +85,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
 
             var serviceRequest = new ServiceRequest()
             {
-                BaseAddress = "https://api.tier3.com/",
+                BaseAddress = Constants.API_BASE_ADDRESS,
                 ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/pause", accountAlias),
                 MediaType = "application/json",
                 RequestModel = requestModel,
@@ -117,7 +117,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
 
             var serviceRequest = new ServiceRequest()
             {
-                BaseAddress = "https://api.tier3.com/",
+                BaseAddress = Constants.API_BASE_ADDRESS,
                 ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/powerOn", accountAlias),
                 MediaType = "application/json",
                 RequestModel = requestModel,
@@ -149,7 +149,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
 
             var serviceRequest = new ServiceRequest()
             {
-                BaseAddress = "https://api.tier3.com/",
+                BaseAddress = Constants.API_BASE_ADDRESS,
                 ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/powerOff", accountAlias),
                 MediaType = "application/json",
                 RequestModel = requestModel,
@@ -181,7 +181,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
 
             var serviceRequest = new ServiceRequest()
             {
-                BaseAddress = "https://api.tier3.com/",
+                BaseAddress = Constants.API_BASE_ADDRESS,
                 ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/reboot", accountAlias),
                 MediaType = "application/json",
                 RequestModel = requestModel,
@@ -213,7 +213,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
 
             var serviceRequest = new ServiceRequest()
             {
-                BaseAddress = "https://api.tier3.com/",
+                BaseAddress = Constants.API_BASE_ADDRESS,
                 ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/shutDown", accountAlias),
                 MediaType = "application/json",
                 RequestModel = requestModel,
@@ -245,7 +245,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
 
             var serviceRequest = new ServiceRequest()
             {
-                BaseAddress = "https://api.tier3.com/",
+                BaseAddress = Constants.API_BASE_ADDRESS,
                 ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/reset", accountAlias),
                 MediaType = "application/json",
                 RequestModel = requestModel,

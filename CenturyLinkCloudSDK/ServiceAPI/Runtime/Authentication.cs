@@ -7,7 +7,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.Runtime
     /// This class is used as a static repository of authentication information that needs to persist accross requests.
     /// The UserInfo property contains the BearerToken needed to be passed to all API calls.
     /// </summary>
-    public static class Persistence
+    public static class Authentication
     {
         private static Lazy<bool> isUserAuthenticated = new Lazy<bool>(() => false);
         private static Lazy<UserInfo> userInfo = null;

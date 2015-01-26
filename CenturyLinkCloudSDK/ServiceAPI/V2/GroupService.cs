@@ -9,7 +9,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
     /// <summary>
     /// This class contains operations associated with server groups.
     /// </summary>
-    public class Groups : ServiceAPIBase
+    public class GroupService : ServiceBase
     {
         /// <summary>
         /// Gets the details for a individual server group and any sub-groups and servers that it contains. 
@@ -21,7 +21,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
         {
             var serviceRequest = new ServiceRequest()
             {
-                BaseAddress = "https://api.tier3.com/",
+                BaseAddress = Constants.API_BASE_ADDRESS,
                 ServiceUri = string.Format("https://api.tier3.com/v2/groups/{0}/{1}", accountAlias, groupId),
                 MediaType = "application/json",
                 RequestModel = null,
@@ -48,8 +48,8 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
         {
             var serviceRequest = new ServiceRequest()
             {
-                BaseAddress = "https://api.tier3.com/",
-                ServiceUri = hypermediaLink,
+                BaseAddress = Constants.API_BASE_ADDRESS,
+                ServiceUri = Constants.API_BASE_ADDRESS + hypermediaLink,
                 MediaType = "application/json",
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get

@@ -10,7 +10,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
     /// <summary>
     /// This class contains operations associated with user authentication.
     /// </summary>
-    public class Authentication : ServiceAPIBase
+    public class AuthenticationService : ServiceBase
     {
         /// <summary>
         /// Use this operation before you call any other API operation. It authenticates a user and  
@@ -25,7 +25,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
 
             var serviceRequest = new ServiceRequest()
             {
-                BaseAddress = "https://api.tier3.com/",
+                BaseAddress = Constants.API_BASE_ADDRESS,
                 ServiceUri = "https://api.tier3.com/v2/authentication/login",
                 MediaType = "application/json",
                 RequestModel = requestModel,
@@ -36,7 +36,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
 
             if (result == null)
             {
-                Persistence.UserInfo = null;
+                Authentication.UserInfo = null;
                 return null;
             }
 
@@ -44,14 +44,14 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
 
             if (response.BearerToken == null)
             {
-                Persistence.UserInfo = null;
+                Authentication.UserInfo = null;
                 return null;
             }
 
-            Persistence.UserInfo = new UserInfo();
-            Persistence.UserInfo.BearerToken = response.BearerToken;
-            Persistence.UserInfo.AccountAlias = response.AccountAlias;
-            Persistence.UserInfo.Roles = response.Roles;
+            Authentication.UserInfo = new UserInfo();
+            Authentication.UserInfo.BearerToken = response.BearerToken;
+            Authentication.UserInfo.AccountAlias = response.AccountAlias;
+            Authentication.UserInfo.Roles = response.Roles;
 
             return response;
         }

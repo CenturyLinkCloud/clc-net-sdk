@@ -11,7 +11,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.Runtime
     /// <summary>
     /// This class is the base class that all service api classes must inherit from.
     /// </summary>
-    public abstract class ServiceAPIBase
+    public abstract class ServiceBase
     {
         /// <summary>
         /// This is the main method through which all api requests are made. It serializes the data to JSON before making the api call,
@@ -31,9 +31,9 @@ namespace CenturyLinkCloudSDK.ServiceAPI.Runtime
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(request.MediaType));
 
-                if (Persistence.IsUserAuthenticated)
+                if (Authentication.IsUserAuthenticated)
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Persistence.UserInfo.BearerToken);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Authentication.UserInfo.BearerToken);
                 }
 
                 HttpResponseMessage response = null;

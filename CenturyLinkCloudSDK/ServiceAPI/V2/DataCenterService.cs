@@ -10,7 +10,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
     /// <summary>
     /// This class contains operations associated with data centers.
     /// </summary>
-    public class DataCenters: ServiceAPIBase
+    public class DataCenterService: ServiceBase
     {
         /// <summary>
         /// Gets the list of data centers that a given account has access to. 
@@ -23,7 +23,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
         {
             var serviceRequest = new ServiceRequest()
             {
-                BaseAddress = "https://api.tier3.com/",
+                BaseAddress = Constants.API_BASE_ADDRESS,
                 ServiceUri = string.Format("https://api.tier3.com/v2/datacenters/{0}", accountAlias),
                 MediaType = "application/json",
                 RequestModel = null,
@@ -51,7 +51,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
         {
             var serviceRequest = new ServiceRequest()
             {
-                BaseAddress = "https://api.tier3.com/",
+                BaseAddress = Constants.API_BASE_ADDRESS,
                 ServiceUri = string.Format("https://api.tier3.com/v2/datacenters/{0}/{1}", accountAlias, dataCenter),
                 MediaType = "application/json",
                 RequestModel = null,
@@ -78,8 +78,8 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
         {
             var serviceRequest = new ServiceRequest()
             {
-                BaseAddress = "https://api.tier3.com/",
-                ServiceUri = hypermediaLink,
+                BaseAddress = Constants.API_BASE_ADDRESS,
+                ServiceUri = Constants.API_BASE_ADDRESS + hypermediaLink,
                 MediaType = "application/json",
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
@@ -108,7 +108,7 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
         {
             var serviceRequest = new ServiceRequest()
             {
-                BaseAddress = "https://api.tier3.com/",
+                BaseAddress = Constants.API_BASE_ADDRESS,
                 ServiceUri = string.Format("https://api.tier3.com/v2/datacenters/{0}/{1}?groupLinks=true", accountAlias, dataCenter),
                 MediaType = "application/json",
                 RequestModel = null,
@@ -137,8 +137,8 @@ namespace CenturyLinkCloudSDK.ServiceAPI.V2
         {
             var serviceRequest = new ServiceRequest()
             {
-                BaseAddress = "https://api.tier3.com/",
-                ServiceUri = string.Format(hypermediaLink + "?groupLinks=true"),
+                BaseAddress = Constants.API_BASE_ADDRESS,
+                ServiceUri = Constants.API_BASE_ADDRESS + hypermediaLink + "?groupLinks=true",
                 MediaType = "application/json",
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get

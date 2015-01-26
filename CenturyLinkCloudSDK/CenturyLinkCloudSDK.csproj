@@ -35,12 +35,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="ServiceAPI\Runtime\Persistence.cs" />
+    <Compile Include="ServiceAPI\Runtime\Constants.cs" />
+    <Compile Include="ServiceAPI\Runtime\Authentication.cs" />
     <Compile Include="ServiceAPI\Runtime\ServiceRequestModel.cs" />
-    <Compile Include="ServiceAPI\V2\DataCenters.cs" />
-    <Compile Include="ServiceAPI\V2\Groups.cs" />
-    <Compile Include="ServiceAPI\V2\Queues.cs" />
-    <Compile Include="ServiceAPI\V2\Servers.cs" />
+    <Compile Include="ServiceAPI\V2\DataCenterService.cs" />
+    <Compile Include="ServiceAPI\V2\GroupService.cs" />
+    <Compile Include="ServiceAPI\V2\QueueService.cs" />
+    <Compile Include="ServiceAPI\V2\ServerService.cs" />
     <Compile Include="ServiceModels\V2\Common\DataCenter.cs" />
     <Compile Include="ServiceModels\V2\Common\DataCenterGroup.cs" />
     <Compile Include="ServiceModels\V2\Common\Group.cs" />
@@ -53,8 +54,8 @@
     <Compile Include="ServiceModels\V2\Groups\Responses\GetGroupResponse.cs" />
     <Compile Include="ServiceModels\V2\Interfaces\IServiceResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceAPI\Runtime\ServiceAPIBase.cs" />
-    <Compile Include="ServiceAPI\V2\Authentication.cs" />
+    <Compile Include="ServiceAPI\Runtime\ServiceBase.cs" />
+    <Compile Include="ServiceAPI\V2\AuthenticationService.cs" />
     <Compile Include="ServiceModels\V2\Common\AlertPolicy.cs" />
     <Compile Include="ServiceModels\V2\Common\ChangeInfo.cs" />
     <Compile Include="ServiceModels\V2\Common\CustomField.cs" />
