@@ -34,7 +34,6 @@ namespace CenturyLinkCloudSDK.Services
 
             if (result == null)
             {
-                //Authentication.UserInfo = null;
                 return null;
             }
 
@@ -42,14 +41,8 @@ namespace CenturyLinkCloudSDK.Services
 
             if (response == null)
             {
-                //Authentication.UserInfo = null;
                 return null;
             }
-
-            //Authentication.UserInfo = new UserInfo();
-            //Authentication.UserInfo.BearerToken = response.BearerToken;
-            //Authentication.UserInfo.AccountAlias = response.AccountAlias;
-            //Authentication.UserInfo.Roles = response.Roles;
 
             return response;
         }

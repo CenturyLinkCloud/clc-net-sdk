@@ -14,6 +14,11 @@ namespace CenturyLinkCloudSDK.Services.Runtime
     {
         private UserInfo userInfo = null;
         private AuthenticationInfo authenticationInfo = null;
+        private AuthenticationService authentication;
+        private DataCenterService dataCenters;
+        private GroupService groups;
+        private QueueService queues;
+        private ServerService servers;
 
         /// <summary>
         /// Constructor called when the user needs to be authenticated. It sets the userInfo and authenticationInfo fields
@@ -26,6 +31,7 @@ namespace CenturyLinkCloudSDK.Services.Runtime
         {
             userInfo = AuthenticateUser(userName, password).Result;
             authenticationInfo = new AuthenticationInfo() { AccountAlias = userInfo.AccountAlias, BearerToken = userInfo.BearerToken };
+            InitializeServices();   
         }
 
         /// <summary>
@@ -36,6 +42,7 @@ namespace CenturyLinkCloudSDK.Services.Runtime
         public Client(AuthenticationInfo authenticationInfo)
         {
             this.authenticationInfo = authenticationInfo;
+            InitializeServices();
         }
 
         public UserInfo UserInfo 
@@ -54,49 +61,59 @@ namespace CenturyLinkCloudSDK.Services.Runtime
             }
         }
 
-        public AuthenticationService AuthenticationService
+        public AuthenticationService Authentication
         {
             get
             {
-                return new AuthenticationService();
+                return authentication;
             }
         }
 
-        public DataCenterService DataCenterService
+        public DataCenterService DataCenters
         {
             get
             {
-                return new DataCenterService(authenticationInfo);
+                return dataCenters;
             }
         }
 
-        public GroupService GroupService
+        public GroupService Groups
         {
             get
             {
-                return new GroupService(authenticationInfo);
+                return groups;
             }
         }
 
-        public QueueService QueueService
+        public QueueService Queues
         {
             get
             {
-                return new QueueService(authenticationInfo);
+                return queues;
             }
         }
 
-        public ServerService ServerService
+        public ServerService Servers
         {
             get
             {
-                return new ServerService(authenticationInfo);
+                return servers;
             }
         }
 
         private async Task<UserInfo> AuthenticateUser(string userName, string password)
         {
-            return await AuthenticationService.Login(userName, password).ConfigureAwait(false);
+            var authentication = new AuthenticationService();
+            return await authentication.Login(userName, password).ConfigureAwait(false);
+        }
+
+        private void InitializeServices()
+        {
+            authentication = new AuthenticationService();
+            dataCenters = new DataCenterService(authenticationInfo);
+            groups = new GroupService(authenticationInfo);
+            queues = new QueueService(authenticationInfo);
+            servers = new ServerService(authenticationInfo);
         }
     }
 }
