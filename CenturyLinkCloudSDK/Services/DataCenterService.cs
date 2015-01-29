@@ -14,7 +14,7 @@ namespace CenturyLinkCloudSDK.Services
     {
         private AuthenticationInfo userAuthentication;
 
-        public DataCenterService(AuthenticationInfo userAuthentication)
+        internal DataCenterService(AuthenticationInfo userAuthentication)
         {
             this.userAuthentication = userAuthentication;
         }

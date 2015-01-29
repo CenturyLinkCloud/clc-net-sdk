@@ -13,7 +13,7 @@ namespace CenturyLinkCloudSDK.Services
     {
         private AuthenticationInfo userAuthentication;
 
-        public GroupService(AuthenticationInfo userAuthentication)
+        internal GroupService(AuthenticationInfo userAuthentication)
         {
             this.userAuthentication = userAuthentication;
         }

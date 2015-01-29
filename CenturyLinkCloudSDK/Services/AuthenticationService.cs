@@ -12,6 +12,9 @@ namespace CenturyLinkCloudSDK.Services
     /// </summary>
     public class AuthenticationService : ServiceBase
     {
+
+        internal AuthenticationService(){ }
+
         /// <summary>
         /// Use this operation before you call any other API operation. It authenticates a user and  
         /// returns the account alias a user's roles, the primary data center, and a valid bearer token.

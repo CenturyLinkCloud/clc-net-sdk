@@ -13,7 +13,7 @@ namespace CenturyLinkCloudSDK.Services
     {
         private AuthenticationInfo userAuthentication;
 
-        public QueueService(AuthenticationInfo userAuthentication)
+        internal QueueService(AuthenticationInfo userAuthentication)
         {
             this.userAuthentication = userAuthentication;
         }

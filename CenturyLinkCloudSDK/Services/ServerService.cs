@@ -13,7 +13,8 @@ namespace CenturyLinkCloudSDK.Services
     public class ServerService: ServiceBase
     {
         private AuthenticationInfo userAuthentication;
-        public ServerService(AuthenticationInfo userAuthentication)
+
+        internal ServerService(AuthenticationInfo userAuthentication)
         {
             this.userAuthentication = userAuthentication;
         }
