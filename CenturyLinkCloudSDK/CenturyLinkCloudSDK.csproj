@@ -35,44 +35,45 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="ServiceAPI\Runtime\Constants.cs" />
-    <Compile Include="ServiceAPI\Runtime\Authentication.cs" />
-    <Compile Include="ServiceAPI\Runtime\ServiceRequestModel.cs" />
-    <Compile Include="ServiceAPI\V2\DataCenterService.cs" />
-    <Compile Include="ServiceAPI\V2\GroupService.cs" />
-    <Compile Include="ServiceAPI\V2\QueueService.cs" />
-    <Compile Include="ServiceAPI\V2\ServerService.cs" />
-    <Compile Include="ServiceModels\V2\Common\DataCenter.cs" />
-    <Compile Include="ServiceModels\V2\Common\DataCenterGroup.cs" />
-    <Compile Include="ServiceModels\V2\Common\Group.cs" />
-    <Compile Include="ServiceModels\V2\Common\Limit.cs" />
-    <Compile Include="ServiceModels\V2\Common\Queue.cs" />
-    <Compile Include="ServiceModels\V2\Common\Server.cs" />
-    <Compile Include="ServiceModels\V2\Common\ServerOperation.cs" />
-    <Compile Include="ServiceModels\V2\Common\UserInfo.cs" />
-    <Compile Include="ServiceModels\V2\DataCenters\Responses\GetDataCenterResponse.cs" />
-    <Compile Include="ServiceModels\V2\Groups\Responses\GetGroupResponse.cs" />
-    <Compile Include="ServiceModels\V2\Interfaces\IServiceResponse.cs" />
+    <Compile Include="ServiceModels\Common\AuthenticationInfo.cs" />
+    <Compile Include="Services\Runtime\Client.cs" />
+    <Compile Include="Services\Runtime\Constants.cs" />
+    <Compile Include="Services\Runtime\ServiceRequestModel.cs" />
+    <Compile Include="Services\DataCenterService.cs" />
+    <Compile Include="Services\GroupService.cs" />
+    <Compile Include="Services\QueueService.cs" />
+    <Compile Include="Services\ServerService.cs" />
+    <Compile Include="ServiceModels\Common\DataCenter.cs" />
+    <Compile Include="ServiceModels\Common\DataCenterGroup.cs" />
+    <Compile Include="ServiceModels\Common\Group.cs" />
+    <Compile Include="ServiceModels\Common\Limit.cs" />
+    <Compile Include="ServiceModels\Common\Queue.cs" />
+    <Compile Include="ServiceModels\Common\Server.cs" />
+    <Compile Include="ServiceModels\Common\ServerOperation.cs" />
+    <Compile Include="ServiceModels\Common\UserInfo.cs" />
+    <Compile Include="ServiceModels\DataCenters\Responses\GetDataCenterResponse.cs" />
+    <Compile Include="ServiceModels\Groups\Responses\GetGroupResponse.cs" />
+    <Compile Include="ServiceModels\Interfaces\IServiceResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceAPI\Runtime\ServiceBase.cs" />
-    <Compile Include="ServiceAPI\V2\AuthenticationService.cs" />
-    <Compile Include="ServiceModels\V2\Common\AlertPolicy.cs" />
-    <Compile Include="ServiceModels\V2\Common\ChangeInfo.cs" />
-    <Compile Include="ServiceModels\V2\Common\CustomField.cs" />
-    <Compile Include="ServiceModels\V2\Common\IpAddress.cs" />
-    <Compile Include="ServiceModels\V2\Common\Link.cs" />
-    <Compile Include="ServiceModels\V2\Authentication\Responses\LoginResponse.cs" />
-    <Compile Include="ServiceModels\V2\Authentication\Requests\LoginRequest.cs" />
-    <Compile Include="ServiceAPI\Runtime\ServiceRequest.cs" />
-    <Compile Include="ServiceModels\V2\Common\Port.cs" />
-    <Compile Include="ServiceModels\V2\DataCenters\Responses\GetDataCenterGroupsResponse.cs" />
-    <Compile Include="ServiceModels\V2\DataCenters\Responses\GetDataCentersResponse.cs" />
-    <Compile Include="ServiceModels\V2\Queues\Responses\GetStatusResponse.cs" />
-    <Compile Include="ServiceModels\V2\Servers\Responses\GetServerResponse.cs" />
-    <Compile Include="ServiceModels\V2\Common\ServerDetail.cs" />
-    <Compile Include="ServiceModels\V2\Common\Snapshot.cs" />
-    <Compile Include="ServiceModels\V2\Common\SourceRestriction.cs" />
-    <Compile Include="ServiceModels\V2\Servers\Responses\ServerPowerOpsResponse.cs" />
+    <Compile Include="Services\Runtime\ServiceBase.cs" />
+    <Compile Include="Services\AuthenticationService.cs" />
+    <Compile Include="ServiceModels\Common\AlertPolicy.cs" />
+    <Compile Include="ServiceModels\Common\ChangeInfo.cs" />
+    <Compile Include="ServiceModels\Common\CustomField.cs" />
+    <Compile Include="ServiceModels\Common\IpAddress.cs" />
+    <Compile Include="ServiceModels\Common\Link.cs" />
+    <Compile Include="ServiceModels\Authentication\Responses\LoginResponse.cs" />
+    <Compile Include="ServiceModels\Authentication\Requests\LoginRequest.cs" />
+    <Compile Include="Services\Runtime\ServiceRequest.cs" />
+    <Compile Include="ServiceModels\Common\Port.cs" />
+    <Compile Include="ServiceModels\DataCenters\Responses\GetDataCenterGroupsResponse.cs" />
+    <Compile Include="ServiceModels\DataCenters\Responses\GetDataCentersResponse.cs" />
+    <Compile Include="ServiceModels\Queues\Responses\GetStatusResponse.cs" />
+    <Compile Include="ServiceModels\Servers\Responses\GetServerResponse.cs" />
+    <Compile Include="ServiceModels\Common\ServerDetail.cs" />
+    <Compile Include="ServiceModels\Common\Snapshot.cs" />
+    <Compile Include="ServiceModels\Common\SourceRestriction.cs" />
+    <Compile Include="ServiceModels\Servers\Responses\ServerPowerOpsResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -95,9 +96,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ServiceAPI\V1\" />
     <Folder Include="ServiceManagers\" />
-    <Folder Include="ServiceModels\V1\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
