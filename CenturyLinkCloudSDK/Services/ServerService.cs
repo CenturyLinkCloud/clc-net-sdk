@@ -41,7 +41,7 @@ namespace CenturyLinkCloudSDK.Services
 
             if (result != null)
             {
-                var response = result.Response as Server;
+                var response = result.Response;
                 return response;
             }
 
@@ -69,7 +69,7 @@ namespace CenturyLinkCloudSDK.Services
 
             if (result != null)
             {
-                var response = result.Response as Server;
+                var response = result.Response;
                 return response;
             }
 
@@ -100,7 +100,7 @@ namespace CenturyLinkCloudSDK.Services
 
             if (result != null)
             {
-                var response = result.Response as IEnumerable<ServerOperation>;
+                var response = result.Response;
                 return response;
             }
 
@@ -131,7 +131,7 @@ namespace CenturyLinkCloudSDK.Services
 
             if (result != null)
             {
-                var response = result.Response as IEnumerable<ServerOperation>;
+                var response = result.Response;
                 return response;
             }
 
@@ -162,7 +162,7 @@ namespace CenturyLinkCloudSDK.Services
 
             if (result != null)
             {
-                var response = result.Response as IEnumerable<ServerOperation>;
+                var response = result.Response;
                 return response;
             }
 
@@ -193,7 +193,7 @@ namespace CenturyLinkCloudSDK.Services
 
             if (result != null)
             {
-                var response = result.Response as IEnumerable<ServerOperation>;
+                var response = result.Response;
                 return response;
             }
 
@@ -224,7 +224,7 @@ namespace CenturyLinkCloudSDK.Services
 
             if (result != null)
             {
-                var response = result.Response as IEnumerable<ServerOperation>;
+                var response = result.Response;
                 return response;
             }
 
@@ -255,7 +255,7 @@ namespace CenturyLinkCloudSDK.Services
 
             if (result != null)
             {
-                var response = result.Response as IEnumerable<ServerOperation>;
+                var response = result.Response;
                 return response;
             }
 

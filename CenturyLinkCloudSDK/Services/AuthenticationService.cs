@@ -40,7 +40,7 @@ namespace CenturyLinkCloudSDK.Services
                 return null;
             }
 
-            var response = result.Response as UserInfo;
+            var response = result.Response;
 
             if (response == null)
             {

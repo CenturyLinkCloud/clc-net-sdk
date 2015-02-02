@@ -7,21 +7,8 @@ namespace CenturyLinkCloudSDK.ServiceModels.DataCenters.Responses
     /// <summary>
     /// This class contains the response from the GetDataCenters operation.
     /// </summary>
-    internal class GetDataCentersResponse: IServiceResponse
+    internal class GetDataCentersResponse : IResponseRoot<IEnumerable<DataCenter>>
     {
-        private IEnumerable<DataCenter> response = new List<DataCenter>();
-
-        public object Response
-        {
-            get
-            {
-                return response;
-            }
-
-            set
-            {
-                response = value as IEnumerable<DataCenter>;
-            }
-        }
+        public IEnumerable<DataCenter> Response { get; set; }
     }
 }

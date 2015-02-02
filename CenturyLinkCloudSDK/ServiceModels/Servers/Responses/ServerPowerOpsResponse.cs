@@ -7,21 +7,8 @@ namespace CenturyLinkCloudSDK.ServiceModels.Servers.Responses
     /// <summary>
     /// This class contains the response from the GetServer operation.
     /// </summary>
-    internal class ServerPowerOpsResponse: IServiceResponse
+    internal class ServerPowerOpsResponse : IResponseRoot<IEnumerable<ServerOperation>>
     {
-        private IEnumerable<ServerOperation> response = new List<ServerOperation>();
-
-        public object Response
-        {
-            get
-            {
-                return response;
-            }
-
-            set
-            {
-                response = value as IEnumerable<ServerOperation>;
-            }
-        }
+        public IEnumerable<ServerOperation> Response { get; set; }
     }
 }

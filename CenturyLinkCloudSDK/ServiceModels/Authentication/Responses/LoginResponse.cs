@@ -6,22 +6,8 @@ namespace CenturyLinkCloudSDK.ServiceModels.Authentication.Responses
     /// <summary>
     /// This class contains the response from the Login operation.
     /// </summary>
-    internal class LoginResponse: IServiceResponse
+    internal class LoginResponse : IResponseRoot<UserInfo>
     {
-        private UserInfo response = new UserInfo();
-
-        public object Response 
-        {           
-            get
-            {
-                return response;
-            }
-            
-            set
-            {
-                response = value as UserInfo;
-            }
-        }
-
+        public UserInfo Response { get; set; }
     }
 }

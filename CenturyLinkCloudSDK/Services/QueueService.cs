@@ -42,7 +42,7 @@ namespace CenturyLinkCloudSDK.Services
 
             if (result != null)
             {
-                var response = result.Response as Queue;
+                var response = result.Response;
                 return response;
             }
 
@@ -72,7 +72,7 @@ namespace CenturyLinkCloudSDK.Services
 
             if (result != null)
             {
-                var response = result.Response as Queue;
+                var response = result.Response;
                 return response;
             }
 

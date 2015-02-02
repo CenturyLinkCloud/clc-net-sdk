@@ -40,7 +40,7 @@ namespace CenturyLinkCloudSDK.Services
 
             if (result != null)
             {
-                var response = result.Response as IEnumerable<DataCenter>;
+                var response = result.Response;
                 return response;
             }
 
@@ -67,7 +67,7 @@ namespace CenturyLinkCloudSDK.Services
 
             if (result != null)
             {
-                var response = result.Response as DataCenter;
+                var response = result.Response;
                 return response;
             }
 
@@ -93,7 +93,7 @@ namespace CenturyLinkCloudSDK.Services
 
             if (result != null)
             {
-                var response = result.Response as DataCenter;
+                var response = result.Response;
                 return response;
             }
 
@@ -122,7 +122,7 @@ namespace CenturyLinkCloudSDK.Services
 
             if (result != null)
             {
-                var response = result.Response as DataCenterGroup;
+                var response = result.Response;
                 return response;
             }
 
@@ -150,7 +150,7 @@ namespace CenturyLinkCloudSDK.Services
 
             if (result != null)
             {
-                var response = result.Response as DataCenterGroup;
+                var response = result.Response;
                 return response;
             }
 
