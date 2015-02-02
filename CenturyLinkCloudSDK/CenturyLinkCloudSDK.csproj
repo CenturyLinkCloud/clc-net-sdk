@@ -93,6 +93,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="FacadeDiagram.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

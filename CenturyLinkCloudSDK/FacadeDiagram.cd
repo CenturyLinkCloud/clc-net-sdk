@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CenturyLinkCloudSDK.Services.AuthenticationService" Collapsed="true">
+    <Position X="0.75" Y="4.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Services\AuthenticationService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CenturyLinkCloudSDK.Services.DataCenterService" Collapsed="true">
+    <Position X="3" Y="4.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AACQAAAAAAAAAAAABAAAAAAAAAEAAAABAAAgAAAAAAA=</HashCode>
+      <FileName>Services\DataCenterService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CenturyLinkCloudSDK.Services.GroupService" Collapsed="true">
+    <Position X="5.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAEAAAgAAAAAAA=</HashCode>
+      <FileName>Services\GroupService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CenturyLinkCloudSDK.Services.QueueService" Collapsed="true">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAEAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Services\QueueService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CenturyLinkCloudSDK.Services.ServerService" Collapsed="true">
+    <Position X="9.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABgAgAAEAAAAAQIAAAEAAIAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Services\ServerService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CenturyLinkCloudSDK.Services.Runtime.Client" Collapsed="true">
+    <Position X="5" Y="7.5" Width="1.75" />
+    <AssociationLine Name="Authentication" Type="CenturyLinkCloudSDK.Services.AuthenticationService" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5" Y="7.938" />
+        <Point X="1.625" Y="7.938" />
+        <Point X="1.625" Y="5.191" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="DataCenters" Type="CenturyLinkCloudSDK.Services.DataCenterService" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5" Y="7.688" />
+        <Point X="3.422" Y="7.688" />
+        <Point X="3.422" Y="5.191" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Queues" Type="CenturyLinkCloudSDK.Services.QueueService" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.75" Y="7.688" />
+        <Point X="8.25" Y="7.688" />
+        <Point X="8.25" Y="5.191" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Servers" Type="CenturyLinkCloudSDK.Services.ServerService" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.75" Y="7.875" />
+        <Point X="10.5" Y="7.875" />
+        <Point X="10.5" Y="5.191" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>QAAACUACABAAAAAQAABAAAAAUAAAEBAAABAAAAAAAAE=</HashCode>
+      <FileName>Services\Runtime\Client.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Authentication" />
+      <Property Name="DataCenters" />
+      <Property Name="Groups" />
+      <Property Name="Queues" />
+      <Property Name="Servers" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CenturyLinkCloudSDK.Services.Runtime.ServiceBase">
+    <Position X="4.75" Y="2" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\Runtime\ServiceBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
