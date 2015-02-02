@@ -20,7 +20,7 @@ namespace CenturyLinkCloudSDK.Services.Runtime
         /// <typeparam name="TRequest"></typeparam>
         /// <typeparam name="TResponse"></typeparam>
         /// <param name="request"></param>
-        /// <returns>An asynchronous Task of the generic TResponse which must implement IServiceResponse</returns>
+        /// <returns>An asynchronous Task of the generic TResponse.</returns>
         internal async Task<TResponse> Invoke<TRequest, TResponse>(TRequest request) 
             where TRequest : ServiceRequest 
         {
