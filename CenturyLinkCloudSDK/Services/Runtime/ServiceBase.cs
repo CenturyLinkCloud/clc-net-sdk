@@ -1,6 +1,8 @@
 ﻿using CenturyLinkCloudSDK.Extensions;
 using CenturyLinkCloudSDK.ServiceModels.Interfaces;
+using CenturyLinkCloudSDK.ServiceModels.Servers.Responses;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -20,67 +22,137 @@ namespace CenturyLinkCloudSDK.Services.Runtime
         /// <typeparam name="TRequest"></typeparam>
         /// <typeparam name="TResponse"></typeparam>
         /// <param name="request"></param>
-        /// <returns>An asynchronous Task of the generic TResponse.</returns>
-        internal async Task<TResponse> Invoke<TRequest, TResponse>(TRequest request) 
-            where TRequest : ServiceRequest 
+        /// <returns>An asynchronous Task of the generic TResponse which must implement IServiceResponse</returns>
+        internal async Task<TResponse> Invoke<TRequest, TResponse>(TRequest request) where TRequest : ServiceRequest
         {
+            HttpResponseMessage httpResponseMessage = null;
+
+            try
+            {
+                httpResponseMessage = await MakeRequest(request).ConfigureAwait(false);
+                var response = await DeserializeResponse<TResponse>(httpResponseMessage).ConfigureAwait(false);
+                return response;
+            }
+            catch (CenturyLinkCloudServiceException serviceException)
+            {
+                //TODO: Perform exception logging operation.
+                serviceException = BuildUpServiceException(serviceException, request, httpResponseMessage);
+                throw serviceException;
+            }
+            catch (Exception ex)
+            {
+                //TODO: Perform exception logging operation.
+                var serviceException = new CenturyLinkCloudServiceException(Constants.ServiceExceptionMessage, ex);
+                serviceException = BuildUpServiceException(serviceException, request, httpResponseMessage);
+                throw serviceException;
+            }
+        }
+
+        private async Task<HttpResponseMessage> MakeRequest<TRequest>(TRequest request) where TRequest : ServiceRequest
+        {
+            HttpResponseMessage httpResponseMessage = null;
+
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(Constants.ApiBaseAddress);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.JsonMediaType));
-
-                if (request.BearerToken != null)
+                try
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request.BearerToken);
-                }
+                    client.BaseAddress = new Uri(Constants.ApiBaseAddress);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.JsonMediaType));
 
-                HttpResponseMessage response = null;
-
-                if (request.HttpMethod == HttpMethod.Get)
-                {
-                    response = await client.GetAsync(request.ServiceUri).ConfigureAwait(false);
-                }
-                else if (request.HttpMethod == HttpMethod.Post)
-                {
-                    if (request.RequestModel.UnNamedArray != null)
+                    if (request.BearerToken != null)
                     {
-                        response = await client.PostAsJsonAsync(request.ServiceUri, request.RequestModel.UnNamedArray).ConfigureAwait(false);
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request.BearerToken);
                     }
-                    else
+
+                    if (request.HttpMethod == HttpMethod.Get)
                     {
-                        response = await client.PostAsJsonAsync(request.ServiceUri, request.RequestModel).ConfigureAwait(false);
+                        httpResponseMessage = await client.GetAsync(request.ServiceUri).ConfigureAwait(false);
                     }
-                }
-                else if (request.HttpMethod == HttpMethod.Put)
-                {
-                    if (request.RequestModel.UnNamedArray != null)
+                    else if (request.HttpMethod == HttpMethod.Post)
                     {
-                        response = await client.PutAsJsonAsync(request.ServiceUri, request.RequestModel.UnNamedArray).ConfigureAwait(false);
+                        if (request.RequestModel.UnNamedArray != null)
+                        {
+                            httpResponseMessage = await client.PostAsJsonAsync(request.ServiceUri, request.RequestModel.UnNamedArray).ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            httpResponseMessage = await client.PostAsJsonAsync(request.ServiceUri, request.RequestModel).ConfigureAwait(false);
+                        }
                     }
-                    else
+                    else if (request.HttpMethod == HttpMethod.Put)
                     {
-                        response = await client.PutAsJsonAsync(request.ServiceUri, request.RequestModel).ConfigureAwait(false);
+                        if (request.RequestModel.UnNamedArray != null)
+                        {
+                            httpResponseMessage = await client.PutAsJsonAsync(request.ServiceUri, request.RequestModel.UnNamedArray).ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            httpResponseMessage = await client.PutAsJsonAsync(request.ServiceUri, request.RequestModel).ConfigureAwait(false);
+                        }
+                    }
+                    else if (request.HttpMethod == HttpMethod.Delete)
+                    {
+                        httpResponseMessage = await client.DeleteAsync(request.ServiceUri).ConfigureAwait(false);
                     }
                 }
-                else if (request.HttpMethod == HttpMethod.Delete)
+                catch (Exception ex)
                 {
-                    response = await client.DeleteAsync(request.ServiceUri).ConfigureAwait(false);
+                    var serviceException = new CenturyLinkCloudServiceException(Constants.ServiceExceptionMessage, ex);
+                    throw serviceException;
                 }
 
-                Uri authenticationURL = response.Headers.Location;
-
-                var jsonString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-                if(!string.IsNullOrEmpty(jsonString))
-                {
-                    var namedObject = jsonString.CreateDeserializableJsonString();
-                    var result = JsonConvert.DeserializeObject<TResponse>(namedObject);
-                    return result;
-                }
-
-                return default(TResponse);              
+                return httpResponseMessage;
             }
+        }
+
+        private async Task<TResponse> DeserializeResponse<TResponse>(HttpResponseMessage httpResponseMessage)
+        {
+            string apiMessage = null;
+
+            Uri authenticationURL = httpResponseMessage.Headers.Location;
+            var jsonString = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            if (string.IsNullOrEmpty(jsonString))
+            {
+                var serviceException = new CenturyLinkCloudServiceException(Constants.ServiceExceptionMessage);
+                throw serviceException;
+            }
+
+            var deserializableJson = jsonString.CreateDeserializableJsonString();
+            var result = JsonConvert.DeserializeObject<TResponse>(deserializableJson);
+
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                //If it is a server power operation we just return the result becasue it contains
+                //status information and error messages for each server attempted to be operated on.
+                if (result.GetType() != typeof(ServerPowerOpsResponse))
+                {
+                    JObject json = JObject.Parse(jsonString);
+                    apiMessage = (string)json["message"];
+
+                    var serviceException = new CenturyLinkCloudServiceException(Constants.ServiceExceptionMessage);
+
+                    if (!string.IsNullOrEmpty(apiMessage))
+                    {
+                        serviceException.ApiMessage = apiMessage;
+                    }
+
+                    throw serviceException;
+                }
+            }
+
+            return result;
+        }
+
+        private CenturyLinkCloudServiceException BuildUpServiceException(CenturyLinkCloudServiceException serviceException, ServiceRequest request, HttpResponseMessage httpResponseMessage)
+        {
+            serviceException.ServiceUri = request.ServiceUri;
+            serviceException.HttpMethod = request.HttpMethod.ToString();
+            serviceException.ResponseStatusCode = httpResponseMessage.StatusCode.ToString();
+            serviceException.ResponseReasonPhrase = httpResponseMessage.ReasonPhrase;
+
+            return serviceException;
         }
     }
 }

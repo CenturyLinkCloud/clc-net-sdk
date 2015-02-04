@@ -14,6 +14,7 @@ namespace CenturyLinkCloudSDK.Services.Runtime
     {
         private UserInfo userInfo = null;
         private AuthenticationInfo authenticationInfo = null;
+        private bool userIsAuthenticated = false;
         private AuthenticationService authentication;
         private DataCenterService dataCenters;
         private GroupService groups;
@@ -30,8 +31,17 @@ namespace CenturyLinkCloudSDK.Services.Runtime
         public Client(string userName, string password)
         {
             userInfo = AuthenticateUser(userName, password).Result;
-            authenticationInfo = new AuthenticationInfo() { AccountAlias = userInfo.AccountAlias, BearerToken = userInfo.BearerToken };
-            InitializeServices();   
+
+            if (userInfo != null)
+            {
+                userIsAuthenticated = true;
+                authenticationInfo = new AuthenticationInfo() { AccountAlias = userInfo.AccountAlias, BearerToken = userInfo.BearerToken };
+                InitializeServices();
+            }
+            else
+            {
+                userIsAuthenticated = false;
+            }
         }
 
         /// <summary>
@@ -41,8 +51,16 @@ namespace CenturyLinkCloudSDK.Services.Runtime
         /// <param name="authenticationInfo"></param>
         public Client(AuthenticationInfo authenticationInfo)
         {
-            this.authenticationInfo = authenticationInfo;
-            InitializeServices();
+            if (authenticationInfo != null)
+            {
+                userIsAuthenticated = true;
+                this.authenticationInfo = authenticationInfo;
+                InitializeServices();
+            }
+            else
+            {
+                userIsAuthenticated = false;
+            }
         }
 
         public UserInfo UserInfo 
@@ -66,6 +84,14 @@ namespace CenturyLinkCloudSDK.Services.Runtime
             get
             {
                 return authentication;
+            }
+        }
+
+        public bool UserIsAuthenticated 
+        {
+            get
+            {
+                return userIsAuthenticated;
             }
         }
 
@@ -104,7 +130,8 @@ namespace CenturyLinkCloudSDK.Services.Runtime
         private async Task<UserInfo> AuthenticateUser(string userName, string password)
         {
             var authentication = new AuthenticationService();
-            return await authentication.Login(userName, password).ConfigureAwait(false);
+            var result = await authentication.Login(userName, password).ConfigureAwait(false);
+            return result;
         }
 
         private void InitializeServices()

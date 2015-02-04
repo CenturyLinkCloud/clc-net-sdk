@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="ServiceModels\Common\AuthenticationInfo.cs" />
+    <Compile Include="Services\Runtime\CenturyLinkCloudServiceException.cs" />
     <Compile Include="Services\Runtime\Client.cs" />
     <Compile Include="Services\Runtime\Constants.cs" />
     <Compile Include="Services\Runtime\ServiceRequestModel.cs" />

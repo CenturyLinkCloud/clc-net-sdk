@@ -7,5 +7,6 @@
     {
         public const string ApiBaseAddress = "https://api.tier3.com";
         public const string JsonMediaType = "application/json";
+        public const string ServiceExceptionMessage = "A service error has occured.";
     }
 }
