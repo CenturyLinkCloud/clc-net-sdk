@@ -30,7 +30,7 @@ namespace CenturyLinkCloudSDK.Services
         {
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format("https://api.tier3.com/v2/datacenters/{0}", userAuthentication.AccountAlias),
+                ServiceUri = string.Format(Constants.ServiceUris.DataCenter.GetDataCenters, userAuthentication.AccountAlias),
                 BearerToken = userAuthentication.BearerToken,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
@@ -57,7 +57,7 @@ namespace CenturyLinkCloudSDK.Services
         {
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format("https://api.tier3.com/v2/datacenters/{0}/{1}", userAuthentication.AccountAlias, dataCenter),
+                ServiceUri = string.Format(Constants.ServiceUris.DataCenter.GetDataCenter, userAuthentication.AccountAlias, dataCenter),
                 BearerToken = userAuthentication.BearerToken,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
@@ -83,7 +83,7 @@ namespace CenturyLinkCloudSDK.Services
         {
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = Constants.ApiBaseAddress + hypermediaLink,
+                ServiceUri = Constants.ServiceUris.ApiBaseAddress + hypermediaLink,
                 BearerToken = userAuthentication.BearerToken,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
@@ -112,7 +112,7 @@ namespace CenturyLinkCloudSDK.Services
         {
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format("https://api.tier3.com/v2/datacenters/{0}/{1}?groupLinks=true", userAuthentication.AccountAlias, dataCenter),
+                ServiceUri = string.Format(Constants.ServiceUris.DataCenter.GetDataCenterGroup, userAuthentication.AccountAlias, dataCenter),
                 BearerToken = userAuthentication.BearerToken,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
@@ -140,7 +140,7 @@ namespace CenturyLinkCloudSDK.Services
         {
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = Constants.ApiBaseAddress + hypermediaLink + "?groupLinks=true",
+                ServiceUri = Constants.ServiceUris.ApiBaseAddress + hypermediaLink + Constants.ServiceUris.Querystring.IncludeGroupLinks,
                 BearerToken = userAuthentication.BearerToken,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get

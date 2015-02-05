@@ -42,7 +42,7 @@ namespace CenturyLinkCloudSDK.Services.Runtime
             catch (Exception ex)
             {
                 //TODO: Perform exception logging operation.
-                var serviceException = new CenturyLinkCloudServiceException(Constants.ServiceExceptionMessage, ex);
+                var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.ServiceExceptionMessage, ex);
                 serviceException = BuildUpServiceException(serviceException, request, httpResponseMessage);
                 throw serviceException;
             }
@@ -56,9 +56,9 @@ namespace CenturyLinkCloudSDK.Services.Runtime
             {
                 try
                 {
-                    client.BaseAddress = new Uri(Constants.ApiBaseAddress);
+                    client.BaseAddress = new Uri(Constants.ServiceUris.ApiBaseAddress);
                     client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.JsonMediaType));
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.ServiceUris.JsonMediaType));
 
                     if (request.BearerToken != null)
                     {
@@ -98,7 +98,7 @@ namespace CenturyLinkCloudSDK.Services.Runtime
                 }
                 catch (Exception ex)
                 {
-                    var serviceException = new CenturyLinkCloudServiceException(Constants.ServiceExceptionMessage, ex);
+                    var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.ServiceExceptionMessage, ex);
                     throw serviceException;
                 }
 
@@ -115,7 +115,7 @@ namespace CenturyLinkCloudSDK.Services.Runtime
 
             if (string.IsNullOrEmpty(jsonString))
             {
-                var serviceException = new CenturyLinkCloudServiceException(Constants.ServiceExceptionMessage);
+                var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.ServiceExceptionMessage);
                 throw serviceException;
             }
 
@@ -131,7 +131,7 @@ namespace CenturyLinkCloudSDK.Services.Runtime
                     JObject json = JObject.Parse(jsonString);
                     apiMessage = (string)json["message"];
 
-                    var serviceException = new CenturyLinkCloudServiceException(Constants.ServiceExceptionMessage);
+                    var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.ServiceExceptionMessage);
 
                     if (!string.IsNullOrEmpty(apiMessage))
                     {
@@ -149,8 +149,7 @@ namespace CenturyLinkCloudSDK.Services.Runtime
         {
             serviceException.ServiceUri = request.ServiceUri;
             serviceException.HttpMethod = request.HttpMethod.ToString();
-            serviceException.ResponseStatusCode = httpResponseMessage.StatusCode.ToString();
-            serviceException.ResponseReasonPhrase = httpResponseMessage.ReasonPhrase;
+            serviceException.HttpResponseMessage = httpResponseMessage;
 
             return serviceException;
         }

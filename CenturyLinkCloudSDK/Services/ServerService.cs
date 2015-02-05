@@ -31,7 +31,7 @@ namespace CenturyLinkCloudSDK.Services
         {
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format("https://api.tier3.com/v2/servers/{0}/{1}", userAuthentication.AccountAlias, serverId),
+                ServiceUri = string.Format(Constants.ServiceUris.Server.GetServer, userAuthentication.AccountAlias, serverId),
                 BearerToken = userAuthentication.BearerToken,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
@@ -59,7 +59,7 @@ namespace CenturyLinkCloudSDK.Services
         {
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = Constants.ApiBaseAddress + hypermediaLink,
+                ServiceUri = Constants.ServiceUris.ApiBaseAddress + hypermediaLink,
                 BearerToken = userAuthentication.BearerToken,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
@@ -90,7 +90,7 @@ namespace CenturyLinkCloudSDK.Services
 
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/pause", userAuthentication.AccountAlias),
+                ServiceUri = string.Format(Constants.ServiceUris.Server.PauseServer, userAuthentication.AccountAlias),
                 BearerToken = userAuthentication.BearerToken,
                 RequestModel = requestModel,
                 HttpMethod = HttpMethod.Post
@@ -121,7 +121,7 @@ namespace CenturyLinkCloudSDK.Services
 
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/powerOn", userAuthentication.AccountAlias),
+                ServiceUri = string.Format(Constants.ServiceUris.Server.PowerOnServer, userAuthentication.AccountAlias),
                 BearerToken = userAuthentication.BearerToken,
                 RequestModel = requestModel,
                 HttpMethod = HttpMethod.Post
@@ -152,7 +152,7 @@ namespace CenturyLinkCloudSDK.Services
 
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/powerOff", userAuthentication.AccountAlias),
+                ServiceUri = string.Format(Constants.ServiceUris.Server.PowerOffServer, userAuthentication.AccountAlias),
                 BearerToken = userAuthentication.BearerToken,
                 RequestModel = requestModel,
                 HttpMethod = HttpMethod.Post
@@ -183,7 +183,7 @@ namespace CenturyLinkCloudSDK.Services
 
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/reboot", userAuthentication.AccountAlias),
+                ServiceUri = string.Format(Constants.ServiceUris.Server.RebootServer, userAuthentication.AccountAlias),
                 BearerToken = userAuthentication.BearerToken,
                 RequestModel = requestModel,
                 HttpMethod = HttpMethod.Post
@@ -214,7 +214,7 @@ namespace CenturyLinkCloudSDK.Services
 
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/shutDown", userAuthentication.AccountAlias),
+                ServiceUri = string.Format(Constants.ServiceUris.Server.ShutDownServer, userAuthentication.AccountAlias),
                 BearerToken = userAuthentication.BearerToken,
                 RequestModel = requestModel,
                 HttpMethod = HttpMethod.Post
@@ -245,7 +245,7 @@ namespace CenturyLinkCloudSDK.Services
 
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/servers/reset", userAuthentication.AccountAlias),
+                ServiceUri = string.Format(Constants.ServiceUris.Server.ResetServer, userAuthentication.AccountAlias),
                 BearerToken = userAuthentication.BearerToken,
                 RequestModel = requestModel,
                 HttpMethod = HttpMethod.Post

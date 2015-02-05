@@ -28,7 +28,7 @@ namespace CenturyLinkCloudSDK.Services
         {
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format("https://api.tier3.com/v2/groups/{0}/{1}", userAuthentication.AccountAlias, groupId),
+                ServiceUri = string.Format(Constants.ServiceUris.Group.GetGroup, userAuthentication.AccountAlias, groupId),
                 BearerToken = userAuthentication.BearerToken,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
@@ -54,7 +54,7 @@ namespace CenturyLinkCloudSDK.Services
         {
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = Constants.ApiBaseAddress + hypermediaLink,
+                ServiceUri = Constants.ServiceUris.ApiBaseAddress + hypermediaLink,
                 BearerToken = userAuthentication.BearerToken,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get

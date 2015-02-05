@@ -62,7 +62,7 @@ namespace CenturyLinkCloudSDK.Services
         {
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = Constants.ApiBaseAddress + hypermediaLink,
+                ServiceUri = Constants.ServiceUris.ApiBaseAddress + hypermediaLink,
                 BearerToken = userAuthentication.BearerToken,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
