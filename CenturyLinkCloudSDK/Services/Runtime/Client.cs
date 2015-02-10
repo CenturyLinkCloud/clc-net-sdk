@@ -1,11 +1,12 @@
 ﻿using CenturyLinkCloudSDK.ServiceModels.Common;
+using CenturyLinkCloudSDK.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CenturyLinkCloudSDK.Services.Runtime
+namespace CenturyLinkCloudSDK
 {
     /// <summary>
     /// This is the facade that provides access to all API services.

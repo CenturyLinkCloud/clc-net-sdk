@@ -35,7 +35,7 @@
       <FileName>Services\ServerService.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="CenturyLinkCloudSDK.Services.Runtime.Client" Collapsed="true">
+  <Class Name="CenturyLinkCloudSDK.Client" Collapsed="true">
     <Position X="5" Y="7.5" Width="1.75" />
     <AssociationLine Name="Authentication" Type="CenturyLinkCloudSDK.Services.AuthenticationService" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
@@ -66,7 +66,7 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>QAAACUACABAAAAAQAABAAAAAUAAAEBAAABAAAAAAAAE=</HashCode>
+      <HashCode>QAAACUACABAAABAQAABQAAAAUAAAEBAAABAAAAAAAAE=</HashCode>
       <FileName>Services\Runtime\Client.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -80,7 +80,7 @@
   <Class Name="CenturyLinkCloudSDK.Services.Runtime.ServiceBase">
     <Position X="4.75" Y="2" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAEAAAAAEAAAABAAAA=</HashCode>
       <FileName>Services\Runtime\ServiceBase.cs</FileName>
     </TypeIdentifier>
   </Class>
