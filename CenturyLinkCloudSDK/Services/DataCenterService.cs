@@ -1,6 +1,6 @@
 ﻿using CenturyLinkCloudSDK.ServiceModels;
 using CenturyLinkCloudSDK.ServiceModels.Responses.DataCenters;
-using CenturyLinkCloudSDK.Services.Runtime;
+using CenturyLinkCloudSDK.Runtime;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;

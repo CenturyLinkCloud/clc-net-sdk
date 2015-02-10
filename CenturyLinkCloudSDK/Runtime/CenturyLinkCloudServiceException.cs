@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 
-namespace CenturyLinkCloudSDK.Services.Runtime
+namespace CenturyLinkCloudSDK.Runtime
 {
     public class CenturyLinkCloudServiceException : Exception
     {

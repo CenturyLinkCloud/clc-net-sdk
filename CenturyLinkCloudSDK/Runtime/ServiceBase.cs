@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace CenturyLinkCloudSDK.Services.Runtime
+namespace CenturyLinkCloudSDK.Runtime
 {
     /// <summary>
     /// This class is the base class that all service api classes must inherit from.

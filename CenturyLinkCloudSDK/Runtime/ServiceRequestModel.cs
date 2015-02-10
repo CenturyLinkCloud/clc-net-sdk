@@ -1,4 +1,4 @@
-﻿namespace CenturyLinkCloudSDK.Services.Runtime
+﻿namespace CenturyLinkCloudSDK.Runtime
 {
     /// <summary>
     /// This base class inherited by all service request models provides an array that can store request body data.

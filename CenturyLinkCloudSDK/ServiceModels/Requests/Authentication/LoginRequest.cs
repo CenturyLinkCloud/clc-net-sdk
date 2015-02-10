@@ -1,4 +1,4 @@
-﻿using CenturyLinkCloudSDK.Services.Runtime;
+﻿using CenturyLinkCloudSDK.Runtime;
 
 namespace CenturyLinkCloudSDK.ServiceModels.Requests.Authentication
 {

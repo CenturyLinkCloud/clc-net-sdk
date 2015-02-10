@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-namespace CenturyLinkCloudSDK.Services.Runtime
+namespace CenturyLinkCloudSDK.Runtime
 {
     /// <summary>
     /// This is the base class all service requests must inherit from.
