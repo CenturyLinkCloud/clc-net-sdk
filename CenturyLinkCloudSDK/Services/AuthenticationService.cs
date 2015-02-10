@@ -1,7 +1,7 @@
-﻿using CenturyLinkCloudSDK.Services.Runtime;
-using CenturyLinkCloudSDK.ServiceModels.Authentication.Requests;
-using CenturyLinkCloudSDK.ServiceModels.Authentication.Responses;
-using CenturyLinkCloudSDK.ServiceModels.Common;
+﻿using CenturyLinkCloudSDK.ServiceModels;
+using CenturyLinkCloudSDK.ServiceModels.Requests.Authentication;
+using CenturyLinkCloudSDK.ServiceModels.Responses.Authentication;
+using CenturyLinkCloudSDK.Services.Runtime;
 using System.Net.Http;
 using System.Threading.Tasks;
 

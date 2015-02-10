@@ -1,6 +1,6 @@
 ﻿using CenturyLinkCloudSDK.Extensions;
 using CenturyLinkCloudSDK.ServiceModels.Interfaces;
-using CenturyLinkCloudSDK.ServiceModels.Servers.Responses;
+using CenturyLinkCloudSDK.ServiceModels.Responses.Servers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
