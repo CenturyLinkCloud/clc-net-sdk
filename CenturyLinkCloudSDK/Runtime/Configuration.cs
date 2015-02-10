@@ -9,23 +9,16 @@ namespace CenturyLinkCloudSDK
 {
     public static class Configuration
     {
-        private static string baseUri = null;
+        private static string baseUri = Constants.ServiceUris.ApiBaseAddress;
 
         public static string BaseUri 
         {
-            get 
+            get
             {
-                if (string.IsNullOrEmpty(baseUri))
-                {
-                    return Constants.ServiceUris.ApiBaseAddress;
-                }
-                else
-                {
-                    return baseUri;
-                }
+                return baseUri;
             }
 
-            set 
+            set
             {
                 baseUri = value;
             }
