@@ -5,6 +5,6 @@
     /// </summary>
     public class SourceRestriction
     {
-        public string cidr { get; set; }
+        public string Cidr { get; set; }
     }
 }

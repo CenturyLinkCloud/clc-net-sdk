@@ -26,7 +26,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="accountAlias"></param>
         /// <returns>An asynchronous Task of IEnumerable of DataCenter.</returns>
-        public async Task<IEnumerable<DataCenter>> GetDataCenters()
+        public async Task<IReadOnlyList<DataCenter>> GetDataCenters()
         {
             var serviceRequest = new ServiceRequest()
             {

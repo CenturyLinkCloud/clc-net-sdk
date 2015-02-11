@@ -9,6 +9,6 @@ namespace CenturyLinkCloudSDK.ServiceModels
     {
         public string Name { get; set; }
 
-        public IEnumerable<Link> Links { get; set; }
+        public IReadOnlyList<Link> Links { get; set; }
     }
 }

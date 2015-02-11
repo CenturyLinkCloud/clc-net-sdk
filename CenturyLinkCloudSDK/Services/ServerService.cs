@@ -84,7 +84,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="accountAlias"></param>
         /// <param name="serverIds"></param>
         /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
-        public async Task<IEnumerable<ServerOperation>> PauseServer(List<string> serverIds)
+        public async Task<IReadOnlyList<ServerOperation>> PauseServer(List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
 
@@ -115,7 +115,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="accountAlias"></param>
         /// <param name="serverIds"></param>
         /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
-        public async Task<IEnumerable<ServerOperation>> PowerOnServer(List<string> serverIds)
+        public async Task<IReadOnlyList<ServerOperation>> PowerOnServer(List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
 
@@ -146,7 +146,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="accountAlias"></param>
         /// <param name="serverIds"></param>
         /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
-        public async Task<IEnumerable<ServerOperation>> PowerOffServer(List<string> serverIds)
+        public async Task<IReadOnlyList<ServerOperation>> PowerOffServer(List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
 
@@ -177,7 +177,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="accountAlias"></param>
         /// <param name="serverIds"></param>
         /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
-        public async Task<IEnumerable<ServerOperation>> RebootServer(List<string> serverIds)
+        public async Task<IReadOnlyList<ServerOperation>> RebootServer(List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
 
@@ -208,7 +208,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="accountAlias"></param>
         /// <param name="serverIds"></param>
         /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
-        public async Task<IEnumerable<ServerOperation>> ShutDownServer(List<string> serverIds)
+        public async Task<IReadOnlyList<ServerOperation>> ShutDownServer(List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
 
@@ -239,7 +239,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="accountAlias"></param>
         /// <param name="serverIds"></param>
         /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
-        public async Task<IEnumerable<ServerOperation>> ResetServer(List<string> serverIds)
+        public async Task<IReadOnlyList<ServerOperation>> ResetServer(List<string> serverIds)
         {
             var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
 

@@ -11,7 +11,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public bool IsQueued { get; set; }
 
-        public IEnumerable<Link> Links { get; set; }
+        public IReadOnlyList<Link> Links { get; set; }
 
         public string ErrorMessage { get; set; }
     }

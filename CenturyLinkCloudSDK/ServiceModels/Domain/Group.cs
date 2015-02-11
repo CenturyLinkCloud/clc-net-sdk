@@ -21,8 +21,8 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public Limit Limits { get; set; }
 
-        public IEnumerable<Group> Groups { get; set; }
+        public IReadOnlyList<Group> Groups { get; set; }
 
-        public IEnumerable<Link> Links { get; set; }
+        public IReadOnlyList<Link> Links { get; set; }
     }
 }
