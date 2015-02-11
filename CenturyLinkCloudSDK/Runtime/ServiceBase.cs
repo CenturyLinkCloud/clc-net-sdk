@@ -119,17 +119,20 @@ namespace CenturyLinkCloudSDK.Runtime
                 throw serviceException;
             }
 
-            var deserializableJson = jsonString.CreateDeserializableJsonString();
-            var result = JsonConvert.DeserializeObject<TResponse>(deserializableJson);
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                var deserializableJson = jsonString.CreateDeserializableJsonString();
+                var result = JsonConvert.DeserializeObject<TResponse>(deserializableJson);
+                return result;
+            }
 
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                //If it is a server power operation we just return the result becasue it contains
-                //status information and error messages for each server attempted to be operated on.
-                if (result.GetType() != typeof(ServerPowerOpsResponse))
+                JObject jsonObject = jsonString.TryParseJson();
+
+                if(jsonObject != null)
                 {
-                    JObject json = JObject.Parse(jsonString);
-                    apiMessage = (string)json["message"];
+                    apiMessage = (string)jsonObject["message"];
 
                     var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.ServiceExceptionMessage);
 
@@ -142,7 +145,7 @@ namespace CenturyLinkCloudSDK.Runtime
                 }
             }
 
-            return result;
+            return default(TResponse);
         }
 
         private CenturyLinkCloudServiceException BuildUpServiceException(CenturyLinkCloudServiceException serviceException, ServiceRequest request, HttpResponseMessage httpResponseMessage)
