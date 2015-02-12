@@ -65,36 +65,7 @@ namespace CenturyLinkCloudSDK.Runtime
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request.BearerToken);
                     }
 
-                    if (request.HttpMethod == HttpMethod.Get)
-                    {
-                        httpResponseMessage = await client.GetAsync(request.ServiceUri).ConfigureAwait(false);
-                    }
-                    else if (request.HttpMethod == HttpMethod.Post)
-                    {
-                        if (request.RequestModel.UnNamedArray != null)
-                        {
-                            httpResponseMessage = await client.PostAsJsonAsync(request.ServiceUri, request.RequestModel.UnNamedArray).ConfigureAwait(false);
-                        }
-                        else
-                        {
-                            httpResponseMessage = await client.PostAsJsonAsync(request.ServiceUri, request.RequestModel).ConfigureAwait(false);
-                        }
-                    }
-                    else if (request.HttpMethod == HttpMethod.Put)
-                    {
-                        if (request.RequestModel.UnNamedArray != null)
-                        {
-                            httpResponseMessage = await client.PutAsJsonAsync(request.ServiceUri, request.RequestModel.UnNamedArray).ConfigureAwait(false);
-                        }
-                        else
-                        {
-                            httpResponseMessage = await client.PutAsJsonAsync(request.ServiceUri, request.RequestModel).ConfigureAwait(false);
-                        }
-                    }
-                    else if (request.HttpMethod == HttpMethod.Delete)
-                    {
-                        httpResponseMessage = await client.DeleteAsync(request.ServiceUri).ConfigureAwait(false);
-                    }
+                    httpResponseMessage = await client.SendAsync<TRequest>(request).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
