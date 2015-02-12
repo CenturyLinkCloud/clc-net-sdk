@@ -3,6 +3,7 @@ using CenturyLinkCloudSDK.ServiceModels.Responses.Queues;
 using CenturyLinkCloudSDK.Runtime;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace CenturyLinkCloudSDK.Services
 {
@@ -30,6 +31,21 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>An asynchronous Task of Queue.</returns>
         public async Task<Queue> GetStatus(string statusId)
         {
+            return await GetStatus(statusId, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the status of a particular job in the queue, which keeps track of any long-running 
+        /// asynchronous requests (such as server power operations or provisioning tasks).
+        /// Use this API operation when you want to check the status of a specific job in the queue. 
+        /// It is usually called after running a batch job and receiving the job identifier from the status link (e.g. Power On, Create Server, etc.) 
+        /// and will typically continue to get called until a "succeeded" or "failed" response is returned.
+        /// </summary>
+        /// <param name="statusId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>An asynchronous Task of Queue.</returns>
+        public async Task<Queue> GetStatus(string statusId, CancellationToken cancellationToken)
+        {
             var serviceRequest = new ServiceRequest()
             {
                 ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/status/{1}", userAuthentication.AccountAlias, statusId),
@@ -38,7 +54,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetStatusResponse>(serviceRequest).ConfigureAwait(false);
+            var result = await Invoke<ServiceRequest, GetStatusResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -68,7 +84,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetStatusResponse>(serviceRequest).ConfigureAwait(false);
+            var result = await Invoke<ServiceRequest, GetStatusResponse>(serviceRequest, CancellationToken.None).ConfigureAwait(false);
 
             if (result != null)
             {

@@ -3,6 +3,7 @@ using CenturyLinkCloudSDK.ServiceModels.Responses.Groups;
 using CenturyLinkCloudSDK.Runtime;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace CenturyLinkCloudSDK.Services
 {
@@ -26,6 +27,17 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>An asynchronous Task of Group.</returns>
         public async Task<Group> GetGroup(string groupId)
         {
+            return await GetGroup(groupId, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the details for a individual server group and any sub-groups and servers that it contains.
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>An asynchronous Task of Group.</returns>
+        public async Task<Group> GetGroup(string groupId, CancellationToken cancellationToken)
+        {
             var serviceRequest = new ServiceRequest()
             {
                 ServiceUri = string.Format(Constants.ServiceUris.Group.GetGroup, userAuthentication.AccountAlias, groupId),
@@ -34,7 +46,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetGroupResponse>(serviceRequest).ConfigureAwait(false);
+            var result = await Invoke<ServiceRequest, GetGroupResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -60,7 +72,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetGroupResponse>(serviceRequest).ConfigureAwait(false);
+            var result = await Invoke<ServiceRequest, GetGroupResponse>(serviceRequest, CancellationToken.None).ConfigureAwait(false);
 
             if (result != null)
             {

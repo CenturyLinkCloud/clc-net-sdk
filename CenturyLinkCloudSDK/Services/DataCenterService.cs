@@ -4,6 +4,7 @@ using CenturyLinkCloudSDK.Runtime;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace CenturyLinkCloudSDK.Services
 {
@@ -28,6 +29,18 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>An asynchronous Task of IEnumerable of DataCenter.</returns>
         public async Task<IReadOnlyList<DataCenter>> GetDataCenters()
         {
+            return await GetDataCenters(CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the list of data centers that a given account has access to. 
+        /// Use this operation when you need the list of data center names and codes that you have access to. 
+        /// Using that list of data centers, you can then query for the root group, and all the child groups in an entire data center.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns>An asynchronous Task of IEnumerable of DataCenter.</returns>
+        public async Task<IReadOnlyList<DataCenter>> GetDataCenters(CancellationToken cancellationToken)
+        {
             var serviceRequest = new ServiceRequest()
             {
                 ServiceUri = string.Format(Constants.ServiceUris.DataCenter.GetDataCenters, userAuthentication.AccountAlias),
@@ -36,7 +49,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetDataCentersResponse>(serviceRequest).ConfigureAwait(false);
+            var result = await Invoke<ServiceRequest, GetDataCentersResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -48,12 +61,23 @@ namespace CenturyLinkCloudSDK.Services
         }
 
         /// <summary>
-        /// Gets the information for a particular data center by accepting an account alias and data center id.
+        /// Gets the information for a particular data center.
         /// </summary>
         /// <param name="accountAlias"></param>
         /// <param name="dataCenter"></param>
         /// <returns>An asynchronous Task of DataCenter.</returns>
         public async Task<DataCenter> GetDataCenter(string dataCenter)
+        {
+            return await GetDataCenter(dataCenter, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the information for a particular data center.
+        /// </summary>
+        /// <param name="dataCenter"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>An asynchronous Task of DataCenter.</returns>
+        public async Task<DataCenter> GetDataCenter(string dataCenter, CancellationToken cancellationToken)
         {
             var serviceRequest = new ServiceRequest()
             {
@@ -63,7 +87,49 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetDataCenterResponse>(serviceRequest).ConfigureAwait(false);
+            var result = await Invoke<ServiceRequest, GetDataCenterResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+
+            if (result != null)
+            {
+                var response = result.Response;
+                return response;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the full hierarchy of groups that exist within a particular account and data center. 
+        /// Use this operation when you want to discover the name of the root hardware group for a data center. 
+        /// Once you have that group alias, you can issue a secondary query to retrieve the entire group hierarchy for a given data center.
+        /// </summary>
+        /// <param name="accountAlias"></param>
+        /// <param name="dataCenter"></param>
+        /// <returns>An asynchronous Task of DataCenterGroup</returns>
+        public async Task<DataCenterGroup> GetDataCenterGroup(string dataCenter)
+        {
+            return await GetDataCenterGroup(dataCenter, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the full hierarchy of groups that exist within a particular account and data center. 
+        /// Use this operation when you want to discover the name of the root hardware group for a data center. 
+        /// Once you have that group alias, you can issue a secondary query to retrieve the entire group hierarchy for a given data center.
+        /// </summary>
+        /// <param name="dataCenter"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>An asynchronous Task of DataCenterGroup</returns>
+        public async Task<DataCenterGroup> GetDataCenterGroup(string dataCenter, CancellationToken cancellationToken)
+        {
+            var serviceRequest = new ServiceRequest()
+            {
+                ServiceUri = string.Format(Constants.ServiceUris.DataCenter.GetDataCenterGroup, userAuthentication.AccountAlias, dataCenter),
+                BearerToken = userAuthentication.BearerToken,
+                RequestModel = null,
+                HttpMethod = HttpMethod.Get
+            };
+
+            var result = await Invoke<ServiceRequest, GetDataCenterGroupsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -89,36 +155,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetDataCenterResponse>(serviceRequest).ConfigureAwait(false);
-
-            if (result != null)
-            {
-                var response = result.Response;
-                return response;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the full hierarchy of groups that exist within a particular account and data center. 
-        /// Use this operation when you want to discover the name of the root hardware group for a data center. 
-        /// Once you have that group alias, you can issue a secondary query to retrieve the entire group hierarchy for a given data center.
-        /// </summary>
-        /// <param name="accountAlias"></param>
-        /// <param name="dataCenter"></param>
-        /// <returns>An asynchronous Task of DataCenterGroup</returns>
-        public async Task<DataCenterGroup> GetDataCenterGroup(string dataCenter)
-        {
-            var serviceRequest = new ServiceRequest()
-            {
-                ServiceUri = string.Format(Constants.ServiceUris.DataCenter.GetDataCenterGroup, userAuthentication.AccountAlias, dataCenter),
-                BearerToken = userAuthentication.BearerToken,
-                RequestModel = null,
-                HttpMethod = HttpMethod.Get
-            };
-
-            var result = await Invoke<ServiceRequest, GetDataCenterGroupsResponse>(serviceRequest).ConfigureAwait(false);
+            var result = await Invoke<ServiceRequest, GetDataCenterResponse>(serviceRequest, CancellationToken.None).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -146,7 +183,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetDataCenterGroupsResponse>(serviceRequest).ConfigureAwait(false);
+            var result = await Invoke<ServiceRequest, GetDataCenterGroupsResponse>(serviceRequest, CancellationToken.None).ConfigureAwait(false);
 
             if (result != null)
             {

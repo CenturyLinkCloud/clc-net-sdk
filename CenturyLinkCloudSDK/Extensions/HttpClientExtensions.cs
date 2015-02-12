@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.Extensions
@@ -18,39 +19,39 @@ namespace CenturyLinkCloudSDK.Extensions
         /// <param name="httpClient"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        internal static async Task<HttpResponseMessage> SendAsync<TRequest>(this HttpClient httpClient, TRequest request) where TRequest : ServiceRequest
+        internal static async Task<HttpResponseMessage> SendAsync<TRequest>(this HttpClient httpClient, TRequest request, CancellationToken cancellationToken) where TRequest : ServiceRequest
         {
             HttpResponseMessage httpResponseMessage = null;
 
             if (request.HttpMethod == HttpMethod.Get)
             {
-                httpResponseMessage = await httpClient.GetAsync(request.ServiceUri).ConfigureAwait(false);
+                httpResponseMessage = await httpClient.GetAsync(request.ServiceUri, cancellationToken).ConfigureAwait(false);
             }
             else if (request.HttpMethod == HttpMethod.Post)
             {
                 if (request.RequestModel.UnNamedArray != null)
                 {
-                    httpResponseMessage = await httpClient.PostAsJsonAsync(request.ServiceUri, request.RequestModel.UnNamedArray).ConfigureAwait(false);
+                    httpResponseMessage = await httpClient.PostAsJsonAsync(request.ServiceUri, request.RequestModel.UnNamedArray, cancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
-                    httpResponseMessage = await httpClient.PostAsJsonAsync(request.ServiceUri, request.RequestModel).ConfigureAwait(false);
+                    httpResponseMessage = await httpClient.PostAsJsonAsync(request.ServiceUri, request.RequestModel, cancellationToken).ConfigureAwait(false);
                 }
             }
             else if (request.HttpMethod == HttpMethod.Put)
             {
                 if (request.RequestModel.UnNamedArray != null)
                 {
-                    httpResponseMessage = await httpClient.PutAsJsonAsync(request.ServiceUri, request.RequestModel.UnNamedArray).ConfigureAwait(false);
+                    httpResponseMessage = await httpClient.PutAsJsonAsync(request.ServiceUri, request.RequestModel.UnNamedArray, cancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
-                    httpResponseMessage = await httpClient.PutAsJsonAsync(request.ServiceUri, request.RequestModel).ConfigureAwait(false);
+                    httpResponseMessage = await httpClient.PutAsJsonAsync(request.ServiceUri, request.RequestModel, cancellationToken).ConfigureAwait(false);
                 }
             }
             else if (request.HttpMethod == HttpMethod.Delete)
             {
-                httpResponseMessage = await httpClient.DeleteAsync(request.ServiceUri).ConfigureAwait(false);
+                httpResponseMessage = await httpClient.DeleteAsync(request.ServiceUri, cancellationToken).ConfigureAwait(false);
             }
 
             return httpResponseMessage;

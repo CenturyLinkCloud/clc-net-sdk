@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.Runtime
@@ -23,13 +24,13 @@ namespace CenturyLinkCloudSDK.Runtime
         /// <typeparam name="TResponse"></typeparam>
         /// <param name="request"></param>
         /// <returns>An asynchronous Task of the generic TResponse which must implement IServiceResponse</returns>
-        internal async Task<TResponse> Invoke<TRequest, TResponse>(TRequest request) where TRequest : ServiceRequest
+        internal async Task<TResponse> Invoke<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken) where TRequest : ServiceRequest
         {
             HttpResponseMessage httpResponseMessage = null;
 
             try
             {
-                httpResponseMessage = await MakeRequest(request).ConfigureAwait(false);
+                httpResponseMessage = await SendRequest(request, cancellationToken).ConfigureAwait(false);
                 var response = await DeserializeResponse<TResponse>(httpResponseMessage).ConfigureAwait(false);
                 return response;
             }
@@ -48,7 +49,7 @@ namespace CenturyLinkCloudSDK.Runtime
             }
         }
 
-        private async Task<HttpResponseMessage> MakeRequest<TRequest>(TRequest request) where TRequest : ServiceRequest
+        private async Task<HttpResponseMessage> SendRequest<TRequest>(TRequest request, CancellationToken cancellationToken) where TRequest : ServiceRequest
         {
             HttpResponseMessage httpResponseMessage = null;
 
@@ -65,7 +66,7 @@ namespace CenturyLinkCloudSDK.Runtime
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request.BearerToken);
                     }
 
-                    httpResponseMessage = await client.SendAsync<TRequest>(request).ConfigureAwait(false);
+                    httpResponseMessage = await client.SendAsync<TRequest>(request, cancellationToken).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
