@@ -10,7 +10,7 @@ namespace CenturyLinkCloudSDK.Services
     /// <summary>
     /// This class contains operations associated with queues.
     /// </summary>
-    public class QueueService : ServiceBase
+    public class QueueService
     {
         private AuthenticationInfo userAuthentication;
 
@@ -54,7 +54,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetStatusResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<ServiceRequest, GetStatusResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -84,7 +84,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetStatusResponse>(serviceRequest, CancellationToken.None).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<ServiceRequest, GetStatusResponse>(serviceRequest, CancellationToken.None).ConfigureAwait(false);
 
             if (result != null)
             {

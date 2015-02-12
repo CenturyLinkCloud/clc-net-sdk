@@ -40,7 +40,7 @@
     <Compile Include="Runtime\Client.cs" />
     <Compile Include="Runtime\Configuration.cs" />
     <Compile Include="Runtime\Constants.cs" />
-    <Compile Include="Runtime\ServiceBase.cs" />
+    <Compile Include="Runtime\ServiceInvoker.cs" />
     <Compile Include="Runtime\ServiceRequest.cs" />
     <Compile Include="Runtime\ServiceRequestModel.cs" />
     <Compile Include="ServiceModels\Domain\AuthenticationInfo.cs" />

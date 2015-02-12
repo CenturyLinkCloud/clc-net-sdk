@@ -10,7 +10,7 @@ namespace CenturyLinkCloudSDK.Services
     /// <summary>
     /// This class contains operations associated with server groups.
     /// </summary>
-    public class GroupService : ServiceBase
+    public class GroupService
     {
         private AuthenticationInfo userAuthentication;
 
@@ -46,7 +46,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetGroupResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<ServiceRequest, GetGroupResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -72,7 +72,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetGroupResponse>(serviceRequest, CancellationToken.None).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<ServiceRequest, GetGroupResponse>(serviceRequest, CancellationToken.None).ConfigureAwait(false);
 
             if (result != null)
             {

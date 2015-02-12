@@ -11,7 +11,7 @@ namespace CenturyLinkCloudSDK.Services
     /// <summary>
     /// This class contains operations associated with servers.
     /// </summary>
-    public class ServerService: ServiceBase
+    public class ServerService
     {
         private AuthenticationInfo userAuthentication;
 
@@ -51,7 +51,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetServerResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<ServiceRequest, GetServerResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -79,7 +79,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetServerResponse>(serviceRequest, CancellationToken.None).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<ServiceRequest, GetServerResponse>(serviceRequest, CancellationToken.None).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -123,7 +123,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Post
             };
 
-            var result = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -167,7 +167,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Post
             };
 
-            var result = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest,cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -211,7 +211,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Post
             };
 
-            var result = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest,cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -255,7 +255,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Post
             };
 
-            var result = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -299,7 +299,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Post
             };
 
-            var result = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -343,7 +343,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Post
             };
 
-            var result = await Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {

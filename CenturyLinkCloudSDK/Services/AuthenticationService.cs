@@ -11,7 +11,7 @@ namespace CenturyLinkCloudSDK.Services
     /// <summary>
     /// This class contains operations associated with user authentication.
     /// </summary>
-    public class AuthenticationService : ServiceBase
+    public class AuthenticationService
     {
 
         internal AuthenticationService() { }
@@ -47,7 +47,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Post
             };
 
-            var result = await Invoke<ServiceRequest, LoginResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<ServiceRequest, LoginResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
 
             if (result == null)
             {

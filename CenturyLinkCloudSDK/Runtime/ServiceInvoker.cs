@@ -1,20 +1,18 @@
-﻿using CenturyLinkCloudSDK.Extensions;
-using CenturyLinkCloudSDK.ServiceModels.Interfaces;
-using CenturyLinkCloudSDK.ServiceModels.Responses.Servers;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CenturyLinkCloudSDK.Extensions;
+using Newtonsoft.Json.Linq;
 
 namespace CenturyLinkCloudSDK.Runtime
 {
-    /// <summary>
-    /// This class is the base class that all service api classes must inherit from.
-    /// </summary>
-    public abstract class ServiceBase
+    internal static class ServiceInvoker
     {
         /// <summary>
         /// This is the main method through which all api requests are made. It serializes the data to JSON before making the api call,
@@ -24,7 +22,7 @@ namespace CenturyLinkCloudSDK.Runtime
         /// <typeparam name="TResponse"></typeparam>
         /// <param name="request"></param>
         /// <returns>An asynchronous Task of the generic TResponse which must implement IServiceResponse</returns>
-        internal async Task<TResponse> Invoke<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken) where TRequest : ServiceRequest
+        internal static async Task<TResponse> Invoke<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken) where TRequest : ServiceRequest
         {
             HttpResponseMessage httpResponseMessage = null;
 
@@ -49,7 +47,7 @@ namespace CenturyLinkCloudSDK.Runtime
             }
         }
 
-        private async Task<HttpResponseMessage> SendRequest<TRequest>(TRequest request, CancellationToken cancellationToken) where TRequest : ServiceRequest
+        private static async Task<HttpResponseMessage> SendRequest<TRequest>(TRequest request, CancellationToken cancellationToken) where TRequest : ServiceRequest
         {
             HttpResponseMessage httpResponseMessage = null;
 
@@ -78,7 +76,7 @@ namespace CenturyLinkCloudSDK.Runtime
             }
         }
 
-        private async Task<TResponse> DeserializeResponse<TResponse>(HttpResponseMessage httpResponseMessage)
+        private static async Task<TResponse> DeserializeResponse<TResponse>(HttpResponseMessage httpResponseMessage)
         {
             string apiMessage = null;
 
@@ -102,7 +100,7 @@ namespace CenturyLinkCloudSDK.Runtime
             {
                 JObject jsonObject = jsonString.TryParseJson();
 
-                if(jsonObject != null)
+                if (jsonObject != null)
                 {
                     apiMessage = (string)jsonObject["message"];
 
@@ -120,7 +118,7 @@ namespace CenturyLinkCloudSDK.Runtime
             return default(TResponse);
         }
 
-        private CenturyLinkCloudServiceException BuildUpServiceException(CenturyLinkCloudServiceException serviceException, ServiceRequest request, HttpResponseMessage httpResponseMessage)
+        private static CenturyLinkCloudServiceException BuildUpServiceException(CenturyLinkCloudServiceException serviceException, ServiceRequest request, HttpResponseMessage httpResponseMessage)
         {
             serviceException.ServiceUri = request.ServiceUri;
             serviceException.HttpMethod = request.HttpMethod.ToString();

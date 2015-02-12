@@ -11,7 +11,7 @@ namespace CenturyLinkCloudSDK.Services
     /// <summary>
     /// This class contains operations associated with data centers.
     /// </summary>
-    public class DataCenterService: ServiceBase
+    public class DataCenterService
     {
         private AuthenticationInfo userAuthentication;
 
@@ -49,7 +49,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetDataCentersResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<ServiceRequest, GetDataCentersResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -87,7 +87,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetDataCenterResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<ServiceRequest, GetDataCenterResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -129,7 +129,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetDataCenterGroupsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<ServiceRequest, GetDataCenterGroupsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -155,7 +155,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetDataCenterResponse>(serviceRequest, CancellationToken.None).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<ServiceRequest, GetDataCenterResponse>(serviceRequest, CancellationToken.None).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -183,7 +183,7 @@ namespace CenturyLinkCloudSDK.Services
                 HttpMethod = HttpMethod.Get
             };
 
-            var result = await Invoke<ServiceRequest, GetDataCenterGroupsResponse>(serviceRequest, CancellationToken.None).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<ServiceRequest, GetDataCenterGroupsResponse>(serviceRequest, CancellationToken.None).ConfigureAwait(false);
 
             if (result != null)
             {

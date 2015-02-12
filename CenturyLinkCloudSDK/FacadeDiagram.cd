@@ -43,13 +43,5 @@
       <NewMemberFileName>Services\Runtime\Client.cs</NewMemberFileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="CenturyLinkCloudSDK.Runtime.ServiceBase">
-    <Position X="4.75" Y="2" Width="2.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAEAAAAAEAAAABAAAA=</HashCode>
-      <FileName>Runtime\ServiceBase.cs</FileName>
-      <NewMemberFileName>Services\Runtime\ServiceBase.cs</NewMemberFileName>
-    </TypeIdentifier>
-  </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
