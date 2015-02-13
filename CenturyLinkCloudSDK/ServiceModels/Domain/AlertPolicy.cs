@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace CenturyLinkCloudSDK.ServiceModels
 {
@@ -11,6 +12,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public string Name { get; set; }
 
-        public IReadOnlyList<Link> Links { get; set; }
+        [JsonPropertyAttribute]
+        private IReadOnlyList<Link> Links { get; set; }
     }
 }

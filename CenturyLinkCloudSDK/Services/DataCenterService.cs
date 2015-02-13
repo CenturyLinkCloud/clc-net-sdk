@@ -130,6 +130,7 @@ namespace CenturyLinkCloudSDK.Services
             };
 
             var result = await ServiceInvoker.Invoke<ServiceRequest, GetDataCenterGroupsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            result.Response.UserAuthentication = userAuthentication;
 
             if (result != null)
             {
