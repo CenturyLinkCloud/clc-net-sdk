@@ -14,7 +14,10 @@ namespace CenturyLinkCloudSDK.Services
     public class AuthenticationService
     {
 
-        internal AuthenticationService() { }
+        internal AuthenticationService() 
+        {
+
+        }
 
         /// <summary>
         /// Use this operation before you call any other API operation. It authenticates a user and  

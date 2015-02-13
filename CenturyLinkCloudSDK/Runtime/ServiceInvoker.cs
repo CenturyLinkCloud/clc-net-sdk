@@ -14,6 +14,16 @@ namespace CenturyLinkCloudSDK.Runtime
 {
     internal static class ServiceInvoker
     {
+        private static HttpClient httpClient;
+
+        static ServiceInvoker()
+        {
+            httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(Constants.ServiceUris.ApiBaseAddress);
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.ServiceUris.JsonMediaType));
+        }
+
         /// <summary>
         /// This is the main method through which all api requests are made. It serializes the data to JSON before making the api call,
         /// determines the appropriate Http method to call, and deserializes the response to a response class that it returns to the caller. 
@@ -34,13 +44,11 @@ namespace CenturyLinkCloudSDK.Runtime
             }
             catch (CenturyLinkCloudServiceException serviceException)
             {
-                //TODO: Perform exception logging operation.
                 serviceException = BuildUpServiceException(serviceException, request, httpResponseMessage);
                 throw serviceException;
             }
             catch (Exception ex)
             {
-                //TODO: Perform exception logging operation.
                 var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.ServiceExceptionMessage, ex);
                 serviceException = BuildUpServiceException(serviceException, request, httpResponseMessage);
                 throw serviceException;
@@ -51,29 +59,22 @@ namespace CenturyLinkCloudSDK.Runtime
         {
             HttpResponseMessage httpResponseMessage = null;
 
-            using (var client = new HttpClient())
+            try
             {
-                try
+                if (request.BearerToken != null && httpClient.DefaultRequestHeaders.Authorization == null)
                 {
-                    client.BaseAddress = new Uri(Constants.ServiceUris.ApiBaseAddress);
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.ServiceUris.JsonMediaType));
-
-                    if (request.BearerToken != null)
-                    {
-                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request.BearerToken);
-                    }
-
-                    httpResponseMessage = await client.SendAsync<TRequest>(request, cancellationToken).ConfigureAwait(false);
-                }
-                catch (Exception ex)
-                {
-                    var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.ServiceExceptionMessage, ex);
-                    throw serviceException;
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request.BearerToken);
                 }
 
-                return httpResponseMessage;
+                httpResponseMessage = await httpClient.SendAsync<TRequest>(request, cancellationToken).ConfigureAwait(false);
             }
+            catch (Exception ex)
+            {
+                var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.ServiceExceptionMessage, ex);
+                throw serviceException;
+            }
+
+            return httpResponseMessage;
         }
 
         private static async Task<TResponse> DeserializeResponse<TResponse>(HttpResponseMessage httpResponseMessage)
