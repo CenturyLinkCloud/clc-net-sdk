@@ -12,11 +12,11 @@ namespace CenturyLinkCloudSDK.Services
     /// </summary>
     public class QueueService
     {
-        private AuthenticationInfo userAuthentication;
+        private Authentication authentication;
 
-        internal QueueService(AuthenticationInfo userAuthentication)
+        internal QueueService(Authentication authentication)
         {
-            this.userAuthentication = userAuthentication;
+            this.authentication = authentication;
         }
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace CenturyLinkCloudSDK.Services
         {
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/status/{1}", userAuthentication.AccountAlias, statusId),
-                BearerToken = userAuthentication.BearerToken,
+                ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/status/{1}", authentication.AccountAlias, statusId),
+                Authentication = authentication,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
             };
@@ -79,7 +79,7 @@ namespace CenturyLinkCloudSDK.Services
             var serviceRequest = new ServiceRequest()
             {
                 ServiceUri = Constants.ServiceUris.ApiBaseAddress + hypermediaLink,
-                BearerToken = userAuthentication.BearerToken,
+                Authentication = authentication,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
             };

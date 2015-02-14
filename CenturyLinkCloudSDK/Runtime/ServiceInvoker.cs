@@ -61,9 +61,12 @@ namespace CenturyLinkCloudSDK.Runtime
 
             try
             {
-                if (request.BearerToken != null && httpClient.DefaultRequestHeaders.Authorization == null)
+                if (request.Authentication != null && httpClient.DefaultRequestHeaders.Authorization == null)
                 {
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request.BearerToken);
+                    if (!string.IsNullOrEmpty(request.Authentication.BearerToken))
+                    {
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request.Authentication.BearerToken);
+                    }
                 }
 
                 httpResponseMessage = await httpClient.SendAsync<TRequest>(request, cancellationToken).ConfigureAwait(false);

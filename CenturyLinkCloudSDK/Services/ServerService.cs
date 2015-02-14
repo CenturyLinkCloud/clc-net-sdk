@@ -13,11 +13,11 @@ namespace CenturyLinkCloudSDK.Services
     /// </summary>
     public class ServerService
     {
-        private AuthenticationInfo userAuthentication;
+        private Authentication authentication;
 
-        internal ServerService(AuthenticationInfo userAuthentication)
+        internal ServerService(Authentication authentication)
         {
-            this.userAuthentication = userAuthentication;
+            this.authentication = authentication;
         }
 
         /// <summary>
@@ -45,8 +45,8 @@ namespace CenturyLinkCloudSDK.Services
         {
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format(Constants.ServiceUris.Server.GetServer, userAuthentication.AccountAlias, serverId),
-                BearerToken = userAuthentication.BearerToken,
+                ServiceUri = string.Format(Constants.ServiceUris.Server.GetServer, authentication.AccountAlias, serverId),
+                Authentication = authentication,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
             };
@@ -74,7 +74,7 @@ namespace CenturyLinkCloudSDK.Services
             var serviceRequest = new ServiceRequest()
             {
                 ServiceUri = Constants.ServiceUris.ApiBaseAddress + hypermediaLink,
-                BearerToken = userAuthentication.BearerToken,
+                Authentication = authentication,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
             };
@@ -113,12 +113,12 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
         public async Task<IReadOnlyList<ServerOperation>> PauseServer(List<string> serverIds, CancellationToken cancellationToken)
         {
-            var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
+            var requestModel = new ServiceRequestModelBase() { UnNamedArray = serverIds.ToArray() };
 
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format(Constants.ServiceUris.Server.PauseServer, userAuthentication.AccountAlias),
-                BearerToken = userAuthentication.BearerToken,
+                ServiceUri = string.Format(Constants.ServiceUris.Server.PauseServer, authentication.AccountAlias),
+                Authentication = authentication,
                 RequestModel = requestModel,
                 HttpMethod = HttpMethod.Post
             };
@@ -157,12 +157,12 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>>An asynchronous Task of IEnumerable of ServerOperation.</returns>
         public async Task<IReadOnlyList<ServerOperation>> PowerOnServer(List<string> serverIds, CancellationToken cancellationToken)
         {
-            var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
+            var requestModel = new ServiceRequestModelBase() { UnNamedArray = serverIds.ToArray() };
 
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format(Constants.ServiceUris.Server.PowerOnServer, userAuthentication.AccountAlias),
-                BearerToken = userAuthentication.BearerToken,
+                ServiceUri = string.Format(Constants.ServiceUris.Server.PowerOnServer, authentication.AccountAlias),
+                Authentication = authentication,
                 RequestModel = requestModel,
                 HttpMethod = HttpMethod.Post
             };
@@ -201,12 +201,12 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
         public async Task<IReadOnlyList<ServerOperation>> PowerOffServer(List<string> serverIds, CancellationToken cancellationToken)
         {
-            var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
+            var requestModel = new ServiceRequestModelBase() { UnNamedArray = serverIds.ToArray() };
 
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format(Constants.ServiceUris.Server.PowerOffServer, userAuthentication.AccountAlias),
-                BearerToken = userAuthentication.BearerToken,
+                ServiceUri = string.Format(Constants.ServiceUris.Server.PowerOffServer, authentication.AccountAlias),
+                Authentication = authentication,
                 RequestModel = requestModel,
                 HttpMethod = HttpMethod.Post
             };
@@ -245,12 +245,12 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
         public async Task<IReadOnlyList<ServerOperation>> RebootServer(List<string> serverIds, CancellationToken cancellationToken)
         {
-            var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
+            var requestModel = new ServiceRequestModelBase() { UnNamedArray = serverIds.ToArray() };
 
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format(Constants.ServiceUris.Server.RebootServer, userAuthentication.AccountAlias),
-                BearerToken = userAuthentication.BearerToken,
+                ServiceUri = string.Format(Constants.ServiceUris.Server.RebootServer, authentication.AccountAlias),
+                Authentication = authentication,
                 RequestModel = requestModel,
                 HttpMethod = HttpMethod.Post
             };
@@ -289,12 +289,12 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
         public async Task<IReadOnlyList<ServerOperation>> ShutDownServer(List<string> serverIds, CancellationToken cancellationToken)
         {
-            var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
+            var requestModel = new ServiceRequestModelBase() { UnNamedArray = serverIds.ToArray() };
 
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format(Constants.ServiceUris.Server.ShutDownServer, userAuthentication.AccountAlias),
-                BearerToken = userAuthentication.BearerToken,
+                ServiceUri = string.Format(Constants.ServiceUris.Server.ShutDownServer, authentication.AccountAlias),
+                Authentication = authentication,
                 RequestModel = requestModel,
                 HttpMethod = HttpMethod.Post
             };
@@ -333,12 +333,12 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
         public async Task<IReadOnlyList<ServerOperation>> ResetServer(List<string> serverIds, CancellationToken cancellationToken)
         {
-            var requestModel = new ServiceRequestModel() { UnNamedArray = serverIds.ToArray() };
+            var requestModel = new ServiceRequestModelBase() { UnNamedArray = serverIds.ToArray() };
 
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format(Constants.ServiceUris.Server.ResetServer, userAuthentication.AccountAlias),
-                BearerToken = userAuthentication.BearerToken,
+                ServiceUri = string.Format(Constants.ServiceUris.Server.ResetServer, authentication.AccountAlias),
+                Authentication = authentication,
                 RequestModel = requestModel,
                 HttpMethod = HttpMethod.Post
             };

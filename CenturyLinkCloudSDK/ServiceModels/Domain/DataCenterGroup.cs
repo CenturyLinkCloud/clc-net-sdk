@@ -15,7 +15,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
     {
         private string rootHardwareGroupLink;
 
-        public AuthenticationInfo UserAuthentication { get; set; }
+        internal Authentication Authentication { get; set; }
 
         public string Id { get; set; }
 
@@ -50,7 +50,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
                 throw new InvalidOperationException(string.Format(Constants.ExceptionMessages.DataCenterGroupDoesNotHaveRootHardwareGroup, Name));
             }
 
-            var groupService = new GroupService(UserAuthentication);
+            var groupService = new GroupService(Authentication);
             var rootGroup = await groupService.GetGroupByHyperLink(rootHardwareGroupLink);
             return rootGroup;
         }

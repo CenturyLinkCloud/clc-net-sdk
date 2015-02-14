@@ -13,11 +13,11 @@ namespace CenturyLinkCloudSDK.Services
     /// </summary>
     public class DataCenterService
     {
-        private AuthenticationInfo userAuthentication;
+        private Authentication authentication;
         
-        internal DataCenterService(AuthenticationInfo userAuthentication)
+        internal DataCenterService(Authentication authentication)
         {
-            this.userAuthentication = userAuthentication;
+            this.authentication = authentication;
         }
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace CenturyLinkCloudSDK.Services
         {
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format(Constants.ServiceUris.DataCenter.GetDataCenters, userAuthentication.AccountAlias),
-                BearerToken = userAuthentication.BearerToken,
+                ServiceUri = string.Format(Constants.ServiceUris.DataCenter.GetDataCenters, authentication.AccountAlias),
+                Authentication = authentication,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
             };
@@ -81,8 +81,8 @@ namespace CenturyLinkCloudSDK.Services
         {
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format(Constants.ServiceUris.DataCenter.GetDataCenter, userAuthentication.AccountAlias, dataCenter),
-                BearerToken = userAuthentication.BearerToken,
+                ServiceUri = string.Format(Constants.ServiceUris.DataCenter.GetDataCenter, authentication.AccountAlias, dataCenter),
+                Authentication = authentication,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
             };
@@ -123,14 +123,14 @@ namespace CenturyLinkCloudSDK.Services
         {
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format(Constants.ServiceUris.DataCenter.GetDataCenterGroup, userAuthentication.AccountAlias, dataCenter),
-                BearerToken = userAuthentication.BearerToken,
+                ServiceUri = string.Format(Constants.ServiceUris.DataCenter.GetDataCenterGroup, authentication.AccountAlias, dataCenter),
+                Authentication = authentication,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
             };
 
             var result = await ServiceInvoker.Invoke<ServiceRequest, GetDataCenterGroupsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
-            result.Response.UserAuthentication = userAuthentication;
+            result.Response.Authentication = authentication;
 
             if (result != null)
             {
@@ -151,7 +151,7 @@ namespace CenturyLinkCloudSDK.Services
             var serviceRequest = new ServiceRequest()
             {
                 ServiceUri = Constants.ServiceUris.ApiBaseAddress + hypermediaLink,
-                BearerToken = userAuthentication.BearerToken,
+                Authentication = authentication,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
             };
@@ -179,7 +179,7 @@ namespace CenturyLinkCloudSDK.Services
             var serviceRequest = new ServiceRequest()
             {
                 ServiceUri = Constants.ServiceUris.ApiBaseAddress + hypermediaLink + Constants.ServiceUris.Querystring.IncludeGroupLinks,
-                BearerToken = userAuthentication.BearerToken,
+                Authentication = authentication,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
             };

@@ -9,7 +9,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
     /// <summary>
     /// POCO class passed in with the Client that contains authentication information.
     /// </summary>
-    public class AuthenticationInfo
+    public class Authentication
     {
         public string BearerToken { get; set; }
 

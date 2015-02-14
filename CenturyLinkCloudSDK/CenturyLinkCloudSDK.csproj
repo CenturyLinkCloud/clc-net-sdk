@@ -42,8 +42,8 @@
     <Compile Include="Runtime\Constants.cs" />
     <Compile Include="Runtime\ServiceInvoker.cs" />
     <Compile Include="Runtime\ServiceRequest.cs" />
-    <Compile Include="Runtime\ServiceRequestModel.cs" />
-    <Compile Include="ServiceModels\Domain\AuthenticationInfo.cs" />
+    <Compile Include="Runtime\ServiceRequestModelBase.cs" />
+    <Compile Include="ServiceModels\Domain\Authentication.cs" />
     <Compile Include="ServiceModels\Requests\Authentication\LoginRequest.cs" />
     <Compile Include="ServiceModels\Responses\Authentication\LoginResponse.cs" />
     <Compile Include="ServiceModels\Responses\DataCenters\GetDataCenterGroupsResponse.cs" />

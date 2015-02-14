@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using CenturyLinkCloudSDK.ServiceModels;
+using System.Net.Http;
 
 namespace CenturyLinkCloudSDK.Runtime
 {
@@ -9,9 +10,9 @@ namespace CenturyLinkCloudSDK.Runtime
     {
         public string  ServiceUri { get; set; }
 
-        public string BearerToken { get; set; }
+        public Authentication Authentication { get; set; }
 
-        public ServiceRequestModel RequestModel { get; set; }
+        public ServiceRequestModelBase RequestModel { get; set; }
 
         public HttpMethod HttpMethod { get; set; }
     }

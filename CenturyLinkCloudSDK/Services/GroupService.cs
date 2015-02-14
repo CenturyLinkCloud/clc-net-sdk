@@ -12,11 +12,11 @@ namespace CenturyLinkCloudSDK.Services
     /// </summary>
     public class GroupService
     {
-        private AuthenticationInfo userAuthentication;
+        private Authentication authentication;
 
-        internal GroupService(AuthenticationInfo userAuthentication)
+        internal GroupService(Authentication authentication)
         {
-            this.userAuthentication = userAuthentication;
+            this.authentication = authentication;
         }
 
         /// <summary>
@@ -40,13 +40,14 @@ namespace CenturyLinkCloudSDK.Services
         {
             var serviceRequest = new ServiceRequest()
             {
-                ServiceUri = string.Format(Constants.ServiceUris.Group.GetGroup, userAuthentication.AccountAlias, groupId),
-                BearerToken = userAuthentication.BearerToken,
+                ServiceUri = string.Format(Constants.ServiceUris.Group.GetGroup, authentication.AccountAlias, groupId),
+                Authentication = authentication,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
             };
 
             var result = await ServiceInvoker.Invoke<ServiceRequest, GetGroupResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            result.Response.Authentication = authentication;
 
             if (result != null)
             {
@@ -67,12 +68,13 @@ namespace CenturyLinkCloudSDK.Services
             var serviceRequest = new ServiceRequest()
             {
                 ServiceUri = Constants.ServiceUris.ApiBaseAddress + hypermediaLink,
-                BearerToken = userAuthentication.BearerToken,
+                Authentication = authentication,
                 RequestModel = null,
                 HttpMethod = HttpMethod.Get
             };
 
             var result = await ServiceInvoker.Invoke<ServiceRequest, GetGroupResponse>(serviceRequest, CancellationToken.None).ConfigureAwait(false);
+            result.Response.Authentication = authentication;
 
             if (result != null)
             {

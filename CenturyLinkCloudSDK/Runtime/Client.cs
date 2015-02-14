@@ -10,9 +10,9 @@ namespace CenturyLinkCloudSDK
     public class Client
     {
         private UserInfo userInfo = null;
-        private AuthenticationInfo authenticationInfo = null;
+        private Authentication authentication = null;
         private bool userIsAuthenticated = false;
-        private AuthenticationService authentication;
+        private AuthenticationService authenticationService;
         private DataCenterService dataCenters;
         private GroupService groups;
         private QueueService queues;
@@ -32,7 +32,7 @@ namespace CenturyLinkCloudSDK
             if (userInfo != null)
             {
                 userIsAuthenticated = true;
-                authenticationInfo = new AuthenticationInfo() { AccountAlias = userInfo.AccountAlias, BearerToken = userInfo.BearerToken };
+                authentication = new Authentication() { AccountAlias = userInfo.AccountAlias, BearerToken = userInfo.BearerToken };
                 InitializeServices();
             }
             else
@@ -46,12 +46,12 @@ namespace CenturyLinkCloudSDK
         /// contains properties for Account Alias and BearerToken.
         /// </summary>
         /// <param name="authenticationInfo"></param>
-        public Client(AuthenticationInfo authenticationInfo)
+        public Client(Authentication authenticationInfo)
         {
             if (authenticationInfo != null)
             {
                 userIsAuthenticated = true;
-                this.authenticationInfo = authenticationInfo;
+                this.authentication = authenticationInfo;
                 InitializeServices();
             }
             else
@@ -68,15 +68,7 @@ namespace CenturyLinkCloudSDK
             }
         }
 
-        public AuthenticationInfo AuthenticationInfo
-        {
-            get
-            {
-                return authenticationInfo;
-            }
-        }
-
-        public AuthenticationService Authentication
+        public Authentication Authentication
         {
             get
             {
@@ -133,11 +125,11 @@ namespace CenturyLinkCloudSDK
 
         private void InitializeServices()
         {
-            authentication = new AuthenticationService();
-            dataCenters = new DataCenterService(authenticationInfo);
-            groups = new GroupService(authenticationInfo);
-            queues = new QueueService(authenticationInfo);
-            servers = new ServerService(authenticationInfo);
+            authenticationService = new AuthenticationService();
+            dataCenters = new DataCenterService(authentication);
+            groups = new GroupService(authentication);
+            queues = new QueueService(authentication);
+            servers = new ServerService(authentication);
         }
     }
 }

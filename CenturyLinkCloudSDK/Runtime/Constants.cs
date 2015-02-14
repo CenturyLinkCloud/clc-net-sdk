@@ -53,7 +53,8 @@
         internal static class ExceptionMessages
         {
             internal const string ServiceExceptionMessage = "A service error has occured.";
-            internal const string DataCenterGroupDoesNotHaveRootHardwareGroup = "Data Center Group {0} did not provide a Root Hardware Group.";
+            internal const string DataCenterGroupDoesNotHaveRootHardwareGroup = "Data Center Group {0} did not return a Root Hardware Group.";
+            internal const string GroupDoesNotHaveServers = "Group {0} did not return any Servers.";
         }
     }
 }

@@ -6,7 +6,7 @@
     /// but rather contain an unnamed array of data. The UnNamedArray property is used in the Invoke method,
     /// of the ServiceAPI base class, in order to determine the type of serialization to perform.
     /// </summary>
-    internal class ServiceRequestModel
+    internal class ServiceRequestModelBase
     {
         public string[] UnNamedArray { get; set; }
     }
