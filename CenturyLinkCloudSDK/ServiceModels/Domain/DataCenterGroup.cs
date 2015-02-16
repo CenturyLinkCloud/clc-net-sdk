@@ -51,7 +51,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
             }
 
             var groupService = new GroupService(Authentication);
-            var rootGroup = await groupService.GetGroupByLink(rootHardwareGroupLink);
+            var rootGroup = await groupService.GetGroupByLink(Configuration.BaseUri + rootHardwareGroupLink);
             return rootGroup;
         }
     }
