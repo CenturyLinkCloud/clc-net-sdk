@@ -39,7 +39,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns>An asynchronous Task of UserInfo object.</returns>
+        /// <returns></returns>
         public async Task<UserInfo> Login(string username, string password, CancellationToken cancellationToken)
         {
             var requestModel = new LoginRequest() { UserName = username, Password = password };

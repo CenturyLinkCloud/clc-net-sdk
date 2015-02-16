@@ -27,7 +27,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="accountAlias"></param>
         /// <param name="serverId"></param>
-        /// <returns>An asynchronous Task of Server.</returns>
+        /// <returns></returns>
         public async Task<Server> GetServer(string serverId)
         {
             return await GetServer(serverId, CancellationToken.None).ConfigureAwait(false);
@@ -40,7 +40,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="serverId"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns>An asynchronous Task of Server.</returns>
+        /// <returns></returns>
         public async Task<Server> GetServer(string serverId, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Server.GetServer, Configuration.BaseUri, authentication.AccountAlias, serverId), string.Empty);
@@ -62,7 +62,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="accountAlias"></param>
         /// <param name="serverIds"></param>
-        /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
+        /// <returns></returns>
         public async Task<IReadOnlyList<ServerOperation>> PauseServer(List<string> serverIds)
         {
             return await PauseServer(serverIds, CancellationToken.None).ConfigureAwait(false);
@@ -75,7 +75,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="serverIds"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
+        /// <returns></returns>
         public async Task<IReadOnlyList<ServerOperation>> PauseServer(List<string> serverIds, CancellationToken cancellationToken)
         {
             var content = JsonConvert.SerializeObject(serverIds.ToArray());
@@ -98,7 +98,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="accountAlias"></param>
         /// <param name="serverIds"></param>
-        /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
+        /// <returns></returns>
         public async Task<IReadOnlyList<ServerOperation>> PowerOnServer(List<string> serverIds)
         {
             return await PowerOnServer(serverIds, CancellationToken.None).ConfigureAwait(false);
@@ -111,7 +111,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="serverIds"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns>>An asynchronous Task of IEnumerable of ServerOperation.</returns>
+        /// <returns></returns>
         public async Task<IReadOnlyList<ServerOperation>> PowerOnServer(List<string> serverIds, CancellationToken cancellationToken)
         {
             var content = JsonConvert.SerializeObject(serverIds.ToArray());
@@ -147,7 +147,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="serverIds"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
+        /// <returns></returns>
         public async Task<IReadOnlyList<ServerOperation>> PowerOffServer(List<string> serverIds, CancellationToken cancellationToken)
         {
             var content = JsonConvert.SerializeObject(serverIds.ToArray());
@@ -170,7 +170,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="accountAlias"></param>
         /// <param name="serverIds"></param>
-        /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
+        /// <returns></returns>
         public async Task<IReadOnlyList<ServerOperation>> RebootServer(List<string> serverIds)
         {
             return await RebootServer(serverIds, CancellationToken.None).ConfigureAwait(false);
@@ -183,7 +183,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="serverIds"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
+        /// <returns></returns>
         public async Task<IReadOnlyList<ServerOperation>> RebootServer(List<string> serverIds, CancellationToken cancellationToken)
         {
             var content = JsonConvert.SerializeObject(serverIds.ToArray());
@@ -206,7 +206,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="accountAlias"></param>
         /// <param name="serverIds"></param>
-        /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
+        /// <returns></returns>
         public async Task<IReadOnlyList<ServerOperation>> ShutDownServer(List<string> serverIds)
         {
             return await ShutDownServer(serverIds, CancellationToken.None).ConfigureAwait(false);
@@ -219,7 +219,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="serverIds"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
+        /// <returns></returns>
         public async Task<IReadOnlyList<ServerOperation>> ShutDownServer(List<string> serverIds, CancellationToken cancellationToken)
         {
             var content = JsonConvert.SerializeObject(serverIds.ToArray());
@@ -255,7 +255,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="serverIds"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
+        /// <returns></returns>
         public async Task<IReadOnlyList<ServerOperation>> ResetServer(List<string> serverIds, CancellationToken cancellationToken)
         {
             var content = JsonConvert.SerializeObject(serverIds.ToArray());
@@ -276,8 +276,21 @@ namespace CenturyLinkCloudSDK.Services
         /// Use this operation when you want to find out all the details for a server. 
         /// It can be used to look for changes, its status, or to retrieve links to associated resources. 
         /// </summary>
-        /// <param name="hypermediaLink"></param>
-        /// <returns>An asynchronous Task of Server.</returns>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        internal async Task<Server> GetServerByLink(string uri)
+        {
+            return await GetServerByLink(uri, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the details for a individual server by hypermedia link.
+        /// Use this operation when you want to find out all the details for a server. 
+        /// It can be used to look for changes, its status, or to retrieve links to associated resources. 
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         internal async Task<Server> GetServerByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri, string.Empty);

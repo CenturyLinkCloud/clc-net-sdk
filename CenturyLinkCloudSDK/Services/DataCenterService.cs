@@ -25,7 +25,7 @@ namespace CenturyLinkCloudSDK.Services
         /// Using that list of data centers, you can then query for the root group, and all the child groups in an entire data center.
         /// </summary>
         /// <param name="accountAlias"></param>
-        /// <returns>An asynchronous Task of IEnumerable of DataCenter.</returns>
+        /// <returns></returns>
         public async Task<IReadOnlyList<DataCenter>> GetDataCenters()
         {
             return await GetDataCenters(CancellationToken.None).ConfigureAwait(false);
@@ -37,7 +37,7 @@ namespace CenturyLinkCloudSDK.Services
         /// Using that list of data centers, you can then query for the root group, and all the child groups in an entire data center.
         /// </summary>
         /// <param name="cancellationToken"></param>
-        /// <returns>An asynchronous Task of IEnumerable of DataCenter.</returns>
+        /// <returns></returns>
         public async Task<IReadOnlyList<DataCenter>> GetDataCenters(CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenters, Configuration.BaseUri, authentication.AccountAlias), string.Empty);
@@ -57,7 +57,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="accountAlias"></param>
         /// <param name="dataCenter"></param>
-        /// <returns>An asynchronous Task of DataCenter.</returns>
+        /// <returns></returns>
         public async Task<DataCenter> GetDataCenter(string dataCenter)
         {
             return await GetDataCenter(dataCenter, CancellationToken.None).ConfigureAwait(false);
@@ -68,7 +68,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="dataCenter"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns>An asynchronous Task of DataCenter.</returns>
+        /// <returns></returns>
         public async Task<DataCenter> GetDataCenter(string dataCenter, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenter, Configuration.BaseUri, authentication.AccountAlias, dataCenter), string.Empty);
@@ -92,7 +92,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="accountAlias"></param>
         /// <param name="dataCenter"></param>
-        /// <returns>An asynchronous Task of DataCenterGroup</returns>
+        /// <returns></returns>
         public async Task<DataCenterGroup> GetDataCenterGroup(string dataCenter)
         {
             return await GetDataCenterGroup(dataCenter, CancellationToken.None).ConfigureAwait(false);
@@ -105,7 +105,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="dataCenter"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns>An asynchronous Task of DataCenterGroup</returns>
+        /// <returns></returns>
         public async Task<DataCenterGroup> GetDataCenterGroup(string dataCenter, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenterGroup, Configuration.BaseUri, authentication.AccountAlias, dataCenter), string.Empty);
@@ -125,8 +125,8 @@ namespace CenturyLinkCloudSDK.Services
         /// <summary>
         /// Gets the information for a particular data center by accepting a hypermedia link.
         /// </summary>
-        /// <param name="hypermediaLink"></param>
-        /// <returns>An asynchronous Task of DataCenter.</returns>
+        /// <param name="uri"></param>
+        /// <returns></returns>
         internal async Task<DataCenter> GetDataCenterByLink(string uri)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri, string.Empty);
@@ -146,8 +146,8 @@ namespace CenturyLinkCloudSDK.Services
         /// Use this operation when you want to discover the name of the root hardware group for a data center. 
         /// Once you have that group alias, you can issue a secondary query to retrieve the entire group hierarchy for a given data center.
         /// </summary>
-        /// <param name="hypermediaLink"></param>
-        /// <returns>An asynchronous Task of DataCenterGroup</returns>
+        /// <param name="uri"></param>
+        /// <returns></returns>
         internal async Task<DataCenterGroup> GetDataCenterGroupByHyperMediaLink(string uri)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri + Constants.ServiceUris.Querystring.IncludeGroupLinks, string.Empty);

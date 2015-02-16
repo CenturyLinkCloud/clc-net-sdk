@@ -27,7 +27,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="accountAlias"></param>
         /// <param name="statusId"></param>
-        /// <returns>An asynchronous Task of Queue.</returns>
+        /// <returns></returns>
         public async Task<Queue> GetStatus(string statusId)
         {
             return await GetStatus(statusId, CancellationToken.None).ConfigureAwait(false);
@@ -65,7 +65,7 @@ namespace CenturyLinkCloudSDK.Services
         /// and will typically continue to get called until a "succeeded" or "failed" response is returned.
         /// </summary>
         /// <param name="hypermediaLink"></param>
-        /// <returns>An asynchronous Task of Queue.</returns>
+        /// <returns></returns>
         internal async Task<Queue> GetStatusByLink(string uri)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri, string.Empty);

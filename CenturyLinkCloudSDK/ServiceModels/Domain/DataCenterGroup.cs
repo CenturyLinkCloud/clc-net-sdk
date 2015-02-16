@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.ServiceModels
@@ -24,6 +25,9 @@ namespace CenturyLinkCloudSDK.ServiceModels
         [JsonPropertyAttribute]
         private IReadOnlyList<Link> Links { get; set; }
 
+        /// <summary>
+        /// Determines if this data center group has a root hardware group by examining the Links collection.
+        /// </summary>
         public bool HasRootHardwareGroup
         {
             get
@@ -43,7 +47,21 @@ namespace CenturyLinkCloudSDK.ServiceModels
             }
         }
 
+        /// <summary>
+        /// Gets the root hardware group.
+        /// </summary>
+        /// <returns>Asyncronous Task of Group</returns>
         public async Task<Group> GetRootHardwareGroup()
+        {
+            return await GetRootHardwareGroup(CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the root hardware group.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Asyncronous Task of Group</returns>
+        public async Task<Group> GetRootHardwareGroup(CancellationToken cancellationToken)
         {
             if (!HasRootHardwareGroup)
             {
@@ -51,7 +69,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
             }
 
             var groupService = new GroupService(Authentication);
-            var rootGroup = await groupService.GetGroupByLink(Configuration.BaseUri + rootHardwareGroupLink);
+            var rootGroup = await groupService.GetGroupByLink(Configuration.BaseUri + rootHardwareGroupLink, cancellationToken);
             return rootGroup;
         }
     }

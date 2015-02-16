@@ -38,6 +38,9 @@ namespace CenturyLinkCloudSDK.ServiceModels
         [JsonPropertyAttribute]
         private IReadOnlyList<Link> Links { get; set; }
 
+        /// <summary>
+        /// Determines if this Group has servers by examining the Links collection.
+        /// </summary>
         public bool HasServers
         {
             get
@@ -58,31 +61,36 @@ namespace CenturyLinkCloudSDK.ServiceModels
             }
         }
 
+        /// <summary>
+        /// Gets the servers that belong to this group.
+        /// </summary>
+        /// <returns></returns>
         public async Task<IReadOnlyList<Server>> GetServers()
+        {
+            return await GetServers(CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the servers that belong to this group.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<IReadOnlyList<Server>> GetServers(CancellationToken cancellationToken)
         {
             var servers = new List<Server>();
 
             if (HasServers)
-            {              
+            {
                 var serverService = new ServerService(Authentication);
 
                 foreach (var serverLink in ServerLinks)
                 {
-                    var server = await serverService.GetServerByLink(Configuration.BaseUri + serverLink.Href, CancellationToken.None);
+                    var server = await serverService.GetServerByLink(Configuration.BaseUri + serverLink.Href, cancellationToken);
                     servers.Add(server);
                 }
             }
 
             return servers;
-        }
-
-        [OnDeserialized]
-        private void SetUserAuthenticationInNestedGroups(StreamingContext context)
-        {
-            foreach(var group in Groups)
-            {
-                group.Authentication = Authentication;
-            }
         }
     }
 }
