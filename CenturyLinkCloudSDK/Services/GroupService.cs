@@ -1,22 +1,20 @@
-﻿using CenturyLinkCloudSDK.ServiceModels;
+﻿using CenturyLinkCloudSDK.Runtime;
+using CenturyLinkCloudSDK.ServiceModels;
 using CenturyLinkCloudSDK.ServiceModels.Responses.Groups;
-using CenturyLinkCloudSDK.Runtime;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.Services
 {
     /// <summary>
     /// This class contains operations associated with server groups.
     /// </summary>
-    public class GroupService
+    public class GroupService : ServiceBase
     {
-        private Authentication authentication;
-
         internal GroupService(Authentication authentication)
+            : base(authentication)
         {
-            this.authentication = authentication;
         }
 
         /// <summary>
@@ -38,15 +36,9 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>An asynchronous Task of Group.</returns>
         public async Task<Group> GetGroup(string groupId, CancellationToken cancellationToken)
         {
-            var serviceRequest = new ServiceRequest()
-            {
-                ServiceUri = string.Format(Constants.ServiceUris.Group.GetGroup, authentication.AccountAlias, groupId),
-                Authentication = authentication,
-                RequestModel = null,
-                HttpMethod = HttpMethod.Get
-            };
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Group.GetGroup, Configuration.BaseUri, authentication.AccountAlias, groupId), string.Empty);
+            var result = await ServiceInvoker.Invoke<GetGroupResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
-            var result = await ServiceInvoker.Invoke<ServiceRequest, GetGroupResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
             result.Response.Authentication = authentication;
 
             if (result != null)
@@ -63,17 +55,11 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="hypermediaLink"></param>
         /// <returns>An asynchronous Task of Group.</returns>
-        public async Task<Group> GetGroupByHyperLink(string hypermediaLink)
+        internal async Task<Group> GetGroupByLink(string uri)
         {
-            var serviceRequest = new ServiceRequest()
-            {
-                ServiceUri = Constants.ServiceUris.ApiBaseAddress + hypermediaLink,
-                Authentication = authentication,
-                RequestModel = null,
-                HttpMethod = HttpMethod.Get
-            };
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri, string.Empty);
+            var result = await ServiceInvoker.Invoke<GetGroupResponse>(httpRequestMessage, CancellationToken.None).ConfigureAwait(false);
 
-            var result = await ServiceInvoker.Invoke<ServiceRequest, GetGroupResponse>(serviceRequest, CancellationToken.None).ConfigureAwait(false);
             result.Response.Authentication = authentication;
 
             if (result != null)

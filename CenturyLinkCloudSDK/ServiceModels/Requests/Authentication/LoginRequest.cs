@@ -5,7 +5,7 @@ namespace CenturyLinkCloudSDK.ServiceModels.Requests.Authentication
     /// <summary>
     /// This class contains the user credentials required during the Login operation.
     /// </summary>
-    internal class LoginRequest: ServiceRequestModelBase
+    internal class LoginRequest
     {
         public string UserName { get; set; }
 

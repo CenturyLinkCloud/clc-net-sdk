@@ -1,20 +1,21 @@
-﻿using CenturyLinkCloudSDK.ServiceModels;
+﻿using CenturyLinkCloudSDK.Runtime;
+using CenturyLinkCloudSDK.ServiceModels;
 using CenturyLinkCloudSDK.ServiceModels.Requests.Authentication;
 using CenturyLinkCloudSDK.ServiceModels.Responses.Authentication;
-using CenturyLinkCloudSDK.Runtime;
+using Newtonsoft.Json;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.Services
 {
     /// <summary>
     /// This class contains operations associated with user authentication.
     /// </summary>
-    public class AuthenticationService
+    public class AuthenticationService : ServiceBase
     {
-
-        internal AuthenticationService() 
+        internal AuthenticationService()
+            : base(null)
         {
 
         }
@@ -43,28 +44,17 @@ namespace CenturyLinkCloudSDK.Services
         {
             var requestModel = new LoginRequest() { UserName = username, Password = password };
 
-            var serviceRequest = new ServiceRequest()
-            {
-                ServiceUri = Constants.ServiceUris.Authentication.Login,
-                RequestModel = requestModel,
-                HttpMethod = HttpMethod.Post
-            };
+            var content = JsonConvert.SerializeObject(requestModel);
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Authentication.Login, Configuration.BaseUri), content);
+            var result = await ServiceInvoker.Invoke<LoginResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
-            var result = await ServiceInvoker.Invoke<ServiceRequest, LoginResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
-
-            if (result == null)
+            if (result != null)
             {
-                return null;
+                var response = result.Response;
+                return response;
             }
 
-            var response = result.Response;
-
-            if (response == null)
-            {
-                return null;
-            }
-
-            return response;
+            return null;
         }
     }
 }

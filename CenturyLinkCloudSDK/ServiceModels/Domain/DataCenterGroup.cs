@@ -24,7 +24,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         [JsonPropertyAttribute]
         private IReadOnlyList<Link> Links { get; set; }
 
-        public bool HasRootGroup
+        public bool HasRootHardwareGroup
         {
             get
             {
@@ -45,13 +45,13 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public async Task<Group> GetRootHardwareGroup()
         {
-            if (!HasRootGroup)
+            if (!HasRootHardwareGroup)
             {
                 throw new InvalidOperationException(string.Format(Constants.ExceptionMessages.DataCenterGroupDoesNotHaveRootHardwareGroup, Name));
             }
 
             var groupService = new GroupService(Authentication);
-            var rootGroup = await groupService.GetGroupByHyperLink(rootHardwareGroupLink);
+            var rootGroup = await groupService.GetGroupByLink(rootHardwareGroupLink);
             return rootGroup;
         }
     }

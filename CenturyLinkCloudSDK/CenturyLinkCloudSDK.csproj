@@ -34,15 +34,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Extensions\HttpClientExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Runtime\CenturyLinkCloudServiceException.cs" />
     <Compile Include="Runtime\Client.cs" />
     <Compile Include="Runtime\Configuration.cs" />
     <Compile Include="Runtime\Constants.cs" />
+    <Compile Include="Runtime\ServiceBase.cs" />
     <Compile Include="Runtime\ServiceInvoker.cs" />
-    <Compile Include="Runtime\ServiceRequest.cs" />
-    <Compile Include="Runtime\ServiceRequestModelBase.cs" />
     <Compile Include="ServiceModels\Domain\Authentication.cs" />
     <Compile Include="ServiceModels\Requests\Authentication\LoginRequest.cs" />
     <Compile Include="ServiceModels\Responses\Authentication\LoginResponse.cs" />

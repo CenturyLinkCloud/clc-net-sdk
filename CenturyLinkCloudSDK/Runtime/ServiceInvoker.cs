@@ -1,14 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using CenturyLinkCloudSDK.Extensions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using CenturyLinkCloudSDK.Extensions;
-using Newtonsoft.Json.Linq;
 
 namespace CenturyLinkCloudSDK.Runtime
 {
@@ -19,65 +16,41 @@ namespace CenturyLinkCloudSDK.Runtime
         static ServiceInvoker()
         {
             httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(Constants.ServiceUris.ApiBaseAddress);
+            httpClient.BaseAddress = new Uri(Configuration.BaseUri);
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.ServiceUris.JsonMediaType));
         }
 
         /// <summary>
-        /// This is the main method through which all api requests are made. It serializes the data to JSON before making the api call,
-        /// determines the appropriate Http method to call, and deserializes the response to a response class that it returns to the caller. 
+        /// This is the main method through which all api requests are made.
         /// </summary>
-        /// <typeparam name="TRequest"></typeparam>
         /// <typeparam name="TResponse"></typeparam>
-        /// <param name="request"></param>
-        /// <returns>An asynchronous Task of the generic TResponse which must implement IServiceResponse</returns>
-        internal static async Task<TResponse> Invoke<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken) where TRequest : ServiceRequest
+        /// <param name="httpRequestMessage"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>An asynchronous Task of the generic TResponse.</returns>
+        internal static async Task<TResponse> Invoke<TResponse>(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
         {
             HttpResponseMessage httpResponseMessage = null;
 
             try
             {
-                httpResponseMessage = await SendRequest(request, cancellationToken).ConfigureAwait(false);
+                httpResponseMessage = await httpClient.SendAsync(httpRequestMessage, cancellationToken).ConfigureAwait(false);
                 var response = await DeserializeResponse<TResponse>(httpResponseMessage).ConfigureAwait(false);
                 return response;
             }
-            catch (CenturyLinkCloudServiceException serviceException)
+            catch (CenturyLinkCloudServiceException ex)
             {
-                serviceException = BuildUpServiceException(serviceException, request, httpResponseMessage);
-                throw serviceException;
+                ex.HttpRequestMessage = httpRequestMessage;
+                ex.HttpResponseMessage = httpResponseMessage;
+                throw ex;
             }
             catch (Exception ex)
             {
                 var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.ServiceExceptionMessage, ex);
-                serviceException = BuildUpServiceException(serviceException, request, httpResponseMessage);
+                serviceException.HttpRequestMessage = httpRequestMessage;
+                serviceException.HttpResponseMessage = httpResponseMessage;
                 throw serviceException;
             }
-        }
-
-        private static async Task<HttpResponseMessage> SendRequest<TRequest>(TRequest request, CancellationToken cancellationToken) where TRequest : ServiceRequest
-        {
-            HttpResponseMessage httpResponseMessage = null;
-
-            try
-            {
-                if (request.Authentication != null && httpClient.DefaultRequestHeaders.Authorization == null)
-                {
-                    if (!string.IsNullOrEmpty(request.Authentication.BearerToken))
-                    {
-                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request.Authentication.BearerToken);
-                    }
-                }
-
-                httpResponseMessage = await httpClient.SendAsync<TRequest>(request, cancellationToken).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.ServiceExceptionMessage, ex);
-                throw serviceException;
-            }
-
-            return httpResponseMessage;
         }
 
         private static async Task<TResponse> DeserializeResponse<TResponse>(HttpResponseMessage httpResponseMessage)
@@ -120,15 +93,6 @@ namespace CenturyLinkCloudSDK.Runtime
             }
 
             return default(TResponse);
-        }
-
-        private static CenturyLinkCloudServiceException BuildUpServiceException(CenturyLinkCloudServiceException serviceException, ServiceRequest request, HttpResponseMessage httpResponseMessage)
-        {
-            serviceException.ServiceUri = request.ServiceUri;
-            serviceException.HttpMethod = request.HttpMethod.ToString();
-            serviceException.HttpResponseMessage = httpResponseMessage;
-
-            return serviceException;
         }
     }
 }

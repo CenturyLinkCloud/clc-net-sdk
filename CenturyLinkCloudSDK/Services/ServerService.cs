@@ -1,23 +1,23 @@
-﻿using CenturyLinkCloudSDK.ServiceModels;
+﻿using CenturyLinkCloudSDK.Runtime;
+using CenturyLinkCloudSDK.ServiceModels;
 using CenturyLinkCloudSDK.ServiceModels.Responses.Servers;
-using CenturyLinkCloudSDK.Runtime;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.Services
 {
     /// <summary>
     /// This class contains operations associated with servers.
     /// </summary>
-    public class ServerService
+    public class ServerService : ServiceBase
     {
-        private Authentication authentication;
-
         internal ServerService(Authentication authentication)
+            : base(authentication)
         {
-            this.authentication = authentication;
+
         }
 
         /// <summary>
@@ -43,43 +43,8 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>An asynchronous Task of Server.</returns>
         public async Task<Server> GetServer(string serverId, CancellationToken cancellationToken)
         {
-            var serviceRequest = new ServiceRequest()
-            {
-                ServiceUri = string.Format(Constants.ServiceUris.Server.GetServer, authentication.AccountAlias, serverId),
-                Authentication = authentication,
-                RequestModel = null,
-                HttpMethod = HttpMethod.Get
-            };
-
-            var result = await ServiceInvoker.Invoke<ServiceRequest, GetServerResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
-
-            if (result != null)
-            {
-                var response = result.Response;
-                return response;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the details for a individual server by hypermedia link.
-        /// Use this operation when you want to find out all the details for a server. 
-        /// It can be used to look for changes, its status, or to retrieve links to associated resources. 
-        /// </summary>
-        /// <param name="hypermediaLink"></param>
-        /// <returns>An asynchronous Task of Server.</returns>
-        public async Task<Server> GetServerByHypermediaLink(string hypermediaLink)
-        {
-            var serviceRequest = new ServiceRequest()
-            {
-                ServiceUri = Constants.ServiceUris.ApiBaseAddress + hypermediaLink,
-                Authentication = authentication,
-                RequestModel = null,
-                HttpMethod = HttpMethod.Get
-            };
-
-            var result = await ServiceInvoker.Invoke<ServiceRequest, GetServerResponse>(serviceRequest, CancellationToken.None).ConfigureAwait(false);
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Server.GetServer, Configuration.BaseUri, authentication.AccountAlias, serverId), string.Empty);
+            var result = await ServiceInvoker.Invoke<GetServerResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -113,17 +78,9 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
         public async Task<IReadOnlyList<ServerOperation>> PauseServer(List<string> serverIds, CancellationToken cancellationToken)
         {
-            var requestModel = new ServiceRequestModelBase() { UnNamedArray = serverIds.ToArray() };
-
-            var serviceRequest = new ServiceRequest()
-            {
-                ServiceUri = string.Format(Constants.ServiceUris.Server.PauseServer, authentication.AccountAlias),
-                Authentication = authentication,
-                RequestModel = requestModel,
-                HttpMethod = HttpMethod.Post
-            };
-
-            var result = await ServiceInvoker.Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            var content = JsonConvert.SerializeObject(serverIds.ToArray());
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PauseServer, Configuration.BaseUri, authentication.AccountAlias), content);
+            var result = await ServiceInvoker.Invoke<ServerPowerOpsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -157,17 +114,9 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>>An asynchronous Task of IEnumerable of ServerOperation.</returns>
         public async Task<IReadOnlyList<ServerOperation>> PowerOnServer(List<string> serverIds, CancellationToken cancellationToken)
         {
-            var requestModel = new ServiceRequestModelBase() { UnNamedArray = serverIds.ToArray() };
-
-            var serviceRequest = new ServiceRequest()
-            {
-                ServiceUri = string.Format(Constants.ServiceUris.Server.PowerOnServer, authentication.AccountAlias),
-                Authentication = authentication,
-                RequestModel = requestModel,
-                HttpMethod = HttpMethod.Post
-            };
-
-            var result = await ServiceInvoker.Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            var content = JsonConvert.SerializeObject(serverIds.ToArray());
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PowerOnServer, Configuration.BaseUri, authentication.AccountAlias), content);
+            var result = await ServiceInvoker.Invoke<ServerPowerOpsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -201,17 +150,9 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
         public async Task<IReadOnlyList<ServerOperation>> PowerOffServer(List<string> serverIds, CancellationToken cancellationToken)
         {
-            var requestModel = new ServiceRequestModelBase() { UnNamedArray = serverIds.ToArray() };
-
-            var serviceRequest = new ServiceRequest()
-            {
-                ServiceUri = string.Format(Constants.ServiceUris.Server.PowerOffServer, authentication.AccountAlias),
-                Authentication = authentication,
-                RequestModel = requestModel,
-                HttpMethod = HttpMethod.Post
-            };
-
-            var result = await ServiceInvoker.Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            var content = JsonConvert.SerializeObject(serverIds.ToArray());
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PowerOffServer, Configuration.BaseUri, authentication.AccountAlias), content);
+            var result = await ServiceInvoker.Invoke<ServerPowerOpsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -245,17 +186,9 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
         public async Task<IReadOnlyList<ServerOperation>> RebootServer(List<string> serverIds, CancellationToken cancellationToken)
         {
-            var requestModel = new ServiceRequestModelBase() { UnNamedArray = serverIds.ToArray() };
-
-            var serviceRequest = new ServiceRequest()
-            {
-                ServiceUri = string.Format(Constants.ServiceUris.Server.RebootServer, authentication.AccountAlias),
-                Authentication = authentication,
-                RequestModel = requestModel,
-                HttpMethod = HttpMethod.Post
-            };
-
-            var result = await ServiceInvoker.Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            var content = JsonConvert.SerializeObject(serverIds.ToArray());
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.RebootServer, Configuration.BaseUri, authentication.AccountAlias), content);
+            var result = await ServiceInvoker.Invoke<ServerPowerOpsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -289,17 +222,9 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
         public async Task<IReadOnlyList<ServerOperation>> ShutDownServer(List<string> serverIds, CancellationToken cancellationToken)
         {
-            var requestModel = new ServiceRequestModelBase() { UnNamedArray = serverIds.ToArray() };
-
-            var serviceRequest = new ServiceRequest()
-            {
-                ServiceUri = string.Format(Constants.ServiceUris.Server.ShutDownServer, authentication.AccountAlias),
-                Authentication = authentication,
-                RequestModel = requestModel,
-                HttpMethod = HttpMethod.Post
-            };
-
-            var result = await ServiceInvoker.Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            var content = JsonConvert.SerializeObject(serverIds.ToArray());
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.ShutDownServer, Configuration.BaseUri, authentication.AccountAlias), content);
+            var result = await ServiceInvoker.Invoke<ServerPowerOpsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -333,17 +258,30 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
         public async Task<IReadOnlyList<ServerOperation>> ResetServer(List<string> serverIds, CancellationToken cancellationToken)
         {
-            var requestModel = new ServiceRequestModelBase() { UnNamedArray = serverIds.ToArray() };
+            var content = JsonConvert.SerializeObject(serverIds.ToArray());
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.ResetServer, Configuration.BaseUri, authentication.AccountAlias), content);
+            var result = await ServiceInvoker.Invoke<ServerPowerOpsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
-            var serviceRequest = new ServiceRequest()
+            if (result != null)
             {
-                ServiceUri = string.Format(Constants.ServiceUris.Server.ResetServer, authentication.AccountAlias),
-                Authentication = authentication,
-                RequestModel = requestModel,
-                HttpMethod = HttpMethod.Post
-            };
+                var response = result.Response;
+                return response;
+            }
 
-            var result = await ServiceInvoker.Invoke<ServiceRequest, ServerPowerOpsResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the details for a individual server by hypermedia link.
+        /// Use this operation when you want to find out all the details for a server. 
+        /// It can be used to look for changes, its status, or to retrieve links to associated resources. 
+        /// </summary>
+        /// <param name="hypermediaLink"></param>
+        /// <returns>An asynchronous Task of Server.</returns>
+        internal async Task<Server> GetServerByLink(string uri, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri, string.Empty);
+            var result = await ServiceInvoker.Invoke<GetServerResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {

@@ -17,9 +17,7 @@ namespace CenturyLinkCloudSDK.Runtime
         {
         }
 
-        public string ServiceUri { get; set; }
-
-        public string HttpMethod { get; set; }
+        public HttpRequestMessage HttpRequestMessage { get; set; }
 
         public HttpResponseMessage HttpResponseMessage { get; set; }
 

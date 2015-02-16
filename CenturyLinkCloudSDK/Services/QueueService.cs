@@ -1,20 +1,19 @@
-﻿using CenturyLinkCloudSDK.ServiceModels;
+﻿using CenturyLinkCloudSDK.Runtime;
+using CenturyLinkCloudSDK.ServiceModels;
 using CenturyLinkCloudSDK.ServiceModels.Responses.Queues;
-using CenturyLinkCloudSDK.Runtime;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.Services
 {
     /// <summary>
     /// This class contains operations associated with queues.
     /// </summary>
-    public class QueueService
+    public class QueueService : ServiceBase
     {
-        private Authentication authentication;
-
         internal QueueService(Authentication authentication)
+            : base(authentication)
         {
             this.authentication = authentication;
         }
@@ -46,15 +45,8 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>An asynchronous Task of Queue.</returns>
         public async Task<Queue> GetStatus(string statusId, CancellationToken cancellationToken)
         {
-            var serviceRequest = new ServiceRequest()
-            {
-                ServiceUri = string.Format("https://api.tier3.com/v2/operations/{0}/status/{1}", authentication.AccountAlias, statusId),
-                Authentication = authentication,
-                RequestModel = null,
-                HttpMethod = HttpMethod.Get
-            };
-
-            var result = await ServiceInvoker.Invoke<ServiceRequest, GetStatusResponse>(serviceRequest, cancellationToken).ConfigureAwait(false);
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Queue.GetStatus, authentication.AccountAlias, statusId), string.Empty);
+            var result = await ServiceInvoker.Invoke<GetStatusResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -74,17 +66,10 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="hypermediaLink"></param>
         /// <returns>An asynchronous Task of Queue.</returns>
-        public async Task<Queue> GetStatusByHypermediaLink(string hypermediaLink)
+        internal async Task<Queue> GetStatusByLink(string uri)
         {
-            var serviceRequest = new ServiceRequest()
-            {
-                ServiceUri = Constants.ServiceUris.ApiBaseAddress + hypermediaLink,
-                Authentication = authentication,
-                RequestModel = null,
-                HttpMethod = HttpMethod.Get
-            };
-
-            var result = await ServiceInvoker.Invoke<ServiceRequest, GetStatusResponse>(serviceRequest, CancellationToken.None).ConfigureAwait(false);
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri, string.Empty);
+            var result = await ServiceInvoker.Invoke<GetStatusResponse>(httpRequestMessage, CancellationToken.None).ConfigureAwait(false);
 
             if (result != null)
             {

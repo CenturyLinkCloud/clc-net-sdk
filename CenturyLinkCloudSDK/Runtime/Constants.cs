@@ -13,35 +13,35 @@
 
             internal static class Authentication
             {
-                internal static string Login { get { return Configuration.BaseUri + "/v2/authentication/login"; } }
+                internal static string Login { get { return "{0}/v2/authentication/login"; } }
             }
 
             internal static class DataCenter
             {
-                internal static string GetDataCenters { get { return Configuration.BaseUri + "/v2/datacenters/{0}"; } }
-                internal static string GetDataCenter { get { return Configuration.BaseUri + "/v2/datacenters/{0}/{1}"; } }
-                internal static string GetDataCenterGroup { get { return Configuration.BaseUri + "/v2/datacenters/{0}/{1}?groupLinks=true"; } }
+                internal static string GetDataCenters { get { return "{0}/v2/datacenters/{1}"; } }
+                internal static string GetDataCenter { get { return "{0}/v2/datacenters/{1}/{2}"; } }
+                internal static string GetDataCenterGroup { get { return "{0}/v2/datacenters/{1}/{2}?groupLinks=true"; } }
             }
 
             internal static class Group
             {
-                internal static string GetGroup { get { return Configuration.BaseUri + "/v2/groups/{0}/{1}"; } }
+                internal static string GetGroup { get { return "{0}/v2/groups/{1}/{2}"; } }
             }
 
             internal static class Queue
             {
-                internal static string GetStatus { get { return Configuration.BaseUri + "/v2/operations/{0}/status/{1}"; } }
+                internal static string GetStatus { get { return "{0}/v2/operations/{1}/status/{2}"; } }
             }
 
             internal static class Server
             {
-                internal static string GetServer { get { return Configuration.BaseUri + "/v2/servers/{0}/{1}"; } }
-                internal static string PauseServer { get { return Configuration.BaseUri + "/v2/operations/{0}/servers/pause"; } }
-                internal static string PowerOnServer { get { return Configuration.BaseUri + "/v2/operations/{0}/servers/powerOn"; } }
-                internal static string PowerOffServer { get { return Configuration.BaseUri + "/v2/operations/{0}/servers/powerOff"; } }
-                internal static string RebootServer { get { return Configuration.BaseUri + "/v2/operations/{0}/servers/reboot"; } }
-                internal static string ShutDownServer { get { return Configuration.BaseUri + "/v2/operations/{0}/servers/shutDown"; } }
-                internal static string ResetServer { get { return Configuration.BaseUri + "/v2/operations/{0}/servers/reset"; } }
+                internal static string GetServer { get { return "{0}/v2/servers/{1}/{2}"; } }
+                internal static string PauseServer { get { return "{0}/v2/operations/{1}/servers/pause"; } }
+                internal static string PowerOnServer { get { return "{0}/v2/operations/{1}/servers/powerOn"; } }
+                internal static string PowerOffServer { get { return "{0}/v2/operations/{1}/servers/powerOff"; } }
+                internal static string RebootServer { get { return "{0}/v2/operations/{1}/servers/reboot"; } }
+                internal static string ShutDownServer { get { return "{0}/v2/operations/{1}/servers/shutDown"; } }
+                internal static string ResetServer { get { return "{0}/v2/operations/{1}/servers/reset"; } }
             }
 
             internal static class Querystring

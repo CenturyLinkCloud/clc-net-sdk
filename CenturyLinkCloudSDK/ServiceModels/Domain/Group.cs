@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.ServiceModels
@@ -67,7 +68,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
                 foreach (var serverLink in ServerLinks)
                 {
-                    var server = await serverService.GetServerByHypermediaLink(serverLink.Href);
+                    var server = await serverService.GetServerByLink(Configuration.BaseUri + serverLink.Href, CancellationToken.None);
                     servers.Add(server);
                 }
             }
