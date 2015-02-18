@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
     /// </summary>
     public class DataCenterGroup
     {
-        private string rootHardwareGroupLink;
+        private Lazy<string> rootHardwareGroupLink;
 
         internal Authentication Authentication { get; set; }
 
@@ -32,15 +33,9 @@ namespace CenturyLinkCloudSDK.ServiceModels
         {
             get
             {
-                if (Links != null)
+                if (rootHardwareGroupLink != null)
                 {
-                    var rootHardwareGroupLink = Links.Where(l => l.Rel.ToUpper() == "GROUP").FirstOrDefault();
-
-                    if (rootHardwareGroupLink != null)
-                    {
-                        this.rootHardwareGroupLink = rootHardwareGroupLink.Href;
-                        return true;
-                    }
+                    return !string.IsNullOrEmpty(rootHardwareGroupLink.Value);
                 }
 
                 return false;
@@ -69,8 +64,22 @@ namespace CenturyLinkCloudSDK.ServiceModels
             }
 
             var groupService = new GroupService(Authentication);
-            var rootGroup = await groupService.GetGroupByLink(Configuration.BaseUri + rootHardwareGroupLink, cancellationToken);
+            var rootGroup = await groupService.GetGroupByLink(Configuration.BaseUri + rootHardwareGroupLink.Value, cancellationToken);
             return rootGroup;
+        }
+
+        [OnDeserialized()]
+        internal void FindRootHardwareGroupLink(StreamingContext context)
+        {
+            if (Links != null)
+            {
+                var groupLink = Links.FirstOrDefault(l => l.Rel.Equals("group", StringComparison.CurrentCultureIgnoreCase));
+
+                if (groupLink != null)
+                {
+                    rootHardwareGroupLink = new Lazy<string>(() => { return groupLink.Href; });
+                }
+            }
         }
     }
 }

@@ -15,6 +15,8 @@ namespace CenturyLinkCloudSDK.ServiceModels
     /// </summary>
     public class Group
     {
+        private Lazy<IReadOnlyList<Link>> serverLinks;
+
         internal Authentication Authentication { get; set; }
 
         public string Id { get; set; }
@@ -33,7 +35,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public IReadOnlyList<Group> Groups { get; set; }
 
-        private IReadOnlyList<Link> ServerLinks { get; set; }
+        //private IReadOnlyList<Link> ServerLinks { get; set; }
 
         [JsonPropertyAttribute]
         private IReadOnlyList<Link> Links { get; set; }
@@ -45,19 +47,22 @@ namespace CenturyLinkCloudSDK.ServiceModels
         {
             get
             {
-                if (Links != null)
+                if (serverLinks == null)
                 {
-                    var hasServers = Links.Any(l => l.Rel.ToUpper() == "SERVER");
-
-                    if (hasServers)
-                    {
-                        ServerLinks = Links.Where(l => l.Rel.ToUpper() == "SERVER").ToList();
-
-                        return true;
-                    }
+                    return false;
                 }
 
-                return false;
+                if (serverLinks.Value == null)
+                {
+                    return false;
+                }
+
+                if (serverLinks.Value.Count == 0)
+                {
+                    return false;
+                }
+
+                return true;
             }
         }
 
@@ -78,19 +83,35 @@ namespace CenturyLinkCloudSDK.ServiceModels
         public async Task<IReadOnlyList<Server>> GetServers(CancellationToken cancellationToken)
         {
             var servers = new List<Server>();
+            FindServerLinks();
 
-            if (HasServers)
+            if (!HasServers)
             {
-                var serverService = new ServerService(Authentication);
+                throw new InvalidOperationException(string.Format(Constants.ExceptionMessages.GroupDoesNotHaveServers, Name));
+            }
 
-                foreach (var serverLink in ServerLinks)
-                {
-                    var server = await serverService.GetServerByLink(Configuration.BaseUri + serverLink.Href, cancellationToken);
-                    servers.Add(server);
-                }
+            var serverService = new ServerService(Authentication);
+
+            foreach (var serverLink in serverLinks.Value)
+            {
+                var server = await serverService.GetServerByLink(Configuration.BaseUri + serverLink.Href, cancellationToken);
+                servers.Add(server);
             }
 
             return servers;
+        }
+
+        internal void FindServerLinks()
+        {
+            if (Links != null)
+            {
+                var hasServers = Links.Any(l => l.Rel.Equals("server", StringComparison.CurrentCultureIgnoreCase));
+
+                if (hasServers)
+                {
+                    serverLinks = new Lazy<IReadOnlyList<Link>>(() => { return Links.Where(l => l.Rel.Equals("server", StringComparison.CurrentCultureIgnoreCase)).ToList(); });
+                }
+            }
         }
     }
 }
