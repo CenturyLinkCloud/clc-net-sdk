@@ -43,27 +43,24 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// <summary>
         /// Determines if this Group has servers by examining the Links collection.
         /// </summary>
-        public bool HasServers
+        private bool HasServers()
         {
-            get
+            if (serverLinks == null)
             {
-                if (serverLinks == null)
-                {
-                    return false;
-                }
-
-                if (serverLinks.Value == null)
-                {
-                    return false;
-                }
-
-                if (serverLinks.Value.Count == 0)
-                {
-                    return false;
-                }
-
-                return true;
+                return false;
             }
+
+            if (serverLinks.Value == null)
+            {
+                return false;
+            }
+
+            if (serverLinks.Value.Count == 0)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -85,7 +82,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
             var servers = new List<Server>();
             FindServerLinks();
 
-            if (!HasServers)
+            if (!HasServers())
             {
                 throw new InvalidOperationException(string.Format(Constants.ExceptionMessages.GroupDoesNotHaveServers, Name));
             }
