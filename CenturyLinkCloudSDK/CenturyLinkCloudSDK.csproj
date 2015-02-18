@@ -35,9 +35,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Runtime\CenturyLinkCloudServiceException.cs" />
-    <Compile Include="Runtime\Client.cs" />
-    <Compile Include="Runtime\Configuration.cs" />
+    <Compile Include="CenturyLinkCloudServiceException.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="Runtime\Constants.cs" />
     <Compile Include="Runtime\ServiceBase.cs" />
     <Compile Include="Runtime\ServiceInvoker.cs" />

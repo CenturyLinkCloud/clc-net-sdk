@@ -58,38 +58,32 @@ namespace CenturyLinkCloudSDK.Runtime
             string apiMessage = null;
 
             Uri authenticationURL = httpResponseMessage.Headers.Location;
-            var jsonString = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-            if (string.IsNullOrEmpty(jsonString))
-            {
-                var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.ServiceExceptionMessage);
-                throw serviceException;
-            }
+            var content = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
-                var deserializableJson = jsonString.CreateDeserializableJsonString();
+                var deserializableJson = content.CreateDeserializableJsonString();
                 var result = JsonConvert.DeserializeObject<TResponse>(deserializableJson);
                 return result;
             }
 
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                JObject jsonObject = jsonString.TryParseJson();
+                var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.ServiceExceptionMessage);
+
+                JObject jsonObject = content.TryParseJson();
 
                 if (jsonObject != null)
                 {
                     apiMessage = (string)jsonObject["message"];
 
-                    var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.ServiceExceptionMessage);
-
                     if (!string.IsNullOrEmpty(apiMessage))
                     {
                         serviceException.ApiMessage = apiMessage;
-                    }
-
-                    throw serviceException;
+                    }   
                 }
+
+                throw serviceException;
             }
 
             return default(TResponse);

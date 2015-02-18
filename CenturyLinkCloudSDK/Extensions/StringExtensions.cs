@@ -6,15 +6,15 @@ namespace CenturyLinkCloudSDK.Extensions
     /// <summary>
     /// This class contains extension methods.
     /// </summary>
-    public static class StringExtensions
+    internal static class StringExtensions
     {
-        public static string CreateDeserializableJsonString(this String jsonString)
+        internal static string CreateDeserializableJsonString(this String jsonString)
         {
             var result = string.Format("{0}" + jsonString.Replace("{", "{{").Replace("}", "}}") + "{1}", "{ \"Response\":", "}");
             return result;
         }
 
-        public static JObject TryParseJson(this String jsonString)
+        internal static JObject TryParseJson(this String jsonString)
         {
             try
             {

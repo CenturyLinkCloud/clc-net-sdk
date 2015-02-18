@@ -43,7 +43,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         public async Task<Server> GetServer(string serverId, CancellationToken cancellationToken)
         {
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Server.GetServer, Configuration.BaseUri, authentication.AccountAlias, serverId), string.Empty);
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Server.GetServer, Configuration.BaseUri, authentication.AccountAlias, serverId));
             var result = await ServiceInvoker.Invoke<GetServerResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
@@ -78,8 +78,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         public async Task<IReadOnlyList<ServerOperation>> PauseServer(List<string> serverIds, CancellationToken cancellationToken)
         {
-            var content = JsonConvert.SerializeObject(serverIds.ToArray());
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PauseServer, Configuration.BaseUri, authentication.AccountAlias), content);
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PauseServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
             var result = await ServiceInvoker.Invoke<ServerPowerOpsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
@@ -114,8 +113,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         public async Task<IReadOnlyList<ServerOperation>> PowerOnServer(List<string> serverIds, CancellationToken cancellationToken)
         {
-            var content = JsonConvert.SerializeObject(serverIds.ToArray());
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PowerOnServer, Configuration.BaseUri, authentication.AccountAlias), content);
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PowerOnServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
             var result = await ServiceInvoker.Invoke<ServerPowerOpsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
@@ -150,8 +148,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         public async Task<IReadOnlyList<ServerOperation>> PowerOffServer(List<string> serverIds, CancellationToken cancellationToken)
         {
-            var content = JsonConvert.SerializeObject(serverIds.ToArray());
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PowerOffServer, Configuration.BaseUri, authentication.AccountAlias), content);
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PowerOffServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
             var result = await ServiceInvoker.Invoke<ServerPowerOpsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
@@ -186,8 +183,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         public async Task<IReadOnlyList<ServerOperation>> RebootServer(List<string> serverIds, CancellationToken cancellationToken)
         {
-            var content = JsonConvert.SerializeObject(serverIds.ToArray());
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.RebootServer, Configuration.BaseUri, authentication.AccountAlias), content);
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.RebootServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
             var result = await ServiceInvoker.Invoke<ServerPowerOpsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
@@ -222,8 +218,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         public async Task<IReadOnlyList<ServerOperation>> ShutDownServer(List<string> serverIds, CancellationToken cancellationToken)
         {
-            var content = JsonConvert.SerializeObject(serverIds.ToArray());
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.ShutDownServer, Configuration.BaseUri, authentication.AccountAlias), content);
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.ShutDownServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
             var result = await ServiceInvoker.Invoke<ServerPowerOpsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
@@ -258,8 +253,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         public async Task<IReadOnlyList<ServerOperation>> ResetServer(List<string> serverIds, CancellationToken cancellationToken)
         {
-            var content = JsonConvert.SerializeObject(serverIds.ToArray());
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.ResetServer, Configuration.BaseUri, authentication.AccountAlias), content);
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.ResetServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
             var result = await ServiceInvoker.Invoke<ServerPowerOpsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
@@ -293,7 +287,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         internal async Task<Server> GetServerByLink(string uri, CancellationToken cancellationToken)
         {
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri, string.Empty);
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
             var result = await ServiceInvoker.Invoke<GetServerResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
