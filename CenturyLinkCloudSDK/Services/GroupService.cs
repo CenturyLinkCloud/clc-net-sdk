@@ -36,18 +36,8 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         public async Task<Group> GetGroup(string groupId, CancellationToken cancellationToken)
         {
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Group.GetGroup, Configuration.BaseUri, authentication.AccountAlias, groupId));
-            var result = await ServiceInvoker.Invoke<GetGroupResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            result.Response.Authentication = authentication;
-
-            if (result != null)
-            {
-                var response = result.Response;
-                return response;
-            }
-
-            return null;
+            var uri = string.Format(Constants.ServiceUris.Group.GetGroup, Configuration.BaseUri, authentication.AccountAlias, groupId);
+            return await GetGroupByLink(uri, cancellationToken).ConfigureAwait(false);
         }
 
        /// <summary>

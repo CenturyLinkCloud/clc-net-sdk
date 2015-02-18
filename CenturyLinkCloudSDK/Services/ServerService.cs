@@ -43,16 +43,8 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         public async Task<Server> GetServer(string serverId, CancellationToken cancellationToken)
         {
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Server.GetServer, Configuration.BaseUri, authentication.AccountAlias, serverId));
-            var result = await ServiceInvoker.Invoke<GetServerResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            if (result != null)
-            {
-                var response = result.Response;
-                return response;
-            }
-
-            return null;
+            var uri = string.Format(Constants.ServiceUris.Server.GetServer, Configuration.BaseUri, authentication.AccountAlias, serverId);
+            return await GetServerByLink(uri, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
