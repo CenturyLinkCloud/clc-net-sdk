@@ -47,7 +47,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         {
             serverLinks = new Lazy<IReadOnlyList<Link>>(()=>
             {
-                return Links.Where(l => l.Rel.Equals("server", StringComparison.CurrentCultureIgnoreCase)).ToList();
+                return Links.Where(l => String.Equals(l.Rel, "server", StringComparison.CurrentCultureIgnoreCase)).ToList();
             });
         }
 

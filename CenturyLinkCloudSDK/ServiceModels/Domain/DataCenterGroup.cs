@@ -34,7 +34,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         {
             rootHardwareGroupLink = new Lazy<string>(() =>
             {
-                var groupLink = Links.FirstOrDefault(l => l.Rel.Equals("group", StringComparison.CurrentCultureIgnoreCase));
+                var groupLink = Links.FirstOrDefault(l => String.Equals(l.Rel, "group", StringComparison.CurrentCultureIgnoreCase));
                 return groupLink != null ? groupLink.Href : null;
             });
         }
