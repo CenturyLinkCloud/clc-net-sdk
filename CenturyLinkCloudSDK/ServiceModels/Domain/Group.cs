@@ -41,26 +41,22 @@ namespace CenturyLinkCloudSDK.ServiceModels
         private IReadOnlyList<Link> Links { get; set; }
 
         /// <summary>
+        /// Default constructor.
+        /// </summary>
+        public Group()
+        {
+            serverLinks = new Lazy<IReadOnlyList<Link>>(()=>
+            {
+                return Links.Where(l => l.Rel.Equals("server", StringComparison.CurrentCultureIgnoreCase)).ToList();
+            });
+        }
+
+        /// <summary>
         /// Determines if this Group has servers by examining the Links collection.
         /// </summary>
         private bool HasServers()
         {
-            if (serverLinks == null)
-            {
-                return false;
-            }
-
-            if (serverLinks.Value == null)
-            {
-                return false;
-            }
-
-            if (serverLinks.Value.Count == 0)
-            {
-                return false;
-            }
-
-            return true;
+            return serverLinks.Value.Count > 0 ? true : false;
         }
 
         /// <summary>
@@ -80,7 +76,6 @@ namespace CenturyLinkCloudSDK.ServiceModels
         public async Task<IReadOnlyList<Server>> GetServers(CancellationToken cancellationToken)
         {
             var servers = new List<Server>();
-            FindServerLinks();
 
             if (!HasServers())
             {
@@ -96,19 +91,6 @@ namespace CenturyLinkCloudSDK.ServiceModels
             }
 
             return servers;
-        }
-
-        internal void FindServerLinks()
-        {
-            if (Links != null)
-            {
-                var hasServers = Links.Any(l => l.Rel.Equals("server", StringComparison.CurrentCultureIgnoreCase));
-
-                if (hasServers)
-                {
-                    serverLinks = new Lazy<IReadOnlyList<Link>>(() => { return Links.Where(l => l.Rel.Equals("server", StringComparison.CurrentCultureIgnoreCase)).ToList(); });
-                }
-            }
         }
     }
 }

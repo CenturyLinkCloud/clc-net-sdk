@@ -15,6 +15,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
     /// </summary>
     public class DataCenterGroup
     {
+
         private Lazy<string> rootHardwareGroupLink;
 
         internal Authentication Authentication { get; set; }
@@ -27,18 +28,25 @@ namespace CenturyLinkCloudSDK.ServiceModels
         private IReadOnlyList<Link> Links { get; set; }
 
         /// <summary>
+        /// Default constructor.
+        /// </summary>
+        public DataCenterGroup()
+        {
+            rootHardwareGroupLink = new Lazy<string>(() =>
+            {
+                var groupLink = Links.FirstOrDefault(l => l.Rel.Equals("group", StringComparison.CurrentCultureIgnoreCase));
+                return groupLink != null ? groupLink.Href : null;
+            });
+        }
+
+        /// <summary>
         /// Determines if this data center group has a root hardware group by examining the Links collection.
         /// </summary>
         public bool HasRootHardwareGroup
         {
             get
             {
-                if (rootHardwareGroupLink != null)
-                {
-                    return !string.IsNullOrEmpty(rootHardwareGroupLink.Value);
-                }
-
-                return false;
+                return !string.IsNullOrEmpty(rootHardwareGroupLink.Value);
             }
         }
 
@@ -68,18 +76,5 @@ namespace CenturyLinkCloudSDK.ServiceModels
             return rootGroup;
         }
 
-        [OnDeserialized()]
-        internal void FindRootHardwareGroupLink(StreamingContext context)
-        {
-            if (Links != null)
-            {
-                var groupLink = Links.FirstOrDefault(l => l.Rel.Equals("group", StringComparison.CurrentCultureIgnoreCase));
-
-                if (groupLink != null)
-                {
-                    rootHardwareGroupLink = new Lazy<string>(() => { return groupLink.Href; });
-                }
-            }
-        }
     }
 }
