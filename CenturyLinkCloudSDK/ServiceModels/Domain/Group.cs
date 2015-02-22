@@ -35,8 +35,6 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public IReadOnlyList<Group> Groups { get; set; }
 
-        //private IReadOnlyList<Link> ServerLinks { get; set; }
-
         [JsonPropertyAttribute]
         private IReadOnlyList<Link> Links { get; set; }
 

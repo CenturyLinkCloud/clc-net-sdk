@@ -1,7 +1,10 @@
 ﻿using CenturyLinkCloudSDK.Extensions;
+using CenturyLinkCloudSDK.ServiceModels;
+using CenturyLinkCloudSDK.ServiceModels.Responses.Servers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -36,6 +39,7 @@ namespace CenturyLinkCloudSDK.Runtime
             {
                 httpResponseMessage = await httpClient.SendAsync(httpRequestMessage, cancellationToken).ConfigureAwait(false);
                 var response = await DeserializeResponse<TResponse>(httpResponseMessage).ConfigureAwait(false);
+                
                 return response;
             }
             catch (CenturyLinkCloudServiceException ex)
@@ -53,23 +57,21 @@ namespace CenturyLinkCloudSDK.Runtime
             }
         }
 
+
         private static async Task<TResponse> DeserializeResponse<TResponse>(HttpResponseMessage httpResponseMessage)
         {
             string apiMessage = null;
 
-            Uri authenticationURL = httpResponseMessage.Headers.Location;
-            var content = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
-
             if (httpResponseMessage.IsSuccessStatusCode)
             {
-                var deserializableJson = content.CreateDeserializableJsonString();
-                var result = JsonConvert.DeserializeObject<TResponse>(deserializableJson);
-                return result;
+                return await httpResponseMessage.Content.ReadAsAsync<TResponse>().ConfigureAwait(false);
             }
 
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
                 var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.ServiceExceptionMessage);
+                
+                var content = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 JObject jsonObject = content.TryParseJson();
 
@@ -80,7 +82,7 @@ namespace CenturyLinkCloudSDK.Runtime
                     if (!string.IsNullOrEmpty(apiMessage))
                     {
                         serviceException.ApiMessage = apiMessage;
-                    }   
+                    }
                 }
 
                 throw serviceException;

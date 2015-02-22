@@ -71,15 +71,9 @@ namespace CenturyLinkCloudSDK.Services
         public async Task<IReadOnlyList<ServerOperation>> PauseServer(List<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PauseServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await ServiceInvoker.Invoke<ServerPowerOpsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<IReadOnlyList<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
-            if (result != null)
-            {
-                var response = result.Response;
-                return response;
-            }
-
-            return null;
+            return result;
         }
 
         /// <summary>
@@ -106,15 +100,9 @@ namespace CenturyLinkCloudSDK.Services
         public async Task<IReadOnlyList<ServerOperation>> PowerOnServer(List<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PowerOnServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await ServiceInvoker.Invoke<ServerPowerOpsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<IReadOnlyList<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
-            if (result != null)
-            {
-                var response = result.Response;
-                return response;
-            }
-
-            return null;
+            return result;
         }
 
         /// <summary>
@@ -141,15 +129,9 @@ namespace CenturyLinkCloudSDK.Services
         public async Task<IReadOnlyList<ServerOperation>> PowerOffServer(List<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PowerOffServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await ServiceInvoker.Invoke<ServerPowerOpsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<IReadOnlyList<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
-            if (result != null)
-            {
-                var response = result.Response;
-                return response;
-            }
-
-            return null;
+            return result;
         }
 
         /// <summary>
@@ -176,15 +158,9 @@ namespace CenturyLinkCloudSDK.Services
         public async Task<IReadOnlyList<ServerOperation>> RebootServer(List<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.RebootServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await ServiceInvoker.Invoke<ServerPowerOpsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<IReadOnlyList<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
-            if (result != null)
-            {
-                var response = result.Response;
-                return response;
-            }
-
-            return null;
+            return result;
         }
 
         /// <summary>
@@ -211,15 +187,9 @@ namespace CenturyLinkCloudSDK.Services
         public async Task<IReadOnlyList<ServerOperation>> ShutDownServer(List<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.ShutDownServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await ServiceInvoker.Invoke<ServerPowerOpsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<IReadOnlyList<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
-            if (result != null)
-            {
-                var response = result.Response;
-                return response;
-            }
-
-            return null;
+            return result;
         }
 
         /// <summary>
@@ -246,15 +216,9 @@ namespace CenturyLinkCloudSDK.Services
         public async Task<IReadOnlyList<ServerOperation>> ResetServer(List<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.ResetServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await ServiceInvoker.Invoke<ServerPowerOpsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<IReadOnlyList<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
-            if (result != null)
-            {
-                var response = result.Response;
-                return response;
-            }
-
-            return null;
+            return result;
         }
 
         /// <summary>
@@ -280,15 +244,9 @@ namespace CenturyLinkCloudSDK.Services
         internal async Task<Server> GetServerByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await ServiceInvoker.Invoke<GetServerResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<Server>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
-            if (result != null)
-            {
-                var response = result.Response;
-                return response;
-            }
-
-            return null;
+            return result;
         }
     }
 }

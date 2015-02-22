@@ -41,15 +41,9 @@ namespace CenturyLinkCloudSDK.Services
         public async Task<IReadOnlyList<DataCenter>> GetDataCenters(CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenters, Configuration.BaseUri, authentication.AccountAlias));
-            var result = await ServiceInvoker.Invoke<GetDataCentersResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<IReadOnlyList<DataCenter>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
-            if (result != null)
-            {
-                var response = result.Response;
-                return response;
-            }
-
-            return null;
+            return result;
         }
 
         /// <summary>
@@ -121,15 +115,9 @@ namespace CenturyLinkCloudSDK.Services
         internal async Task<DataCenter> GetDataCenterByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await ServiceInvoker.Invoke<GetDataCenterResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<DataCenter>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
-            if (result != null)
-            {
-                var response = result.Response;
-                return response;
-            }
-
-            return null;
+            return result;
         }
 
         /// <summary>
@@ -155,16 +143,10 @@ namespace CenturyLinkCloudSDK.Services
         internal async Task<DataCenterGroup> GetDataCenterGroupByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await ServiceInvoker.Invoke<GetDataCenterGroupsResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-            result.Response.Authentication = authentication;
+            var result = await ServiceInvoker.Invoke<DataCenterGroup>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            result.Authentication = authentication;
 
-            if (result != null)
-            {
-                var response = result.Response;
-                return response;
-            }
-
-            return null;
+            return result;
         }
     }
 }
