@@ -15,7 +15,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
     /// </summary>
     public class Group
     {
-        private Lazy<IReadOnlyList<Link>> serverLinks;
+        private Lazy<IEnumerable<Link>> serverLinks;
 
         internal Authentication Authentication { get; set; }
 
@@ -33,17 +33,17 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public Limit Limits { get; set; }
 
-        public IReadOnlyList<Group> Groups { get; set; }
+        public IEnumerable<Group> Groups { get; set; }
 
         [JsonPropertyAttribute]
-        private IReadOnlyList<Link> Links { get; set; }
+        private IEnumerable<Link> Links { get; set; }
 
         /// <summary>
         /// Default constructor.
         /// </summary>
         public Group()
         {
-            serverLinks = new Lazy<IReadOnlyList<Link>>(()=>
+            serverLinks = new Lazy<IEnumerable<Link>>(()=>
             {
                 return Links.Where(l => String.Equals(l.Rel, "server", StringComparison.CurrentCultureIgnoreCase)).ToList();
             });
@@ -54,14 +54,14 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// </summary>
         private bool HasServers()
         {
-            return serverLinks.Value.Count > 0 ? true : false;
+            return serverLinks.Value.Count() > 0 ? true : false;
         }
 
         /// <summary>
         /// Gets the servers that belong to this group.
         /// </summary>
         /// <returns></returns>
-        public async Task<IReadOnlyList<Server>> GetServers()
+        public async Task<IEnumerable<Server>> GetServers()
         {
             return await GetServers(CancellationToken.None).ConfigureAwait(false);
         }
@@ -71,7 +71,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<IReadOnlyList<Server>> GetServers(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Server>> GetServers(CancellationToken cancellationToken)
         {
             var servers = new List<Server>();
 

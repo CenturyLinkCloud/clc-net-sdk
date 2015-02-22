@@ -55,7 +55,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="accountAlias"></param>
         /// <param name="serverIds"></param>
         /// <returns></returns>
-        public async Task<IReadOnlyList<ServerOperation>> PauseServer(List<string> serverIds)
+        public async Task<IEnumerable<ServerOperation>> PauseServer(List<string> serverIds)
         {
             return await PauseServer(serverIds, CancellationToken.None).ConfigureAwait(false);
         }
@@ -68,10 +68,10 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="serverIds"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<IReadOnlyList<ServerOperation>> PauseServer(List<string> serverIds, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ServerOperation>> PauseServer(List<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PauseServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await ServiceInvoker.Invoke<IReadOnlyList<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
@@ -84,7 +84,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="accountAlias"></param>
         /// <param name="serverIds"></param>
         /// <returns></returns>
-        public async Task<IReadOnlyList<ServerOperation>> PowerOnServer(List<string> serverIds)
+        public async Task<IEnumerable<ServerOperation>> PowerOnServer(List<string> serverIds)
         {
             return await PowerOnServer(serverIds, CancellationToken.None).ConfigureAwait(false);
         }
@@ -97,10 +97,10 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="serverIds"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<IReadOnlyList<ServerOperation>> PowerOnServer(List<string> serverIds, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ServerOperation>> PowerOnServer(List<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PowerOnServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await ServiceInvoker.Invoke<IReadOnlyList<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
@@ -113,7 +113,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="accountAlias"></param>
         /// <param name="serverIds"></param>
         /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
-        public async Task<IReadOnlyList<ServerOperation>> PowerOffServer(List<string> serverIds)
+        public async Task<IEnumerable<ServerOperation>> PowerOffServer(List<string> serverIds)
         {
             return await PowerOffServer(serverIds, CancellationToken.None).ConfigureAwait(false);
         }
@@ -126,10 +126,10 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="serverIds"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<IReadOnlyList<ServerOperation>> PowerOffServer(List<string> serverIds, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ServerOperation>> PowerOffServer(List<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PowerOffServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await ServiceInvoker.Invoke<IReadOnlyList<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
@@ -142,7 +142,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="accountAlias"></param>
         /// <param name="serverIds"></param>
         /// <returns></returns>
-        public async Task<IReadOnlyList<ServerOperation>> RebootServer(List<string> serverIds)
+        public async Task<IEnumerable<ServerOperation>> RebootServer(List<string> serverIds)
         {
             return await RebootServer(serverIds, CancellationToken.None).ConfigureAwait(false);
         }
@@ -155,10 +155,10 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="serverIds"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<IReadOnlyList<ServerOperation>> RebootServer(List<string> serverIds, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ServerOperation>> RebootServer(List<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.RebootServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await ServiceInvoker.Invoke<IReadOnlyList<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
@@ -171,7 +171,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="accountAlias"></param>
         /// <param name="serverIds"></param>
         /// <returns></returns>
-        public async Task<IReadOnlyList<ServerOperation>> ShutDownServer(List<string> serverIds)
+        public async Task<IEnumerable<ServerOperation>> ShutDownServer(List<string> serverIds)
         {
             return await ShutDownServer(serverIds, CancellationToken.None).ConfigureAwait(false);
         }
@@ -184,10 +184,10 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="serverIds"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<IReadOnlyList<ServerOperation>> ShutDownServer(List<string> serverIds, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ServerOperation>> ShutDownServer(List<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.ShutDownServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await ServiceInvoker.Invoke<IReadOnlyList<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
@@ -200,7 +200,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="accountAlias"></param>
         /// <param name="serverIds"></param>
         /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
-        public async Task<IReadOnlyList<ServerOperation>> ResetServer(List<string> serverIds)
+        public async Task<IEnumerable<ServerOperation>> ResetServer(List<string> serverIds)
         {
             return await ResetServer(serverIds, CancellationToken.None).ConfigureAwait(false);
         }
@@ -213,10 +213,10 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="serverIds"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<IReadOnlyList<ServerOperation>> ResetServer(List<string> serverIds, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ServerOperation>> ResetServer(List<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.ResetServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await ServiceInvoker.Invoke<IReadOnlyList<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }

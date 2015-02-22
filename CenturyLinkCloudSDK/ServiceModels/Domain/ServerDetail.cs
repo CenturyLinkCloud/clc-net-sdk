@@ -7,9 +7,9 @@ namespace CenturyLinkCloudSDK.ServiceModels
     /// </summary>
     public class ServerDetail
     {
-        public IReadOnlyList<IpAddress> IpAddresses { get; set; }
+        public IEnumerable<IpAddress> IpAddresses { get; set; }
 
-        public IReadOnlyList<AlertPolicy> AlertPolicies { get; set; }
+        public IEnumerable<AlertPolicy> AlertPolicies { get; set; }
 
         public int Cpu { get; set; }
 
@@ -25,8 +25,8 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public int StorageGB { get; set; }
 
-        public IReadOnlyList<Snapshot> Snapshots { get; set; }
+        public IEnumerable<Snapshot> Snapshots { get; set; }
 
-        public IReadOnlyList<CustomField> CustomFields { get; set; }
+        public IEnumerable<CustomField> CustomFields { get; set; }
     }
 }

@@ -33,6 +33,6 @@ namespace CenturyLinkCloudSDK.ServiceModels
         public ChangeInfo ChangeInfo { get; set; }
 
         [JsonPropertyAttribute]
-        private IReadOnlyList<Link> Links { get; set; }
+        private IEnumerable<Link> Links { get; set; }
     }
 }

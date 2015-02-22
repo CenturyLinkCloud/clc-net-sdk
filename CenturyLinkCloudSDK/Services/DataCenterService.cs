@@ -26,7 +26,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="accountAlias"></param>
         /// <returns></returns>
-        public async Task<IReadOnlyList<DataCenter>> GetDataCenters()
+        public async Task<IEnumerable<DataCenter>> GetDataCenters()
         {
             return await GetDataCenters(CancellationToken.None).ConfigureAwait(false);
         }
@@ -38,10 +38,10 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<IReadOnlyList<DataCenter>> GetDataCenters(CancellationToken cancellationToken)
+        public async Task<IEnumerable<DataCenter>> GetDataCenters(CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenters, Configuration.BaseUri, authentication.AccountAlias));
-            var result = await ServiceInvoker.Invoke<IReadOnlyList<DataCenter>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<IEnumerable<DataCenter>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }

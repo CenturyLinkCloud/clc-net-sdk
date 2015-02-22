@@ -11,6 +11,6 @@ namespace CenturyLinkCloudSDK.ServiceModels
         public string Name { get; set; }
 
         [JsonPropertyAttribute]
-        private IReadOnlyList<Link> Links { get; set; }
+        private IEnumerable<Link> Links { get; set; }
     }
 }

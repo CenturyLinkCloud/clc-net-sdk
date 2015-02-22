@@ -13,7 +13,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         public bool IsQueued { get; set; }
 
         [JsonPropertyAttribute]
-        private IReadOnlyList<Link> Links { get; set; }
+        private IEnumerable<Link> Links { get; set; }
 
         public string ErrorMessage { get; set; }
     }
