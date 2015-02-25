@@ -43,7 +43,7 @@
     <Compile Include="Runtime\ServiceInvoker.cs" />
     <Compile Include="ServiceModels\Domain\Authentication.cs" />
     <Compile Include="ServiceModels\Domain\GroupBilling.cs" />
-    <Compile Include="ServiceModels\Domain\GroupDetailBilling.cs" />
+    <Compile Include="ServiceModels\Domain\GroupBillingDetail.cs" />
     <Compile Include="ServiceModels\Domain\ServerBilling.cs" />
     <Compile Include="ServiceModels\Requests\Authentication\LoginRequest.cs" />
     <Compile Include="ServiceModels\Responses\Authentication\LoginResponse.cs" />

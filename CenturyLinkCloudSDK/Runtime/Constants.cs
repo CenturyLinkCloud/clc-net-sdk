@@ -26,6 +26,7 @@
             internal static class Group
             {
                 internal static string GetGroup { get { return "{0}/v2/groups/{1}/{2}"; } }
+                internal static string GetGroupBillingDetails { get { return "{0}/v2/groups/{1}/{2}/billing"; } }
             }
 
             internal static class Queue

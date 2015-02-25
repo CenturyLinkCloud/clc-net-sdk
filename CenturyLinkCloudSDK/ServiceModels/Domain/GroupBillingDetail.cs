@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CenturyLinkCloudSDK.ServiceModels
 {
-    public class GroupDetailBilling
+    public class GroupBillingDetail
     {
         public DateTime Date { get; set; }
 

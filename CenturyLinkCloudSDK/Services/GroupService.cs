@@ -40,6 +40,17 @@ namespace CenturyLinkCloudSDK.Services
             return await GetGroupByLink(uri, cancellationToken).ConfigureAwait(false);
         }
 
+        public async Task<GroupBillingDetail> GetGroupBillingDetails(string groupId)
+        {
+            return await GetGroupBillingDetails(groupId, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        public async Task<GroupBillingDetail> GetGroupBillingDetails(string groupId, CancellationToken cancellationToken)
+        {
+            var uri = string.Format(Constants.ServiceUris.Group.GetGroupBillingDetails, Configuration.BaseUri, authentication.AccountAlias, groupId);
+            return await GetGroupBillingDetailsByLink(uri, cancellationToken).ConfigureAwait(false);
+        }
+
        /// <summary>
        /// Gets the details for a individual server group and any sub-groups and servers that it contains by hypermedia link.
        /// </summary>
@@ -62,6 +73,19 @@ namespace CenturyLinkCloudSDK.Services
             var result = await ServiceInvoker.Invoke<Group>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             result.Authentication = authentication;
+
+            return result;
+        }
+
+        internal async Task<GroupBillingDetail> GetGroupBillingDetailsByLink(string uri)
+        {
+            return await GetGroupBillingDetailsByLink(uri, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        internal async Task<GroupBillingDetail> GetGroupBillingDetailsByLink(string uri, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
+            var result = await ServiceInvoker.Invoke<GroupBillingDetail>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
