@@ -7,6 +7,8 @@ namespace CenturyLinkCloudSDK.ServiceModels
     {
         public DateTime Date { get; set; }
 
-        public IEnumerable<GroupBilling> Groups { get; set; }
+        //public IEnumerable<GroupBilling> Groups { get; set; }
+
+        public Dictionary<string, GroupBilling> Groups { get; set; }
     }
 }

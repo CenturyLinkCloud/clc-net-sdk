@@ -40,11 +40,22 @@ namespace CenturyLinkCloudSDK.Services
             return await GetGroupByLink(uri, cancellationToken).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Gets the billing details for a group.
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <returns></returns>
         public async Task<GroupBillingDetail> GetGroupBillingDetails(string groupId)
         {
             return await GetGroupBillingDetails(groupId, CancellationToken.None).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Gets the billing details for a group.
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task<GroupBillingDetail> GetGroupBillingDetails(string groupId, CancellationToken cancellationToken)
         {
             var uri = string.Format(Constants.ServiceUris.Group.GetGroupBillingDetails, Configuration.BaseUri, authentication.AccountAlias, groupId);

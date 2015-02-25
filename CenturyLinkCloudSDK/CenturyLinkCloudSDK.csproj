@@ -41,7 +41,9 @@
     <Compile Include="Runtime\Constants.cs" />
     <Compile Include="Runtime\ServiceBase.cs" />
     <Compile Include="Runtime\ServiceInvoker.cs" />
+    <Compile Include="ServiceManagers\BillingManager.cs" />
     <Compile Include="ServiceModels\Domain\Authentication.cs" />
+    <Compile Include="ServiceModels\Domain\BillingDetail.cs" />
     <Compile Include="ServiceModels\Domain\GroupBilling.cs" />
     <Compile Include="ServiceModels\Domain\GroupBillingDetail.cs" />
     <Compile Include="ServiceModels\Domain\ServerBilling.cs" />
@@ -100,9 +102,7 @@
     <None Include="FacadeDiagram.cd" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ServiceManagers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">

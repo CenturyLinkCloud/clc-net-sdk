@@ -1,10 +1,8 @@
 ﻿
 namespace CenturyLinkCloudSDK.ServiceModels
 {
-    public class ServerBilling
+    public class BillingDetail
     {
-        //public string Id { get; set; }
-
         public float TemplateCost { get; set; }
 
         public float ArchiveCost { get; set; }
@@ -14,6 +12,5 @@ namespace CenturyLinkCloudSDK.ServiceModels
         public float MonthToDate { get; set; }
 
         public float CurrentHour { get; set; }
-
     }
 }
