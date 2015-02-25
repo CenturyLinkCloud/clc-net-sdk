@@ -48,7 +48,12 @@
             internal static class Querystring
             {
                 internal const string IncludeGroupLinks = "?groupLinks=true";
-            }           
+            }   
+        
+            internal static class Alerts
+            {
+                internal static string GetAlertPoliciesForAccount { get { return "{0}/v2/alertPolicies/{1}"; } }
+            }
         }
 
         internal static class ExceptionMessages

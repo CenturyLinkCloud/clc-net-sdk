@@ -42,6 +42,10 @@
     <Compile Include="Runtime\ServiceBase.cs" />
     <Compile Include="Runtime\ServiceInvoker.cs" />
     <Compile Include="ServiceManagers\BillingManager.cs" />
+    <Compile Include="ServiceModels\Domain\AlertAction.cs" />
+    <Compile Include="ServiceModels\Domain\AlertActionSettings.cs" />
+    <Compile Include="ServiceModels\Domain\AlertPolicyItems.cs" />
+    <Compile Include="ServiceModels\Domain\AlertTrigger.cs" />
     <Compile Include="ServiceModels\Domain\Authentication.cs" />
     <Compile Include="ServiceModels\Domain\BillingDetail.cs" />
     <Compile Include="ServiceModels\Domain\GroupBilling.cs" />
@@ -56,6 +60,7 @@
     <Compile Include="ServiceModels\Responses\Queues\GetStatusResponse.cs" />
     <Compile Include="ServiceModels\Responses\Servers\GetServerResponse.cs" />
     <Compile Include="ServiceModels\Responses\Servers\ServerPowerOpsResponse.cs" />
+    <Compile Include="Services\AlertService.cs" />
     <Compile Include="Services\DataCenterService.cs" />
     <Compile Include="Services\GroupService.cs" />
     <Compile Include="Services\QueueService.cs" />

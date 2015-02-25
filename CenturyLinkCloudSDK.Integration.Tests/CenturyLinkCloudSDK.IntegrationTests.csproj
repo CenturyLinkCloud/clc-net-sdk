@@ -66,6 +66,7 @@
     <Compile Include="GroupsTests.cs" />
     <Compile Include="QueueTests.cs" />
     <Compile Include="BillingManagerTests.cs" />
+    <Compile Include="AlertTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CenturyLinkCloudSDK\CenturyLinkCloudSdk.csproj">

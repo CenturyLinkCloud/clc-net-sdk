@@ -18,6 +18,7 @@ namespace CenturyLinkCloudSDK
         private GroupService groups;
         private QueueService queues;
         private ServerService servers;
+        private AlertService alerts;
         private BillingManager billingManager;
 
         /// <summary>
@@ -118,6 +119,14 @@ namespace CenturyLinkCloudSDK
             }
         }
 
+        public AlertService Alerts
+        {
+            get
+            {
+                return alerts;
+            }
+        }
+
         public BillingManager BillingManager
         {
             get
@@ -140,6 +149,7 @@ namespace CenturyLinkCloudSDK
             groups = new GroupService(authentication);
             queues = new QueueService(authentication);
             servers = new ServerService(authentication);
+            alerts = new AlertService(authentication);
             billingManager = new BillingManager(authentication);
         }
     }

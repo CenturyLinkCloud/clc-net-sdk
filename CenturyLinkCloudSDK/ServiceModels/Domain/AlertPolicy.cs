@@ -12,6 +12,10 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public string Name { get; set; }
 
+        public IEnumerable<AlertAction> Actions { get; set; }
+
+        public IEnumerable<AlertTrigger> Triggers { get; set; }
+
         [JsonPropertyAttribute]
         private IEnumerable<Link> Links { get; set; }
     }
