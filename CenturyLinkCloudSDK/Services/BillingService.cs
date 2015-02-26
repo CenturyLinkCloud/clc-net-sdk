@@ -65,7 +65,6 @@ namespace CenturyLinkCloudSDK.Services
 
             var dataCenterGroup = await dataCenterService.GetDataCenterGroup(dataCenter.Id).ConfigureAwait(false);
             var rootGroup = await dataCenterGroup.GetRootHardwareGroup(cancellationToken).ConfigureAwait(false);
-
             var groupBillingDetail = await GetGroupBillingDetails(rootGroup.Id).ConfigureAwait(false);
 
             foreach (var group in groupBillingDetail.Groups)

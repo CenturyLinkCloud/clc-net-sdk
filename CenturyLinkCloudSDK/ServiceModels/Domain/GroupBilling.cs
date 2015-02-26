@@ -6,6 +6,6 @@ namespace CenturyLinkCloudSDK.ServiceModels
     {
         public string Name { get; set; }
 
-        public Dictionary<string, ServerBilling> Servers { get; set; }
+        public Dictionary<string, BillingDetail> Servers { get; set; }
     }
 }
