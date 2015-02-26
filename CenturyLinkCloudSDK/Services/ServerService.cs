@@ -222,6 +222,52 @@ namespace CenturyLinkCloudSDK.Services
         }
 
         /// <summary>
+        /// Gets the server statistics.
+        /// </summary>
+        /// <param name="serverId"></param>
+        /// <returns></returns>
+        public async Task<Statistics> GetServerStatistics(string serverId)
+        {
+            return await GetServerStatistics(serverId, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the server statistics.
+        /// </summary>
+        /// <param name="serverId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<Statistics> GetServerStatistics(string serverId, CancellationToken cancellationToken)
+        {
+            var uri = string.Format(Constants.ServiceUris.Server.GetServerStatistics, Configuration.BaseUri, authentication.AccountAlias, serverId, Constants.ServiceUris.Querystring.GetLatestStatistics);
+            return await GetServerStatisticsByLink(uri, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the server statistics.
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        internal async Task<Statistics> GetServerStatisticsByLink(string uri)
+        {
+            return await GetServerStatisticsByLink(uri, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the server statistics. 
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        internal async Task<Statistics> GetServerStatisticsByLink(string uri, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
+            var result = await ServiceInvoker.Invoke<Statistics>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            return result;
+        }
+
+        /// <summary>
         /// Gets the details for a individual server by hypermedia link.
         /// Use this operation when you want to find out all the details for a server. 
         /// It can be used to look for changes, its status, or to retrieve links to associated resources. 

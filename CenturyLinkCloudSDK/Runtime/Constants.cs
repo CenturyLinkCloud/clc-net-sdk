@@ -26,7 +26,13 @@
             internal static class Group
             {
                 internal static string GetGroup { get { return "{0}/v2/groups/{1}/{2}"; } }
-                internal static string GetGroupBillingDetails { get { return "{0}/v2/groups/{1}/{2}/billing"; } }
+
+                internal static string GetBillingDetails { get { return "{0}/v2/groups/{1}/{2}/billing"; } }
+            }
+
+            internal static class Account
+            {
+                internal static string GetBillingDetails { get { return "{0}/v2/billing/{1}/total"; } }
             }
 
             internal static class Queue
@@ -43,11 +49,13 @@
                 internal static string RebootServer { get { return "{0}/v2/operations/{1}/servers/reboot"; } }
                 internal static string ShutDownServer { get { return "{0}/v2/operations/{1}/servers/shutDown"; } }
                 internal static string ResetServer { get { return "{0}/v2/operations/{1}/servers/reset"; } }
+                internal static string GetServerStatistics { get { return "{0}/v2/servers/{1}/{2}/statistics{3}"; } }
             }
 
             internal static class Querystring
             {
                 internal const string IncludeGroupLinks = "?groupLinks=true";
+                internal const string GetLatestStatistics = "?type=latest";
             }   
         
             internal static class Alerts

@@ -1,4 +1,4 @@
-﻿using CenturyLinkCloudSDK.ServiceManagers;
+﻿
 using CenturyLinkCloudSDK.ServiceModels;
 using CenturyLinkCloudSDK.Services;
 using System.Threading.Tasks;
@@ -19,7 +19,7 @@ namespace CenturyLinkCloudSDK
         private QueueService queues;
         private ServerService servers;
         private AlertService alerts;
-        private BillingManager billingManager;
+        private BillingService billing;
 
         /// <summary>
         /// Constructor called when the user needs to be authenticated. It sets the userInfo and authenticationInfo fields
@@ -127,11 +127,11 @@ namespace CenturyLinkCloudSDK
             }
         }
 
-        public BillingManager BillingManager
+        public BillingService Billing
         {
             get
             {
-                return billingManager;
+                return billing;
             }
         }
 
@@ -150,7 +150,7 @@ namespace CenturyLinkCloudSDK
             queues = new QueueService(authentication);
             servers = new ServerService(authentication);
             alerts = new AlertService(authentication);
-            billingManager = new BillingManager(authentication);
+            billing = new BillingService(authentication);
         }
     }
 }

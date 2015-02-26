@@ -13,5 +13,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public float CurrentHour { get; set; }
 
+        public float OneTimeCharges { get; set; }
+
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.ServiceModels
 {
-    public class AlertPolicyItems
+    public class AlertPolicies
     {
         public IEnumerable<AlertPolicy> Items { get; set; }
 
