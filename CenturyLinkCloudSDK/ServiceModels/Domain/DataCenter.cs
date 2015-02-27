@@ -13,6 +13,8 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public string Name { get; set; }
 
+        public TotalAssets Totals { get; set; }
+
         [JsonPropertyAttribute]
         private IEnumerable<Link> Links { get; set; }
     }

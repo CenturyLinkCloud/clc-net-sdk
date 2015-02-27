@@ -40,7 +40,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         public async Task<IEnumerable<DataCenter>> GetDataCenters(CancellationToken cancellationToken)
         {
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenters, Configuration.BaseUri, authentication.AccountAlias));
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenters, Configuration.BaseUri, authentication.AccountAlias, string.Empty));
             var result = await ServiceInvoker.Invoke<IEnumerable<DataCenter>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
@@ -50,22 +50,22 @@ namespace CenturyLinkCloudSDK.Services
         /// Gets the information for a particular data center.
         /// </summary>
         /// <param name="accountAlias"></param>
-        /// <param name="dataCenter"></param>
+        /// <param name="dataCenterId"></param>
         /// <returns></returns>
-        public async Task<DataCenter> GetDataCenter(string dataCenter)
+        public async Task<DataCenter> GetDataCenter(string dataCenterId)
         {
-            return await GetDataCenter(dataCenter, CancellationToken.None).ConfigureAwait(false);
+            return await GetDataCenter(dataCenterId, CancellationToken.None).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Gets the information for a particular data center.
         /// </summary>
-        /// <param name="dataCenter"></param>
+        /// <param name="dataCenterId"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<DataCenter> GetDataCenter(string dataCenter, CancellationToken cancellationToken)
+        public async Task<DataCenter> GetDataCenter(string dataCenterId, CancellationToken cancellationToken)
         {
-            var uri = string.Format(Constants.ServiceUris.DataCenter.GetDataCenter, Configuration.BaseUri, authentication.AccountAlias, dataCenter);
+            var uri = string.Format(Constants.ServiceUris.DataCenter.GetDataCenter, Configuration.BaseUri, authentication.AccountAlias, dataCenterId, string.Empty);
             return await GetDataCenterByLink(uri, cancellationToken).ConfigureAwait(false);
         }
 
@@ -75,11 +75,11 @@ namespace CenturyLinkCloudSDK.Services
         /// Once you have that group alias, you can issue a secondary query to retrieve the entire group hierarchy for a given data center.
         /// </summary>
         /// <param name="accountAlias"></param>
-        /// <param name="dataCenter"></param>
+        /// <param name="dataCenterId"></param>
         /// <returns></returns>
-        public async Task<DataCenterGroup> GetDataCenterGroup(string dataCenter)
+        public async Task<DataCenterGroup> GetDataCenterGroup(string dataCenterId)
         {
-            return await GetDataCenterGroup(dataCenter, CancellationToken.None).ConfigureAwait(false);
+            return await GetDataCenterGroup(dataCenterId, CancellationToken.None).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -87,13 +87,105 @@ namespace CenturyLinkCloudSDK.Services
         /// Use this operation when you want to discover the name of the root hardware group for a data center. 
         /// Once you have that group alias, you can issue a secondary query to retrieve the entire group hierarchy for a given data center.
         /// </summary>
-        /// <param name="dataCenter"></param>
+        /// <param name="dataCenterId"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<DataCenterGroup> GetDataCenterGroup(string dataCenter, CancellationToken cancellationToken)
+        public async Task<DataCenterGroup> GetDataCenterGroup(string dataCenterId, CancellationToken cancellationToken)
         {
-            var uri = string.Format(Constants.ServiceUris.DataCenter.GetDataCenterGroup, Configuration.BaseUri, authentication.AccountAlias, dataCenter);
+            var uri = string.Format(Constants.ServiceUris.DataCenter.GetDataCenter, Configuration.BaseUri, authentication.AccountAlias, dataCenterId, Constants.ServiceUris.Querystring.IncludeGroupLinks);
             return await GetDataCenterGroupByLink(uri, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        ///  Gets the total assets for all data centers.
+        /// </summary>
+        /// <param name="dataCenterId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<DataCenter>> GetAllDataCentersWithTotalAssets()
+        {
+            return await GetAllDataCentersWithTotalAssets(CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the total assets for all data centers.
+        /// </summary>
+        /// <param name="dataCenterId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<DataCenter>> GetAllDataCentersWithTotalAssets(CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenters, Configuration.BaseUri, authentication.AccountAlias, Constants.ServiceUris.Querystring.IncludeTotalAssets));
+            var result = await ServiceInvoker.Invoke<IEnumerable<DataCenter>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            return result;
+        }
+
+
+        /// <summary>
+        /// Gets the account total assets.
+        /// </summary>
+        /// <param name="dataCenterIds"></param>
+        /// <returns></returns>
+        public async Task<TotalAssets> GetAccountTotalAssets(IEnumerable<string> dataCenterIds)
+        {
+            return await GetAccountTotalAssets(dataCenterIds, CancellationToken.None).ConfigureAwait(false);
+        }
+
+
+        /// <summary>
+        /// Gets the account total assets.
+        /// </summary>
+        /// <param name="dataCenterIds"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<TotalAssets> GetAccountTotalAssets(IEnumerable<string> dataCenterIds, CancellationToken cancellationToken)
+        {
+            var totalAssets = new TotalAssets();
+            var tasks = new List<Task<DataCenter>>();
+
+            foreach(var dataCenterId in dataCenterIds)
+            {
+                tasks.Add(Task.Run(() => GetDataCenterWithTotalAssets(dataCenterId, cancellationToken).Result));
+                //tasks.Add(Task.Run(async () => await GetDataCenterWithTotalAssets(dataCenterId, cancellationToken).ConfigureAwait(false)));
+            }
+
+            await Task.WhenAll(tasks);
+
+            foreach (var task in tasks)
+            {
+                totalAssets.Servers += task.Result.Totals.Servers;
+                totalAssets.Cpus += task.Result.Totals.Cpus;
+                totalAssets.MemoryGB += task.Result.Totals.MemoryGB;
+                totalAssets.StorageGB += task.Result.Totals.StorageGB;
+                totalAssets.Queue += task.Result.Totals.Queue;
+            }
+
+            return totalAssets;
+        }
+
+        /// <summary>
+        /// Gets a data center with total asset information.
+        /// </summary>
+        /// <param name="dataCenterId"></param>
+        /// <returns></returns>
+        public async Task<DataCenter> GetDataCenterWithTotalAssets(string dataCenterId)
+        {
+            return await GetDataCenterWithTotalAssets(dataCenterId, CancellationToken.None).ConfigureAwait(false);
+        }
+
+
+        /// <summary>
+        /// Gets a data center with total asset information.
+        /// </summary>
+        /// <param name="dataCenterId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<DataCenter> GetDataCenterWithTotalAssets(string dataCenterId, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenter, Configuration.BaseUri, authentication.AccountAlias, dataCenterId, Constants.ServiceUris.Querystring.IncludeTotalAssets));
+            var result = await ServiceInvoker.Invoke<DataCenter>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            return result;
         }
 
         /// <summary>

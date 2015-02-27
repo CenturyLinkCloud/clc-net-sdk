@@ -18,9 +18,8 @@
 
             internal static class DataCenter
             {
-                internal static string GetDataCenters { get { return "{0}/v2/datacenters/{1}"; } }
-                internal static string GetDataCenter { get { return "{0}/v2/datacenters/{1}/{2}"; } }
-                internal static string GetDataCenterGroup { get { return "{0}/v2/datacenters/{1}/{2}?groupLinks=true"; } }
+                internal static string GetDataCenters { get { return "{0}/v2/datacenters/{1}{2}"; } }
+                internal static string GetDataCenter { get { return "{0}/v2/datacenters/{1}/{2}{3}"; } }
             }
 
             internal static class Group
@@ -56,6 +55,7 @@
             {
                 internal const string IncludeGroupLinks = "?groupLinks=true";
                 internal const string GetLatestStatistics = "?type=latest";
+                internal const string IncludeTotalAssets = "?totals=true";
             }   
         
             internal static class Alerts

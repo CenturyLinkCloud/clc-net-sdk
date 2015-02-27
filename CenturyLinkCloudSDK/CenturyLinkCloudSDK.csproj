@@ -55,6 +55,7 @@
     <Compile Include="ServiceModels\Domain\GuestDiskUsageStatistic.cs" />
     <Compile Include="ServiceModels\Domain\ServerStatistic.cs" />
     <Compile Include="ServiceModels\Domain\Statistics.cs" />
+    <Compile Include="ServiceModels\Domain\TotalAssets.cs" />
     <Compile Include="ServiceModels\Requests\Authentication\LoginRequest.cs" />
     <Compile Include="ServiceModels\Responses\Authentication\LoginResponse.cs" />
     <Compile Include="ServiceModels\Responses\DataCenters\GetDataCenterGroupsResponse.cs" />
