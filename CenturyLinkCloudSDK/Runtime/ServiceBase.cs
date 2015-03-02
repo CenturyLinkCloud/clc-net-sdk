@@ -56,7 +56,7 @@ namespace CenturyLinkCloudSDK.Runtime
             }
             catch(Exception ex)
             {
-                var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.ServiceExceptionMessage, ex);
+                var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.DefaultServiceExceptionMessage, ex);
                 serviceException.HttpRequestMessage = httpRequestMessage;
                 throw serviceException;
             }

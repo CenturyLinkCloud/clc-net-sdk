@@ -83,7 +83,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
             var servers = new List<Server>();
             var serverService = new ServerService(Authentication);
             
-            var statistics = await serverService.GetServerStatisticsByLink(string.Format(statisticsLink.Value.Href, Constants.ServiceUris.Querystring.GetLatestStatistics), cancellationToken).ConfigureAwait(false);
+            var statistics = await serverService.GetServerStatisticsByLink(string.Format("{0}{1}", statisticsLink.Value.Href, Constants.ServiceUris.Querystring.GetLatestStatistics), cancellationToken).ConfigureAwait(false);
 
             return statistics;
         }

@@ -44,13 +44,22 @@ namespace CenturyLinkCloudSDK.Services
         }
 
         /// <summary>
-        /// Gets the alerts for all servers in the account.
+        /// Gets the alerts for all servers in the account that subscribe to an alert policy.
         /// </summary>
-        /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<string>> GetServerAlerts(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Alert>> GetServerAlerts()
         {
-            var alerts = new List<string>();
+            return await GetServerAlerts(CancellationToken.None).ConfigureAwait(false);
+        }
+
+       /// <summary>
+        /// Gets the alerts for all servers in the account that subscribe to an alert policy.
+       /// </summary>
+       /// <param name="cancellationToken"></param>
+       /// <returns></returns>
+        public async Task<IEnumerable<Alert>> GetServerAlerts(CancellationToken cancellationToken)
+        {
+            var alerts = new List<Alert>();
 
             var alertPolicies = await GetAlertPoliciesForAccount(cancellationToken).ConfigureAwait(false);
 
@@ -67,23 +76,89 @@ namespace CenturyLinkCloudSDK.Services
                     var statistics = await server.GetStatistics().ConfigureAwait(false);
                     var statistic = statistics.Stats.FirstOrDefault();
 
-                    foreach (var trigger in alertPolicy.Triggers)
+                    if (statistic != null)
                     {
-                        if (string.Equals(trigger.Metric, "cpu", StringComparison.CurrentCultureIgnoreCase))
+                        foreach (var trigger in alertPolicy.Triggers)
                         {
-                            if (statistic != null)
+                            try
                             {
-                                if (statistic.Cpu > trigger.Threshold)
+                                var alert = GetServerAlert(alertPolicy, trigger, statistic, server);
+
+                                if (alert != null)
                                 {
-                                    alerts.Add(server.Id);
+                                    alerts.Add(alert);
                                 }
+                            }
+                            catch (Exception ex)
+                            {
+                                var exception = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.AlertGenerationExceptionMessage, ex);
+                                throw exception;
                             }
                         }
                     }
                 }
             }
 
+            return alerts;
+        }
+
+        /// <summary>
+        /// Determines if a server has violated a certain alert policy and returns an alert if true;
+        /// </summary>
+        /// <param name="alertPolicy"></param>
+        /// <param name="trigger"></param>
+        /// <param name="statistic"></param>
+        /// <param name="server"></param>
+        /// <returns></returns>
+        private Alert GetServerAlert(AlertPolicy alertPolicy, AlertTrigger trigger, ServerStatistic statistic, Server server)
+        {
+            if (string.Equals(trigger.Metric, Constants.Metrics.Cpu, StringComparison.CurrentCultureIgnoreCase))
+            {
+                if (statistic.CpuPercent > trigger.Threshold / 100)
+                {
+                    return GenerateAlert(alertPolicy, trigger, statistic, server, Constants.AlertMessages.CpuAlert);
+                }
+            }
+
+            if (string.Equals(trigger.Metric, Constants.Metrics.Memory, StringComparison.CurrentCultureIgnoreCase))
+            {
+                if (statistic.MemoryPercent > trigger.Threshold / 100)
+                {
+                    return GenerateAlert(alertPolicy, trigger, statistic, server, Constants.AlertMessages.MemoryAlert);
+                }
+            }
+
+            if (string.Equals(trigger.Metric, Constants.Metrics.Disk, StringComparison.CurrentCultureIgnoreCase))
+            {
+                float totalDiskUsage = 0;
+
+                foreach (var guestDiskUsage in statistic.GuestDiskUsage)
+                {
+                    float usage = (guestDiskUsage.ConsumedMB / guestDiskUsage.CapacityMB);
+                    totalDiskUsage += usage;
+                }
+
+                if (totalDiskUsage > trigger.Threshold / 100)
+                {
+                    return GenerateAlert(alertPolicy, trigger, statistic, server, Constants.AlertMessages.DiskUsageAlert);
+                }
+            }
+
             return null;
+        }
+
+        private Alert GenerateAlert(AlertPolicy alertPolicy, AlertTrigger trigger, ServerStatistic statistic, Server server, string message)
+        {
+            var alert = new Alert()
+            {
+                AlertPolicyId = alertPolicy.Id,
+                ServerId = server.Id,
+                Metric = trigger.Metric,
+                Message = message,
+                GeneratedOn = statistic.Timestamp
+            };
+
+            return alert;
         }
     }
 }

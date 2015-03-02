@@ -50,7 +50,7 @@ namespace CenturyLinkCloudSDK.Runtime
             }
             catch (Exception ex)
             {
-                var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.ServiceExceptionMessage, ex);
+                var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.DefaultServiceExceptionMessage, ex);
                 serviceException.HttpRequestMessage = httpRequestMessage;
                 serviceException.HttpResponseMessage = httpResponseMessage;
                 throw serviceException;
@@ -69,7 +69,7 @@ namespace CenturyLinkCloudSDK.Runtime
 
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.ServiceExceptionMessage);
+                var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.DefaultServiceExceptionMessage);
                 
                 var content = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 

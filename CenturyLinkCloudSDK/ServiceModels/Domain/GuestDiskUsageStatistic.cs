@@ -10,8 +10,8 @@ namespace CenturyLinkCloudSDK.ServiceModels
     {
         public string Path { get; set; }
 
-        public long CapacityMB { get; set; }
+        public float CapacityMB { get; set; }
 
-        public long ConsumedMB { get; set; }
+        public float ConsumedMB { get; set; }
     }
 }

@@ -64,11 +64,26 @@
             }
         }
 
+        internal static class Metrics
+        {
+            internal const string Cpu = "cpu";
+            internal const string Memory = "memory";
+            internal const string Disk = "disk";
+        }
+
         internal static class ExceptionMessages
         {
-            internal const string ServiceExceptionMessage = "A service error has occured.";
+            internal const string DefaultServiceExceptionMessage = "A service error has occured.";
+            internal const string AlertGenerationExceptionMessage = "An error occured while trying to generate alerts.";
             internal const string DataCenterGroupDoesNotHaveRootHardwareGroup = "Data Center Group {0} did not return a Root Hardware Group.";
             internal const string GroupDoesNotHaveServers = "Group {0} did not return any Servers.";
+        }
+
+        internal static class AlertMessages
+        {
+            internal const string CpuAlert = "CPU is above threshold";
+            internal const string MemoryAlert = "Memory is above threshold";
+            internal const string DiskUsageAlert = "Disk Usage is above threshold";
         }
     }
 }

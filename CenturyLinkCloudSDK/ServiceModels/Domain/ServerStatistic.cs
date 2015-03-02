@@ -12,17 +12,17 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public short Cpu { get; set; }
 
-        public decimal CpuPercent { get; set; }
+        public float CpuPercent { get; set; }
 
-        public int MemoryMB { get; set; }
+        public float MemoryMB { get; set; }
 
-        public decimal MemoryPercent { get; set; }
+        public float MemoryPercent { get; set; }
 
-        public long NetworkReceivedKBps { get; set; }
+        public float NetworkReceivedKBps { get; set; }
 
-        public long NetworkTransmittedKBps { get; set; }
+        public float NetworkTransmittedKBps { get; set; }
 
-        public long DiskUsageTotalCapacityMB { get; set; }
+        public float DiskUsageTotalCapacityMB { get; set; }
 
         public IEnumerable<DiskUsageStatistic> DiskUsage { get; set; }
 
