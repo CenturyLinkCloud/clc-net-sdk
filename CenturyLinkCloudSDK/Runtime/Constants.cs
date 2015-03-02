@@ -32,6 +32,8 @@
             internal static class Account
             {
                 internal static string GetBillingDetails { get { return "{0}/v2/billing/{1}/total"; } }
+
+                internal static string GetRecentActivity { get { return "{0}/v2/search/activities"; } }
             }
 
             internal static class Queue

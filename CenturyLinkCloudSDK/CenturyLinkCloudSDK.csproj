@@ -42,6 +42,7 @@
     <Compile Include="Runtime\Constants.cs" />
     <Compile Include="Runtime\ServiceBase.cs" />
     <Compile Include="Runtime\ServiceInvoker.cs" />
+    <Compile Include="ServiceModels\Domain\AccountActivity.cs" />
     <Compile Include="ServiceModels\Domain\AccountBillingDetail.cs" />
     <Compile Include="ServiceModels\Domain\Alert.cs" />
     <Compile Include="ServiceModels\Domain\AlertAction.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="ServiceModels\Domain\ServerStatistic.cs" />
     <Compile Include="ServiceModels\Domain\Statistics.cs" />
     <Compile Include="ServiceModels\Domain\TotalAssets.cs" />
+    <Compile Include="ServiceModels\Requests\Account\GetRecentActivityRequest.cs" />
     <Compile Include="ServiceModels\Requests\Authentication\LoginRequest.cs" />
     <Compile Include="ServiceModels\Responses\Authentication\LoginResponse.cs" />
     <Compile Include="ServiceModels\Responses\DataCenters\GetDataCenterGroupsResponse.cs" />
