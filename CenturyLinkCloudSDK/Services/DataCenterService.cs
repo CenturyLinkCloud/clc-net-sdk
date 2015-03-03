@@ -100,6 +100,31 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="dataCenterId"></param>
         /// <returns></returns>
+        //public async Task<IEnumerable<DataCenter>> GetAllDataCentersWithTotalAssets()
+        //{
+        //    return await GetAllDataCentersWithTotalAssets(CancellationToken.None).ConfigureAwait(false);
+        //}
+
+        ///// <summary>
+        ///// Gets the total assets for all data centers.
+        ///// </summary>
+        ///// <param name="dataCenterId"></param>
+        ///// <param name="cancellationToken"></param>
+        ///// <returns></returns>
+        //public async Task<IEnumerable<DataCenter>> GetAllDataCentersWithTotalAssets(CancellationToken cancellationToken)
+        //{
+        //    var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenters, Configuration.BaseUri, authentication.AccountAlias, Constants.ServiceUris.Querystring.IncludeTotalAssets));
+        //    var result = await ServiceInvoker.Invoke<IEnumerable<DataCenter>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+        //    return result;
+        //}
+
+
+        /// <summary>
+        ///  Gets the total assets for all data centers.
+        /// </summary>
+        /// <param name="dataCenterId"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<DataCenter>> GetAllDataCentersWithTotalAssets()
         {
             return await GetAllDataCentersWithTotalAssets(CancellationToken.None).ConfigureAwait(false);
@@ -113,11 +138,27 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         public async Task<IEnumerable<DataCenter>> GetAllDataCentersWithTotalAssets(CancellationToken cancellationToken)
         {
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenters, Configuration.BaseUri, authentication.AccountAlias, Constants.ServiceUris.Querystring.IncludeTotalAssets));
-            var result = await ServiceInvoker.Invoke<IEnumerable<DataCenter>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var dataCentersWithTotals = new List<DataCenter>();
+            var tasks = new List<Task<DataCenter>>();
 
-            return result;
+            var dataCenterService = new DataCenterService(authentication);
+            var dataCenters = await dataCenterService.GetDataCenters().ConfigureAwait(false);
+
+            foreach (var dataCenter in dataCenters)
+            {
+                tasks.Add(Task.Run(async () => await dataCenterService.GetDataCenterWithTotalAssets(dataCenter.Id, cancellationToken).ConfigureAwait(false)));
+            }
+
+            await Task.WhenAll(tasks);
+
+           foreach(var task in tasks)
+           {
+               dataCentersWithTotals.Add(task.Result);
+           }
+
+           return dataCentersWithTotals;
         }
+
 
         /// <summary>
         /// Gets a data center with total asset information.

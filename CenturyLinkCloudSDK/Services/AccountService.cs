@@ -113,8 +113,8 @@ namespace CenturyLinkCloudSDK.Services
 
             foreach (var dataCenterId in dataCenterIds)
             {
-                tasks.Add(Task.Run(() => dataCenterService.GetDataCenterWithTotalAssets(dataCenterId, cancellationToken).Result));
-                //tasks.Add(Task.Run(async () => await GetDataCenterWithTotalAssets(dataCenterId, cancellationToken).ConfigureAwait(false)));
+                //tasks.Add(Task.Run(() => dataCenterService.GetDataCenterWithTotalAssets(dataCenterId, cancellationToken).Result));
+                tasks.Add(Task.Run(async () => await dataCenterService.GetDataCenterWithTotalAssets(dataCenterId, cancellationToken).ConfigureAwait(false)));
             }
 
             await Task.WhenAll(tasks);
