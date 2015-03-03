@@ -1,5 +1,4 @@
-﻿
-using CenturyLinkCloudSDK.ServiceModels;
+﻿using CenturyLinkCloudSDK.ServiceModels;
 using CenturyLinkCloudSDK.Services;
 using System.Threading.Tasks;
 
@@ -20,6 +19,7 @@ namespace CenturyLinkCloudSDK
         private ServerService servers;
         private AlertService alerts;
         private BillingService billing;
+        private AccountService account;
 
         /// <summary>
         /// Constructor called when the user needs to be authenticated. It sets the userInfo and authenticationInfo fields
@@ -135,6 +135,14 @@ namespace CenturyLinkCloudSDK
             }
         }
 
+        public AccountService Account
+        {
+            get
+            {
+                return account;
+            }
+        }
+
         private async Task<UserInfo> AuthenticateUser(string userName, string password)
         {
             var authentication = new AuthenticationService();
@@ -151,6 +159,7 @@ namespace CenturyLinkCloudSDK
             servers = new ServerService(authentication);
             alerts = new AlertService(authentication);
             billing = new BillingService(authentication);
+            account = new AccountService(authentication);
         }
     }
 }

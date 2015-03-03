@@ -68,6 +68,7 @@
     <Compile Include="ServiceModels\Responses\Queues\GetStatusResponse.cs" />
     <Compile Include="ServiceModels\Responses\Servers\GetServerResponse.cs" />
     <Compile Include="ServiceModels\Responses\Servers\ServerPowerOpsResponse.cs" />
+    <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\AlertService.cs" />
     <Compile Include="Services\BillingService.cs" />
     <Compile Include="Services\DataCenterService.cs" />
