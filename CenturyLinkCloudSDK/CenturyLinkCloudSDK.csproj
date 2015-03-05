@@ -55,6 +55,7 @@
     <Compile Include="ServiceModels\Domain\GroupBilling.cs" />
     <Compile Include="ServiceModels\Domain\GroupBillingDetail.cs" />
     <Compile Include="ServiceModels\Domain\GuestDiskUsageStatistic.cs" />
+    <Compile Include="ServiceModels\Domain\ServerPricing.cs" />
     <Compile Include="ServiceModels\Domain\ServerStatistic.cs" />
     <Compile Include="ServiceModels\Domain\Statistics.cs" />
     <Compile Include="ServiceModels\Domain\TotalAssets.cs" />
