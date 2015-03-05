@@ -222,6 +222,54 @@ namespace CenturyLinkCloudSDK.Services
         }
 
         /// <summary>
+        /// Starts server maintenance.
+        /// </summary>
+        /// <param name="serverIds"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<ServerOperation>> StartMaintenance(List<string> serverIds)
+        {
+            return await StartMaintenance(serverIds, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Starts server maintenance.
+        /// </summary>
+        /// <param name="serverIds"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<ServerOperation>> StartMaintenance(List<string> serverIds, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.StartMaintenance, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
+            var result = await ServiceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Stops server maintenance.
+        /// </summary>
+        /// <param name="serverIds"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<ServerOperation>> StopMaintenance(List<string> serverIds)
+        {
+            return await StopMaintenance(serverIds, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Stops server maintenance.
+        /// </summary>
+        /// <param name="serverIds"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<ServerOperation>> StopMaintenance(List<string> serverIds, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.StopMaintenance, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
+            var result = await ServiceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            return result;
+        }
+
+        /// <summary>
         /// Gets the server statistics.
         /// </summary>
         /// <param name="serverId"></param>

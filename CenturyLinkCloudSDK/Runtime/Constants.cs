@@ -68,6 +68,10 @@
 
                 internal static string ResetServer { get { return "{0}/v2/operations/{1}/servers/reset"; } }
 
+                internal static string StartMaintenance { get { return "{0}/v2/operations/{1}/servers/startMaintenance"; } }
+
+                internal static string StopMaintenance { get { return "{0}/v2/operations/{1}/servers/stopMaintenance"; } }
+                
                 internal static string GetServerStatistics { get { return "{0}/v2/servers/{1}/{2}/statistics{3}"; } }
             }
 
