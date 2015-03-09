@@ -25,6 +25,10 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public int StorageGB { get; set; }
 
+        public IEnumerable<Disk> Disks { get; set; }
+
+        public IEnumerable<Partition> Partitions { get; set; }
+
         public IEnumerable<Snapshot> Snapshots { get; set; }
 
         public IEnumerable<CustomField> CustomFields { get; set; }

@@ -51,10 +51,12 @@
     <Compile Include="ServiceModels\Domain\AlertTrigger.cs" />
     <Compile Include="ServiceModels\Domain\Authentication.cs" />
     <Compile Include="ServiceModels\Domain\BillingDetail.cs" />
+    <Compile Include="ServiceModels\Domain\Disk.cs" />
     <Compile Include="ServiceModels\Domain\DiskUsageStatistic.cs" />
     <Compile Include="ServiceModels\Domain\GroupBilling.cs" />
     <Compile Include="ServiceModels\Domain\GroupBillingDetail.cs" />
     <Compile Include="ServiceModels\Domain\GuestDiskUsageStatistic.cs" />
+    <Compile Include="ServiceModels\Domain\Partition.cs" />
     <Compile Include="ServiceModels\Domain\ServerPricing.cs" />
     <Compile Include="ServiceModels\Domain\ServerStatistic.cs" />
     <Compile Include="ServiceModels\Domain\Statistics.cs" />
