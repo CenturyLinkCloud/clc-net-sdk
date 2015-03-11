@@ -31,7 +31,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public int ServerCount { get; set; }
 
-        public Limit Limits { get; set; }
+        public ComputeLimits Limits { get; set; }
 
         public IEnumerable<Group> Groups { get; set; }
 

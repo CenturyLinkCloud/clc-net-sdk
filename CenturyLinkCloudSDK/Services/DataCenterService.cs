@@ -159,7 +159,6 @@ namespace CenturyLinkCloudSDK.Services
            return dataCentersWithTotals;
         }
 
-
         /// <summary>
         /// Gets a data center with total asset information.
         /// </summary>
@@ -169,7 +168,6 @@ namespace CenturyLinkCloudSDK.Services
         {
             return await GetDataCenterWithTotalAssets(dataCenterId, CancellationToken.None).ConfigureAwait(false);
         }
-
 
         /// <summary>
         /// Gets a data center with total asset information.
@@ -181,6 +179,7 @@ namespace CenturyLinkCloudSDK.Services
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenter, Configuration.BaseUri, authentication.AccountAlias, dataCenterId, Constants.ServiceUris.Querystring.IncludeTotalAssets));
             var result = await ServiceInvoker.Invoke<DataCenter>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            result.Authentication = authentication;
 
             return result;
         }
@@ -205,6 +204,7 @@ namespace CenturyLinkCloudSDK.Services
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
             var result = await ServiceInvoker.Invoke<DataCenter>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            result.Authentication = authentication;
 
             return result;
         }
@@ -234,6 +234,30 @@ namespace CenturyLinkCloudSDK.Services
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
             var result = await ServiceInvoker.Invoke<DataCenterGroup>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
             result.Authentication = authentication;
+
+            return result;
+        }
+ 
+        /// <summary>
+        /// Gets the compute limits.
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        internal async Task<ComputeLimits> GetComputeLimitsByLink(string uri)
+        {
+            return await GetComputeLimitsByLink(uri, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the compute limits.
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        internal async Task<ComputeLimits> GetComputeLimitsByLink(string uri, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
+            var result = await ServiceInvoker.Invoke<ComputeLimits>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }

@@ -14,7 +14,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
     /// </summary>
     public class Server
     {
-         private Lazy<Link> statisticsLink;
+        private Lazy<Link> statisticsLink;
 
         [JsonPropertyAttribute]
         private IEnumerable<Link> Links { get; set; }
