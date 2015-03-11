@@ -44,26 +44,25 @@ namespace CenturyLinkCloudSDK.Services
         /// <summary>
         /// Gets the billing details of a data center.
         /// </summary>
-        /// <param name="dataCenter"></param>
+        /// <param name="dataCenterId"></param>
         /// <returns></returns>
-        public async Task<BillingDetail> GetDataCenterBillingDetails(DataCenter dataCenter)
+        public async Task<BillingDetail> GetDataCenterBillingDetails(string dataCenterId)
         {
-            return await GetDataCenterBillingDetails(dataCenter, CancellationToken.None).ConfigureAwait(false);
+            return await GetDataCenterBillingDetails(dataCenterId, CancellationToken.None).ConfigureAwait(false);
         }
-
 
         /// <summary>
         /// Gets the billing details of a data center.
         /// </summary>
-        /// <param name="dataCenter"></param>
+        /// <param name="dataCenterId"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<BillingDetail> GetDataCenterBillingDetails(DataCenter dataCenter, CancellationToken cancellationToken)
+        public async Task<BillingDetail> GetDataCenterBillingDetails(string dataCenterId, CancellationToken cancellationToken)
         {
             var billingDetail = new BillingDetail();
             var dataCenterService = new DataCenterService(authentication);
 
-            var dataCenterGroup = await dataCenterService.GetDataCenterGroup(dataCenter.Id).ConfigureAwait(false);
+            var dataCenterGroup = await dataCenterService.GetDataCenterGroup(dataCenterId).ConfigureAwait(false);
             var rootGroup = await dataCenterGroup.GetRootHardwareGroup(cancellationToken).ConfigureAwait(false);
             var groupBillingDetail = await GetGroupBillingDetails(rootGroup.Id).ConfigureAwait(false);
 
