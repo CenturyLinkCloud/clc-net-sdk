@@ -14,16 +14,6 @@ namespace CenturyLinkCloudSDK.Runtime
 {
     internal static class ServiceInvoker
     {
-        private static HttpClient httpClient;
-
-        static ServiceInvoker()
-        {
-            httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(Configuration.BaseUri);
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.ServiceUris.JsonMediaType));
-        }
-
         /// <summary>
         /// This is the main method through which all api requests are made.
         /// </summary>
@@ -33,27 +23,34 @@ namespace CenturyLinkCloudSDK.Runtime
         /// <returns>An asynchronous Task of the generic TResponse.</returns>
         internal static async Task<TResponse> Invoke<TResponse>(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
         {
-            HttpResponseMessage httpResponseMessage = null;
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.BaseAddress = new Uri(Configuration.BaseUri);
+                httpClient.DefaultRequestHeaders.Accept.Clear();
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.ServiceUris.JsonMediaType));
 
-            try
-            {
-                httpResponseMessage = await httpClient.SendAsync(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-                var response = await DeserializeResponse<TResponse>(httpResponseMessage).ConfigureAwait(false);
-                
-                return response;
-            }
-            catch (CenturyLinkCloudServiceException ex)
-            {
-                ex.HttpRequestMessage = httpRequestMessage;
-                ex.HttpResponseMessage = httpResponseMessage;
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.DefaultServiceExceptionMessage, ex);
-                serviceException.HttpRequestMessage = httpRequestMessage;
-                serviceException.HttpResponseMessage = httpResponseMessage;
-                throw serviceException;
+                HttpResponseMessage httpResponseMessage = null;
+
+                try
+                {
+                    httpResponseMessage = await httpClient.SendAsync(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+                    var response = await DeserializeResponse<TResponse>(httpResponseMessage).ConfigureAwait(false);
+
+                    return response;
+                }
+                catch (CenturyLinkCloudServiceException ex)
+                {
+                    ex.HttpRequestMessage = httpRequestMessage;
+                    ex.HttpResponseMessage = httpResponseMessage;
+                    throw ex;
+                }
+                catch (Exception ex)
+                {
+                    var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.DefaultServiceExceptionMessage, ex);
+                    serviceException.HttpRequestMessage = httpRequestMessage;
+                    serviceException.HttpResponseMessage = httpResponseMessage;
+                    throw serviceException;
+                }
             }
         }
 
