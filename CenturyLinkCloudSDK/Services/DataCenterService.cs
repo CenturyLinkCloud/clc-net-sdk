@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using CenturyLinkCloudSDK.Extensions;
 
 namespace CenturyLinkCloudSDK.Services
 {
@@ -303,7 +304,7 @@ namespace CenturyLinkCloudSDK.Services
         {
             var requestModel = new GetRecentActivityRequest() 
             { 
-                EntityTypes = new List<string>(){ "Server", "Group" },
+                EntityTypes = new List<string>(){ Constants.EntityTypes.Server, Constants.EntityTypes.Group },
                 ReferenceIds = referenceIds,
                 Accounts = accounts, 
                 Limit = recordCountLimit 
@@ -389,6 +390,12 @@ namespace CenturyLinkCloudSDK.Services
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
             var result = await ServiceInvoker.Invoke<ComputeLimits>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            if (result != null)
+            {
+                result.MemoryGBFormatted = result.MemoryGB.Value.RoundNumberToNearestUpperLimit();
+                result.StorageGBFormatted = result.StorageGB.Value.RoundNumberToNearestUpperLimit();
+            }
 
             return result;
         }

@@ -107,5 +107,17 @@
             internal const string MemoryAlert = "Memory is above threshold";
             internal const string DiskUsageAlert = "Disk Usage is above threshold";
         }
+
+        internal static class GeneralMessages
+        {
+            internal const string NegativeNumberNotValid = "Negative numbers are not valid in this context.";
+            internal const string RoundingNotAccounted = "Number rounding not accounted for.";
+        }
+
+        internal static class EntityTypes
+        {
+            internal const string Server = "Server";
+            internal const string Group = "Group";
+        }
     }
 }
