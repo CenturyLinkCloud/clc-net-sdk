@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace CenturyLinkCloudSDK.ServiceModels
 {
-    public class Limit
+    public class IntegerLimit
     {
         public int Value { get; set; }
 

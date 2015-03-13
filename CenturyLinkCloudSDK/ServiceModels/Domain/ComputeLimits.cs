@@ -2,10 +2,10 @@
 {
     public class ComputeLimits
     {
-        public Limit Cpu { get; set; }
+        public IntegerLimit Cpu { get; set; }
 
-        public Limit MemoryGB { get; set; }
+        public IntegerLimit MemoryGB { get; set; }
 
-        public Limit StorageGB { get; set; }
+        public IntegerLimit StorageGB { get; set; }
     }
 }

@@ -12,6 +12,8 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public Group RootGroup { get; set; }
 
+        public DefaultSettings DefaultSettings { get; set; }
+
         public IEnumerable<Activity> RecentActivity { get; set; }
     }
 }

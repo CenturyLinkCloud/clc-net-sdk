@@ -121,12 +121,14 @@ namespace CenturyLinkCloudSDK.Services
             BillingDetail billingTotals = null;
             ComputeLimits computeLimits = null;
             Group rootGroup = null;
+            DefaultSettings defaultSettings = null;
             List<string> serverIds = null;
             IEnumerable<Activity> recentActivity = null;
 
             tasks.Add(Task.Run(async () => billingTotals = await dataCenter.GetBillingTotals().ConfigureAwait(false)));
             tasks.Add(Task.Run(async () => computeLimits = await dataCenter.GetComputeLimits().ConfigureAwait(false)));
             tasks.Add(Task.Run(async () => rootGroup = await dataCenter.GetRootGroup().ConfigureAwait(false)));
+            tasks.Add(Task.Run(async () => defaultSettings = await dataCenter.GetDefaultSettings().ConfigureAwait(false)));           
 
             await Task.WhenAll(tasks);
 
@@ -142,6 +144,7 @@ namespace CenturyLinkCloudSDK.Services
                 BillingTotals = billingTotals,
                 ComputeLimits = computeLimits,
                 RootGroup = rootGroup,
+                DefaultSettings = defaultSettings,
                 RecentActivity = recentActivity
             };
 
@@ -415,12 +418,36 @@ namespace CenturyLinkCloudSDK.Services
         }
 
         /// <summary>
+        /// Gets the default settings.
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        internal async Task<DefaultSettings> GetDefaultSettingsByLink(string uri)
+        {
+            return await GetDefaultSettingsByLink(uri, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the default settings.
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        internal async Task<DefaultSettings> GetDefaultSettingsByLink(string uri, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
+            var result = await ServiceInvoker.Invoke<DefaultSettings>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            return result;
+        }
+
+        /// <summary>
         /// Recursive method that gets the serverIds of the data center root group and all subgroups.
         /// </summary>
         /// <param name="group"></param>
         /// <param name="serverIds"></param>
         /// <returns></returns>
-        public List<string> GetGroupServerIds(Group group, List<string> serverIds)
+        private List<string> GetGroupServerIds(Group group, List<string> serverIds)
         {
             var groupServerIds = group.GetServerIds();
 

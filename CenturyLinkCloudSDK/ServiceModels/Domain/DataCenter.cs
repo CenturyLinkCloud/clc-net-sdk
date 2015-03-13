@@ -16,6 +16,8 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         private Lazy<Link> rootGroupLink;
 
+        private Lazy<Link> defaultsLink;
+
         public Authentication Authentication { get; set; }
 
         /// <summary>
@@ -36,6 +38,11 @@ namespace CenturyLinkCloudSDK.ServiceModels
             rootGroupLink = new Lazy<Link>(() =>
             {
                 return Links.FirstOrDefault(l => String.Equals(l.Rel, "group", StringComparison.CurrentCultureIgnoreCase));
+            });
+
+            defaultsLink = new Lazy<Link>(() =>
+            {
+                return Links.FirstOrDefault(l => String.Equals(l.Rel, "defaults", StringComparison.CurrentCultureIgnoreCase));
             });
         }
 
@@ -72,6 +79,15 @@ namespace CenturyLinkCloudSDK.ServiceModels
         private bool HasRootGroup()
         {
             return rootGroupLink.Value != null ? true : false;
+        }
+
+        /// <summary>
+        /// Determines if this data center has default settings based on the links collection.
+        /// </summary>
+        /// <returns></returns>
+        private bool HasDefaults()
+        {
+            return defaultsLink.Value != null ? true : false;
         }
 
         /// <summary>
@@ -176,6 +192,25 @@ namespace CenturyLinkCloudSDK.ServiceModels
             var dataCenterService = new DataCenterService(Authentication);
             var rootGroup = await dataCenterService.GetRootGroupByLink(string.Format("{0}{1}", Configuration.BaseUri, rootGroupLink.Value.Href), cancellationToken).ConfigureAwait(false);
             return rootGroup;
+        }
+
+
+        public async Task<DefaultSettings> GetDefaultSettings()
+        {
+            return await GetDefaultSettings(CancellationToken.None).ConfigureAwait(false);
+        }
+
+
+        public async Task<DefaultSettings> GetDefaultSettings(CancellationToken cancellationToken)
+        {
+            if (!HasDefaults())
+            {
+                return null;
+            }
+
+            var dataCenterService = new DataCenterService(Authentication);
+            var defaultSettings = await dataCenterService.GetDefaultSettingsByLink(string.Format("{0}{1}", Configuration.BaseUri, defaultsLink.Value.Href), cancellationToken).ConfigureAwait(false);
+            return defaultSettings;
         }
     }
 }

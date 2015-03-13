@@ -55,16 +55,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ServiceModels\Domain\DataCenterOverview.cs" />
+    <Compile Include="ServiceModels\Domain\DefaultSettings.cs" />
     <Compile Include="ServiceModels\Domain\Disk.cs" />
     <Compile Include="ServiceModels\Domain\DiskUsageStatistic.cs" />
     <Compile Include="ServiceModels\Domain\GroupBilling.cs" />
     <Compile Include="ServiceModels\Domain\GroupBillingDetail.cs" />
     <Compile Include="ServiceModels\Domain\GuestDiskUsageStatistic.cs" />
-    <Compile Include="ServiceModels\Domain\Limit.cs" />
+    <Compile Include="ServiceModels\Domain\IntegerLimit.cs" />
     <Compile Include="ServiceModels\Domain\Partition.cs" />
     <Compile Include="ServiceModels\Domain\ServerPricing.cs" />
     <Compile Include="ServiceModels\Domain\ServerStatistic.cs" />
     <Compile Include="ServiceModels\Domain\Statistics.cs" />
+    <Compile Include="ServiceModels\Domain\StringLimit.cs" />
     <Compile Include="ServiceModels\Domain\TotalAssets.cs" />
     <Compile Include="ServiceModels\Requests\Account\GetRecentActivityRequest.cs" />
     <Compile Include="ServiceModels\Requests\Authentication\LoginRequest.cs" />
