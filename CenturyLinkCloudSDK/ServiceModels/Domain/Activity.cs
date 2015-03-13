@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.ServiceModels
 {
-    public class AccountActivity
+    public class Activity
     {
         public string AccountAlias { get; set; }
 

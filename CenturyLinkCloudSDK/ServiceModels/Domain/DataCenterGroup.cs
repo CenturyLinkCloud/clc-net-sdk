@@ -10,15 +10,12 @@ using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.ServiceModels
 {
-    /// <summary>
-    /// POCO class used for deserialization/serialization of data provided to or returned from API calls.
-    /// </summary>
     public class DataCenterGroup
     {
 
         private Lazy<string> rootHardwareGroupLink;
 
-        internal Authentication Authentication { get; set; }
+        public Authentication Authentication { get; set; }
 
         public string Id { get; set; }
 

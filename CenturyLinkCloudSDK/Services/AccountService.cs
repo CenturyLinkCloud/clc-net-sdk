@@ -25,7 +25,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="recordCountLimit"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<AccountActivity>> GetRecentActivity()
+        public async Task<IEnumerable<Activity>> GetRecentActivity()
         {
             return await GetRecentActivity(CancellationToken.None).ConfigureAwait(false);
         }
@@ -35,7 +35,7 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<AccountActivity>> GetRecentActivity(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Activity>> GetRecentActivity(CancellationToken cancellationToken)
         {
             var accounts = new List<String>();
             accounts.Add(authentication.AccountAlias);
@@ -47,7 +47,7 @@ namespace CenturyLinkCloudSDK.Services
         /// Returns recent account activity.
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<AccountActivity>> GetRecentActivity(int recordCountLimit)
+        public async Task<IEnumerable<Activity>> GetRecentActivity(int recordCountLimit)
         {
             return await GetRecentActivity(recordCountLimit, CancellationToken.None).ConfigureAwait(false);
         }
@@ -56,7 +56,7 @@ namespace CenturyLinkCloudSDK.Services
         /// Returns recent account activity.
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<AccountActivity>> GetRecentActivity(int recordCountLimit, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Activity>> GetRecentActivity(int recordCountLimit, CancellationToken cancellationToken)
         {
             var accounts = new List<String>();
             accounts.Add(authentication.AccountAlias);
@@ -68,7 +68,7 @@ namespace CenturyLinkCloudSDK.Services
         /// Returns recent account activity.
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<AccountActivity>> GetRecentActivity(IEnumerable<string> accounts, int recordCountLimit)
+        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> accounts, int recordCountLimit)
         {
             return await GetRecentActivity(accounts, recordCountLimit, CancellationToken.None).ConfigureAwait(false);
         }
@@ -78,12 +78,12 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<AccountActivity>> GetRecentActivity(IEnumerable<string> accounts, int recordCountLimit, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> accounts, int recordCountLimit, CancellationToken cancellationToken)
         {
             var requestModel = new GetRecentActivityRequest() { Accounts = accounts, Limit = recordCountLimit };
 
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Account.GetRecentActivity, Configuration.BaseUri), requestModel);
-            var result = await ServiceInvoker.Invoke<IEnumerable<AccountActivity>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await ServiceInvoker.Invoke<IEnumerable<Activity>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }

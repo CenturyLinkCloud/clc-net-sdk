@@ -171,5 +171,42 @@ namespace CenturyLinkCloudSDK.Services
 
             return result;
         }
+
+
+        /// <summary>
+        /// Gets the billing details for a group.
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        internal async Task<BillingDetail> GetGroupBillingTotalsByLink(string uri)
+        {
+            return await GetGroupBillingTotalsByLink(uri, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the billing details for a group.
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        internal async Task<BillingDetail> GetGroupBillingTotalsByLink(string uri, CancellationToken cancellationToken)
+        {
+            var billingDetail = new BillingDetail();
+
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
+            var result = await ServiceInvoker.Invoke<GroupBillingDetail>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            foreach (var group in result.Groups)
+            {
+                foreach (var server in group.Value.Servers)
+                {
+                    billingDetail.MonthlyEstimate += server.Value.MonthlyEstimate;
+                    billingDetail.CurrentHour += server.Value.CurrentHour;
+                    billingDetail.MonthToDate += server.Value.MonthToDate;
+                }
+            }
+
+            return billingDetail;
+        }
     }
 }

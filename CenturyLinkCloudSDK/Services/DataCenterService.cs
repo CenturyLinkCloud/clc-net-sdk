@@ -1,5 +1,7 @@
 ﻿using CenturyLinkCloudSDK.Runtime;
 using CenturyLinkCloudSDK.ServiceModels;
+using CenturyLinkCloudSDK.ServiceModels.Requests.DataCenter;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
@@ -96,29 +98,55 @@ namespace CenturyLinkCloudSDK.Services
         }
 
         /// <summary>
-        ///  Gets the total assets for all data centers.
+        /// Gets the data center overview, which contains composite information from several different areas such as billing, compute limits recent activities etc.
         /// </summary>
         /// <param name="dataCenterId"></param>
         /// <returns></returns>
-        //public async Task<IEnumerable<DataCenter>> GetAllDataCentersWithTotalAssets()
-        //{
-        //    return await GetAllDataCentersWithTotalAssets(CancellationToken.None).ConfigureAwait(false);
-        //}
+        public async Task<DataCenterOverview> GetDataCenterOverview(string dataCenterId)
+        {
+            return await GetDataCenterOverview(dataCenterId, CancellationToken.None).ConfigureAwait(false);
+        }
 
-        ///// <summary>
-        ///// Gets the total assets for all data centers.
-        ///// </summary>
-        ///// <param name="dataCenterId"></param>
-        ///// <param name="cancellationToken"></param>
-        ///// <returns></returns>
-        //public async Task<IEnumerable<DataCenter>> GetAllDataCentersWithTotalAssets(CancellationToken cancellationToken)
-        //{
-        //    var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenters, Configuration.BaseUri, authentication.AccountAlias, Constants.ServiceUris.Querystring.IncludeTotalAssets));
-        //    var result = await ServiceInvoker.Invoke<IEnumerable<DataCenter>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+        /// <summary>
+        /// Gets the data center overview, which contains composite information from several different areas such as billing, compute limits recent activities etc.
+        /// </summary>
+        /// <param name="dataCenterId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<DataCenterOverview> GetDataCenterOverview(string dataCenterId, CancellationToken cancellationToken)
+        {
+            var dataCenter = await GetDataCenterWithGroupsAndTotalAssets(dataCenterId).ConfigureAwait(false);
+            var tasks = new List<Task>();
 
-        //    return result;
-        //}
+            BillingDetail billingTotals = null;
+            ComputeLimits computeLimits = null;
+            Group rootGroup = null;
+            List<string> serverIds = null;
+            IEnumerable<Activity> recentActivity = null;
 
+            tasks.Add(Task.Run(async () => billingTotals = await dataCenter.GetBillingTotals().ConfigureAwait(false)));
+            tasks.Add(Task.Run(async () => computeLimits = await dataCenter.GetComputeLimits().ConfigureAwait(false)));
+            tasks.Add(Task.Run(async () => rootGroup = await dataCenter.GetRootGroup().ConfigureAwait(false)));
+
+            await Task.WhenAll(tasks);
+
+            if (rootGroup != null)
+            {
+                serverIds = GetGroupServerIds(rootGroup, new List<string>());
+                recentActivity = await GetRecentActivity(serverIds).ConfigureAwait(false);
+            }
+
+            var dataCenterOverview = new DataCenterOverview()
+            {
+                DataCenter = dataCenter,
+                BillingTotals = billingTotals,
+                ComputeLimits = computeLimits,
+                RootGroup = rootGroup,
+                RecentActivity = recentActivity
+            };
+
+            return dataCenterOverview;
+        }     
 
         /// <summary>
         ///  Gets the total assets for all data centers.
@@ -180,6 +208,106 @@ namespace CenturyLinkCloudSDK.Services
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenter, Configuration.BaseUri, authentication.AccountAlias, dataCenterId, Constants.ServiceUris.Querystring.IncludeTotalAssets));
             var result = await ServiceInvoker.Invoke<DataCenter>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
             result.Authentication = authentication;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the data center with the root group and all subgroups and with total assets.
+        /// </summary>
+        /// <param name="dataCenterId"></param>
+        /// <returns></returns>
+        public async Task<DataCenter> GetDataCenterWithGroupsAndTotalAssets(string dataCenterId)
+        {
+            return await GetDataCenterWithGroupsAndTotalAssets(dataCenterId, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the data center with the root group and all subgroups and with total assets.
+        /// </summary>
+        /// <param name="dataCenterId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<DataCenter> GetDataCenterWithGroupsAndTotalAssets(string dataCenterId, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenter, Configuration.BaseUri, authentication.AccountAlias, dataCenterId, Constants.ServiceUris.Querystring.IncludeGroupLinksAndTotalAssets));
+            var result = await ServiceInvoker.Invoke<DataCenter>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            result.Authentication = authentication;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns recent data center activity.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> referenceIds)
+        {
+
+            return await GetRecentActivity(referenceIds, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Returns recent data center activity.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> referenceIds, CancellationToken cancellationToken)
+        {
+
+            return await GetRecentActivity(referenceIds, 10, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Returns recent data center activity.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> referenceIds, int recordCountLimit)
+        {
+
+            return await GetRecentActivity(referenceIds, recordCountLimit, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Returns recent data center activity.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> accounts, IEnumerable<string> referenceIds, int recordCountLimit)
+        {
+            return await GetRecentActivity(accounts, referenceIds, recordCountLimit, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Returns recent data center activity.
+        /// </summary>
+        /// <param name="referenceIds"></param>
+        /// <param name="recordCountLimit"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> referenceIds, int recordCountLimit, CancellationToken cancellationToken)
+        {
+            var accounts = new List<string>();
+            accounts.Add(authentication.AccountAlias);
+
+            return await GetRecentActivity(accounts, referenceIds, recordCountLimit, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Returns recent data center activity.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> accounts, IEnumerable<string> referenceIds, int recordCountLimit, CancellationToken cancellationToken)
+        {
+            var requestModel = new GetRecentActivityRequest() 
+            { 
+                EntityTypes = new List<string>(){ "Server", "Group" },
+                ReferenceIds = referenceIds,
+                Accounts = accounts, 
+                Limit = recordCountLimit 
+            };
+
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.DataCenter.GetRecentActivity, Configuration.BaseUri), requestModel);
+            var result = await ServiceInvoker.Invoke<IEnumerable<Activity>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
@@ -260,6 +388,53 @@ namespace CenturyLinkCloudSDK.Services
             var result = await ServiceInvoker.Invoke<ComputeLimits>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
+        }
+
+        /// <summary>
+        /// Gets the root group and all subgroups.
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        internal async Task<Group> GetRootGroupByLink(string uri)
+        {
+            return await GetRootGroupByLink(uri, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the root group and all subgroups.
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        internal async Task<Group> GetRootGroupByLink(string uri, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
+            var result = await ServiceInvoker.Invoke<Group>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Recursive method that gets the serverIds of the data center root group and all subgroups.
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="serverIds"></param>
+        /// <returns></returns>
+        public List<string> GetGroupServerIds(Group group, List<string> serverIds)
+        {
+            var groupServerIds = group.GetServerIds();
+
+            if (groupServerIds != null)
+            {
+                serverIds.AddRange(groupServerIds);
+            }
+
+            foreach (var subgroup in group.Groups)
+            {
+                serverIds = GetGroupServerIds(subgroup, serverIds);
+            }
+
+            return serverIds;
         }
     }
 }

@@ -10,14 +10,11 @@ using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.ServiceModels
 {
-    /// <summary>
-    /// POCO class used for deserialization/serialization of data provided to or returned from API calls.
-    /// </summary>
     public class Group
     {
         private Lazy<IEnumerable<Link>> serverLinks;
 
-        internal Authentication Authentication { get; set; }
+        public Authentication Authentication { get; set; }
 
         public string Id { get; set; }
 
@@ -29,7 +26,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public string Status { get; set; }
 
-        public int ServerCount { get; set; }
+        public int ServersCount { get; set; }
 
         public ComputeLimits Limits { get; set; }
 
@@ -77,7 +74,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
             if (!HasServers())
             {
-                throw new InvalidOperationException(string.Format(Constants.ExceptionMessages.GroupDoesNotHaveServers, Name));
+                return null;
             }
 
             var serverService = new ServerService(Authentication);
@@ -89,6 +86,32 @@ namespace CenturyLinkCloudSDK.ServiceModels
             }
 
             return servers;
+        }
+
+        /// <summary>
+        /// Returns the server Ids for all groups and subgroups.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<string> GetServerIds()
+        {
+            return GetServerIds(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Returns the server Ids for all groups and subgroups.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public IEnumerable<string> GetServerIds(CancellationToken cancellationToken)
+        {
+            var serverIds = new List<string>();
+
+            if (!HasServers())
+            {
+                return null;
+            }
+
+            return serverLinks.Value.Select(l => l.Id).ToList();
         }
     }
 }

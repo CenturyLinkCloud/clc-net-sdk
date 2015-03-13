@@ -9,9 +9,6 @@ using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.ServiceModels
 {
-    /// <summary>
-    /// POCO class used for deserialization/serialization of data provided to or returned from API calls.
-    /// </summary>
     public class AlertPolicy
     {
         private Lazy<IEnumerable<Link>> serverLinks;
@@ -19,7 +16,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         [JsonPropertyAttribute]
         private IEnumerable<Link> Links { get; set; }
 
-        internal Authentication Authentication { get; set; }
+        public Authentication Authentication { get; set; }
 
         /// <summary>
         /// Default constructor.

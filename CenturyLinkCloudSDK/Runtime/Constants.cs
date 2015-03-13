@@ -40,6 +40,8 @@
                 internal static string GetDataCenters { get { return "{0}/v2/datacenters/{1}{2}"; } }
 
                 internal static string GetDataCenter { get { return "{0}/v2/datacenters/{1}/{2}{3}"; } }
+
+                internal static string GetRecentActivity { get { return "{0}/v2/search/activities"; } }
             }
 
             internal static class Group
@@ -80,6 +82,7 @@
                 internal const string IncludeGroupLinks = "?groupLinks=true";
                 internal const string GetLatestStatistics = "?type=latest";
                 internal const string IncludeTotalAssets = "?totals=true";
+                internal const string IncludeGroupLinksAndTotalAssets = "?groupLinks=true&totals=true";
             }   
         }
 
