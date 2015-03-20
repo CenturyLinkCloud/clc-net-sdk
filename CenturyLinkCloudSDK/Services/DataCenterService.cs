@@ -135,7 +135,9 @@ namespace CenturyLinkCloudSDK.Services
 
             if (rootGroup != null)
             {
-                serverIds = GetGroupServerIds(rootGroup, new List<string>());
+                var groupService = new GroupService(authentication);
+
+                serverIds = groupService.GetServerIds(rootGroup, new List<string>());
                 recentActivity = await GetRecentActivity(serverIds).ConfigureAwait(false);
             }
 
@@ -446,29 +448,6 @@ namespace CenturyLinkCloudSDK.Services
             var result = await ServiceInvoker.Invoke<DefaultSettings>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
-        }
-
-        /// <summary>
-        /// Recursive method that gets the serverIds of the data center root group and all subgroups.
-        /// </summary>
-        /// <param name="group"></param>
-        /// <param name="serverIds"></param>
-        /// <returns></returns>
-        private List<string> GetGroupServerIds(Group group, List<string> serverIds)
-        {
-            var groupServerIds = group.GetServerIds();
-
-            if (groupServerIds != null)
-            {
-                serverIds.AddRange(groupServerIds);
-            }
-
-            foreach (var subgroup in group.Groups)
-            {
-                serverIds = GetGroupServerIds(subgroup, serverIds);
-            }
-
-            return serverIds;
         }
     }
 }

@@ -41,12 +41,14 @@
 
                 internal static string GetDataCenter { get { return "{0}/v2/datacenters/{1}/{2}{3}"; } }
 
-                internal static string GetRecentActivity { get { return "{0}/v2/search/activities"; } }
+                internal static string GetRecentActivity { get { return Account.GetRecentActivity; } }
             }
 
             internal static class Group
             {
                 internal static string GetGroup { get { return "{0}/v2/groups/{1}/{2}"; } }
+
+                internal static string GetRecentActivity { get { return Account.GetRecentActivity; } }
             }
 
             internal static class Queue

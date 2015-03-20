@@ -194,13 +194,20 @@ namespace CenturyLinkCloudSDK.ServiceModels
             return rootGroup;
         }
 
-
+        /// <summary>
+        /// Get the default settings.
+        /// </summary>
+        /// <returns></returns>
         public async Task<DefaultSettings> GetDefaultSettings()
         {
             return await GetDefaultSettings(CancellationToken.None).ConfigureAwait(false);
         }
 
-
+        /// <summary>
+        /// Gets the default settings.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task<DefaultSettings> GetDefaultSettings(CancellationToken cancellationToken)
         {
             if (!HasDefaults())

@@ -172,7 +172,6 @@ namespace CenturyLinkCloudSDK.Services
             return result;
         }
 
-
         /// <summary>
         /// Gets the billing details for a group.
         /// </summary>
