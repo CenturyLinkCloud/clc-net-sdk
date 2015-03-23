@@ -60,6 +60,7 @@
     <Compile Include="ServiceModels\Domain\DiskUsageStatistic.cs" />
     <Compile Include="ServiceModels\Domain\GroupBilling.cs" />
     <Compile Include="ServiceModels\Domain\GroupBillingDetail.cs" />
+    <Compile Include="ServiceModels\Domain\GroupOverview.cs" />
     <Compile Include="ServiceModels\Domain\GuestDiskUsageStatistic.cs" />
     <Compile Include="ServiceModels\Domain\IntegerLimit.cs" />
     <Compile Include="ServiceModels\Domain\Partition.cs" />

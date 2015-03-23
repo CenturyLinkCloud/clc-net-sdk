@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using CenturyLinkCloudSDK.Extensions;
 
 namespace CenturyLinkCloudSDK.Services
 {
@@ -118,12 +119,112 @@ namespace CenturyLinkCloudSDK.Services
         }
 
         /// <summary>
+        /// Gets the group overview, which contains composite information from several different areas such as billing, assets, recent activities etc.
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <returns></returns>
+        public async Task<GroupOverview> GetGroupOverview(string groupId)
+        {
+            return await GetGroupOverview(groupId, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the group overview, which contains composite information from several different areas such as billing, assets, recent activities etc.
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<GroupOverview> GetGroupOverview(string groupId, CancellationToken cancellationToken)
+        {
+            var group = await GetGroup(groupId, cancellationToken).ConfigureAwait(false);
+
+            if (group != null)
+            {
+                var serverIds = GetServerIds(group, new List<string>());
+                var tasks = new List<Task>();
+
+                BillingDetail billingTotals = null;
+                TotalAssets totalAssets = null;
+                DefaultSettings defaultSettings = null;
+                IEnumerable<Activity> recentActivity = null;
+
+                tasks.Add(Task.Run(async () => billingTotals = await group.GetBillingTotals(cancellationToken).ConfigureAwait(false)));
+                tasks.Add(Task.Run(async () => totalAssets = await GetTotalAssets(serverIds, cancellationToken).ConfigureAwait(false)));
+                tasks.Add(Task.Run(async () => defaultSettings = await group.GetDefaultSettings(cancellationToken).ConfigureAwait(false)));
+                tasks.Add(Task.Run(async () => recentActivity = await GetRecentActivity(serverIds, cancellationToken).ConfigureAwait(false)));
+
+                await Task.WhenAll(tasks);
+
+                var groupOverview = new GroupOverview()
+                {
+                    Group = group,
+                    BillingTotals = billingTotals,
+                    TotalAssets = totalAssets,
+                    DefaultSettings = defaultSettings,
+                    RecentActivity = recentActivity
+                };
+
+                return groupOverview;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the total assets for the group.
+        /// </summary>
+        /// <param name="serverIds"></param>
+        /// <returns></returns>
+        public async Task<TotalAssets> GetTotalAssets(List<string> serverIds)
+        {
+            return await GetTotalAssets(serverIds, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the total assets for the group.
+        /// </summary>
+        /// <param name="serverIds"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<TotalAssets> GetTotalAssets(List<string> serverIds, CancellationToken cancellationToken)
+        {
+            var serverService =  new ServerService(authentication);
+            var totalAssets =  new TotalAssets();
+
+            totalAssets.Servers = serverIds.Count;
+
+            foreach(var serverId in serverIds)
+            {
+                var server = await serverService.GetServer(serverId, cancellationToken).ConfigureAwait(false);
+
+                if(server == null)
+                {
+                    return null;
+                }
+
+                if(server.Details == null)
+                {
+                    return null;
+                }
+
+                totalAssets.Cpus += server.Details.Cpu;
+                totalAssets.MemoryGB += server.Details.MemoryMB;
+                totalAssets.StorageGB += server.Details.StorageGB;     
+            }
+
+            //The memory values we get for the servers is in MB so we need to convert to GB to display.
+            totalAssets.MemoryGBFormatted = totalAssets.MemoryGB.ConvertMBToGB();
+
+            return totalAssets;
+        }
+
+        /// <summary>
         /// Recursive method that gets the serverIds of the data center root group and all subgroups.
         /// </summary>
         /// <param name="group"></param>
         /// <param name="serverIds"></param>
         /// <returns></returns>
-        internal List<string> GetServerIds(Group group, List<string> serverIds)
+        public List<string> GetServerIds(Group group, List<string> serverIds)
         {
             var groupServerIds = group.GetServerIds();
 

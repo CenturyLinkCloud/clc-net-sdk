@@ -36,6 +36,8 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public IEnumerable<Group> Groups { get; set; }
 
+        public ChangeInfo ChangeInfo { get; set; }
+
         [JsonPropertyAttribute]
         private IEnumerable<Link> Links { get; set; }
 

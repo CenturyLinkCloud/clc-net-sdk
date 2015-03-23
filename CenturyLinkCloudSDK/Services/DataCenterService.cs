@@ -116,42 +116,48 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         public async Task<DataCenterOverview> GetDataCenterOverview(string dataCenterId, CancellationToken cancellationToken)
         {
-            var dataCenter = await GetDataCenterWithGroupsAndTotalAssets(dataCenterId).ConfigureAwait(false);
-            var tasks = new List<Task>();
+            var dataCenter = await GetDataCenterWithGroupsAndTotalAssets(dataCenterId, cancellationToken).ConfigureAwait(false);
 
-            BillingDetail billingTotals = null;
-            ComputeLimits computeLimits = null;
-            Group rootGroup = null;
-            DefaultSettings defaultSettings = null;
-            List<string> serverIds = null;
-            IEnumerable<Activity> recentActivity = null;
-
-            tasks.Add(Task.Run(async () => billingTotals = await dataCenter.GetBillingTotals().ConfigureAwait(false)));
-            tasks.Add(Task.Run(async () => computeLimits = await dataCenter.GetComputeLimits().ConfigureAwait(false)));
-            tasks.Add(Task.Run(async () => rootGroup = await dataCenter.GetRootGroup().ConfigureAwait(false)));
-            tasks.Add(Task.Run(async () => defaultSettings = await dataCenter.GetDefaultSettings().ConfigureAwait(false)));           
-
-            await Task.WhenAll(tasks);
-
-            if (rootGroup != null)
+            if (dataCenter != null)
             {
-                var groupService = new GroupService(authentication);
+                var tasks = new List<Task>();
 
-                serverIds = groupService.GetServerIds(rootGroup, new List<string>());
-                recentActivity = await GetRecentActivity(serverIds).ConfigureAwait(false);
+                BillingDetail billingTotals = null;
+                ComputeLimits computeLimits = null;
+                Group rootGroup = null;
+                DefaultSettings defaultSettings = null;
+                List<string> serverIds = null;
+                IEnumerable<Activity> recentActivity = null;
+
+                tasks.Add(Task.Run(async () => billingTotals = await dataCenter.GetBillingTotals(cancellationToken).ConfigureAwait(false)));
+                tasks.Add(Task.Run(async () => computeLimits = await dataCenter.GetComputeLimits(cancellationToken).ConfigureAwait(false)));
+                tasks.Add(Task.Run(async () => rootGroup = await dataCenter.GetRootGroup(cancellationToken).ConfigureAwait(false)));
+                tasks.Add(Task.Run(async () => defaultSettings = await dataCenter.GetDefaultSettings(cancellationToken).ConfigureAwait(false)));
+
+                await Task.WhenAll(tasks);
+
+                if (rootGroup != null)
+                {
+                    var groupService = new GroupService(authentication);
+
+                    serverIds = groupService.GetServerIds(rootGroup, new List<string>());
+                    recentActivity = await GetRecentActivity(serverIds, cancellationToken).ConfigureAwait(false);
+                }
+
+                var dataCenterOverview = new DataCenterOverview()
+                {
+                    DataCenter = dataCenter,
+                    BillingTotals = billingTotals,
+                    ComputeLimits = computeLimits,
+                    RootGroup = rootGroup,
+                    DefaultSettings = defaultSettings,
+                    RecentActivity = recentActivity
+                };
+
+                return dataCenterOverview;
             }
 
-            var dataCenterOverview = new DataCenterOverview()
-            {
-                DataCenter = dataCenter,
-                BillingTotals = billingTotals,
-                ComputeLimits = computeLimits,
-                RootGroup = rootGroup,
-                DefaultSettings = defaultSettings,
-                RecentActivity = recentActivity
-            };
-
-            return dataCenterOverview;
+            return null;
         }     
 
         /// <summary>

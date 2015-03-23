@@ -51,5 +51,26 @@ namespace CenturyLinkCloudSDK.Extensions
 
             return Constants.GeneralMessages.RoundingNotAccounted;
         }
+
+        internal static string ConvertMBToGB(this int number)
+        {
+            if (number < 0)
+            {
+                return Constants.GeneralMessages.NegativeNumberNotValid;
+            }
+
+            if (number <= 1024)
+            {
+                return string.Format("{0} {1}", number, "MB");
+            }
+
+            if (number >= 1024)
+            {
+                var roundedNumber = Math.Truncate((double)number / 1024);
+                return string.Format("{0} {1}", roundedNumber, "GB");
+            }
+
+            return Constants.GeneralMessages.RoundingNotAccounted;
+        }
     }
 }

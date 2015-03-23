@@ -4,14 +4,18 @@ namespace CenturyLinkCloudSDK.ServiceModels
 {
     public class TotalAssets
     {
-        public Int16 Servers { get; set; }
+        public int Servers { get; set; }
 
-        public Int16 Cpus { get; set; }
+        public int Cpus { get; set; }
 
-        public Int16 MemoryGB { get; set; }
+        public int MemoryGB { get; set; }
 
-        public Int16 StorageGB { get; set; }
+        public int StorageGB { get; set; }
 
-        public Int16 Queue { get; set; }
+        public int Queue { get; set; }
+
+        public string MemoryGBFormatted { get; set; }
+
+        public string StorageGBFormatted { get; set; }
     }
 }
