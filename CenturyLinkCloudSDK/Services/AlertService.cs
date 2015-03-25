@@ -73,25 +73,29 @@ namespace CenturyLinkCloudSDK.Services
                     server.Authentication = authentication;
 
                     var statistics = await server.GetStatistics().ConfigureAwait(false);
-                    var statistic = statistics.Stats.FirstOrDefault();
 
-                    if (statistic != null)
+                    if (statistics != null)
                     {
-                        foreach (var trigger in alertPolicy.Triggers)
-                        {
-                            try
-                            {
-                                var alert = GetServerAlert(alertPolicy, trigger, statistic, server);
+                        var statistic = statistics.Stats.FirstOrDefault();
 
-                                if (alert != null)
-                                {
-                                    alerts.Add(alert);
-                                }
-                            }
-                            catch (Exception ex)
+                        if (statistic != null)
+                        {
+                            foreach (var trigger in alertPolicy.Triggers)
                             {
-                                var exception = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.AlertGenerationExceptionMessage, ex);
-                                throw exception;
+                                try
+                                {
+                                    var alert = GetServerAlert(alertPolicy, trigger, statistic, server);
+
+                                    if (alert != null)
+                                    {
+                                        alerts.Add(alert);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    var exception = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.AlertGenerationExceptionMessage, ex);
+                                    throw exception;
+                                }
                             }
                         }
                     }

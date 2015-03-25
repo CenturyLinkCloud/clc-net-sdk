@@ -63,12 +63,15 @@ namespace CenturyLinkCloudSDK.ServiceModels
         {
             var servers = new List<Server>();
 
-            var serverService = new ServerService(Authentication);
-
-            foreach (var serverLink in serverLinks.Value)
+            if (HasServers())
             {
-                var server = await serverService.GetServerByLink(Configuration.BaseUri + serverLink.Href, cancellationToken);
-                servers.Add(server);
+                var serverService = new ServerService(Authentication);
+
+                foreach (var serverLink in serverLinks.Value)
+                {
+                    var server = await serverService.GetServerByLink(Configuration.BaseUri + serverLink.Href, cancellationToken);
+                    servers.Add(server);
+                }
             }
 
             return servers;

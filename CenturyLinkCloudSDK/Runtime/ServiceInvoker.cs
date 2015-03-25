@@ -42,6 +42,17 @@ namespace CenturyLinkCloudSDK.Runtime
                 {
                     ex.HttpRequestMessage = httpRequestMessage;
                     ex.HttpResponseMessage = httpResponseMessage;
+
+                    if (httpRequestMessage.Content != null)
+                    {
+                        ex.RequestContent = httpRequestMessage.Content.ReadAsStringAsync().Result;
+                    }
+
+                    if (httpResponseMessage.Content != null)
+                    {
+                        ex.ResponseContent = httpResponseMessage.Content.ReadAsStringAsync().Result;
+                    }
+
                     throw ex;
                 }
                 catch (Exception ex)
@@ -49,6 +60,17 @@ namespace CenturyLinkCloudSDK.Runtime
                     var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.DefaultServiceExceptionMessage, ex);
                     serviceException.HttpRequestMessage = httpRequestMessage;
                     serviceException.HttpResponseMessage = httpResponseMessage;
+
+                    if (httpRequestMessage.Content != null)
+                    {
+                        serviceException.RequestContent = httpRequestMessage.Content.ReadAsStringAsync().Result;
+                    }
+
+                    if (httpResponseMessage.Content != null)
+                    {
+                        serviceException.ResponseContent = httpResponseMessage.Content.ReadAsStringAsync().Result;
+                    }
+
                     throw serviceException;
                 }
             }

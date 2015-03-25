@@ -21,6 +21,10 @@ namespace CenturyLinkCloudSDK
 
         public HttpResponseMessage HttpResponseMessage { get; set; }
 
+        public string RequestContent { get; set; }
+
+        public string ResponseContent { get; set; }
+
         public string ApiMessage { get; set; }
 
     }

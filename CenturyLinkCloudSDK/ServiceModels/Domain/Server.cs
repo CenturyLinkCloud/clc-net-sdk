@@ -77,7 +77,11 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// <returns></returns>
         public async Task<Statistics> GetStatistics(CancellationToken cancellationToken)
         {
-            var servers = new List<Server>();
+            if(!HasStatistics())
+            {
+                return null;
+            }
+
             var serverService = new ServerService(Authentication);
 
             var statistics = await serverService.GetServerStatisticsByLink(string.Format("{0}{1}{2}", Configuration.BaseUri, statisticsLink.Value.Href, Constants.ServiceUris.Querystring.GetLatestStatistics), cancellationToken).ConfigureAwait(false);
