@@ -88,6 +88,13 @@ namespace CenturyLinkCloudSDK.Runtime
 
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
+
+                //This logic is necessary to prevent exceptions from being thrown when a resource is not found due to bad data in the system.
+                if(httpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return default(TResponse);
+                }
+
                 var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.DefaultServiceExceptionMessage);
                 
                 var content = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);

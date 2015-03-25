@@ -70,7 +70,11 @@ namespace CenturyLinkCloudSDK.ServiceModels
                 foreach (var serverLink in serverLinks.Value)
                 {
                     var server = await serverService.GetServerByLink(Configuration.BaseUri + serverLink.Href, cancellationToken);
-                    servers.Add(server);
+
+                    if (server != null)
+                    {
+                        servers.Add(server);
+                    }
                 }
             }
 
