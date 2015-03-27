@@ -52,7 +52,7 @@ namespace CenturyLinkCloudSDK.Extensions
             return Constants.GeneralMessages.RoundingNotAccounted;
         }
 
-        internal static string ConvertMBToGB(this int number)
+        internal static string ConvertMBToHigherUnit(this int number)
         {
             if (number < 0)
             {
@@ -64,10 +64,16 @@ namespace CenturyLinkCloudSDK.Extensions
                 return string.Format("{0} {1}", number, "MB");
             }
 
-            if (number >= 1024)
+            if (number > 1024 && number < 1048576)
             {
                 var roundedNumber = Math.Truncate((double)number / 1024);
                 return string.Format("{0} {1}", roundedNumber, "GB");
+            }
+
+            if (number >= 1048576)
+            {
+                var roundedNumber = Math.Truncate((double)number / 1048576);
+                return string.Format("{0} {1}", roundedNumber, "TB");
             }
 
             return Constants.GeneralMessages.RoundingNotAccounted;

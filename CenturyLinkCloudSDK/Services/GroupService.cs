@@ -213,7 +213,10 @@ namespace CenturyLinkCloudSDK.Services
             }
 
             //The memory values we get for the servers is in MB so we need to convert to GB to display.
-            totalAssets.MemoryGBFormatted = totalAssets.MemoryGB.ConvertMBToGB();
+            totalAssets.MemoryGBFormatted = totalAssets.MemoryGB.ConvertMBToHigherUnit();
+
+            //Just in case we do that for StorageGB as well.
+            totalAssets.StorageGBFormatted = totalAssets.StorageGB.ConvertMBToHigherUnit();
 
             return totalAssets;
         }

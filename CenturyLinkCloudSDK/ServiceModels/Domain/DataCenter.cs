@@ -18,6 +18,8 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         private Lazy<Link> defaultsLink;
 
+        private Lazy<Link> networkLimitsLink;
+
         public Authentication Authentication { get; set; }
 
         /// <summary>
@@ -43,6 +45,11 @@ namespace CenturyLinkCloudSDK.ServiceModels
             defaultsLink = new Lazy<Link>(() =>
             {
                 return Links.FirstOrDefault(l => String.Equals(l.Rel, "defaults", StringComparison.CurrentCultureIgnoreCase));
+            });
+
+            networkLimitsLink = new Lazy<Link>(() =>
+            {
+                return Links.FirstOrDefault(l => String.Equals(l.Rel, "networkLimits", StringComparison.CurrentCultureIgnoreCase));
             });
         }
 
@@ -88,6 +95,15 @@ namespace CenturyLinkCloudSDK.ServiceModels
         private bool HasDefaults()
         {
             return defaultsLink.Value != null ? true : false;
+        }
+
+        /// <summary>
+        /// Determines if this data center has network limits based on the links collection.
+        /// </summary>
+        /// <returns></returns>
+        private bool HasNetworkLimits()
+        {
+            return networkLimitsLink.Value != null ? true : false;
         }
 
         /// <summary>
@@ -218,6 +234,32 @@ namespace CenturyLinkCloudSDK.ServiceModels
             var dataCenterService = new DataCenterService(Authentication);
             var defaultSettings = await dataCenterService.GetDefaultSettingsByLink(string.Format("{0}{1}", Configuration.BaseUri, defaultsLink.Value.Href), cancellationToken).ConfigureAwait(false);
             return defaultSettings;
+        }
+
+        /// <summary>
+        /// Get the network limits.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<NetworkLimits> GetNetworkLimits()
+        {
+            return await GetNetworkLimits(CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the network limits.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<NetworkLimits> GetNetworkLimits(CancellationToken cancellationToken)
+        {
+            if (!HasNetworkLimits())
+            {
+                return null;
+            }
+
+            var dataCenterService = new DataCenterService(Authentication);
+            var networkLimits = await dataCenterService.GetNetworkLimitsByLink(string.Format("{0}{1}", Configuration.BaseUri, networkLimitsLink.Value.Href), cancellationToken).ConfigureAwait(false);
+            return networkLimits;
         }
     }
 }

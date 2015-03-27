@@ -14,6 +14,8 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public DefaultSettings DefaultSettings { get; set; }
 
+        public NetworkLimits NetworkLimits { get; set; }
+
         public IEnumerable<Activity> RecentActivity { get; set; }
     }
 }

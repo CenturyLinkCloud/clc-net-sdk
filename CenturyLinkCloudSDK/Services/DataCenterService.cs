@@ -126,6 +126,7 @@ namespace CenturyLinkCloudSDK.Services
                 ComputeLimits computeLimits = null;
                 Group rootGroup = null;
                 DefaultSettings defaultSettings = null;
+                NetworkLimits networkLimits = null;
                 List<string> serverIds = null;
                 IEnumerable<Activity> recentActivity = null;
 
@@ -133,6 +134,7 @@ namespace CenturyLinkCloudSDK.Services
                 tasks.Add(Task.Run(async () => computeLimits = await dataCenter.GetComputeLimits(cancellationToken).ConfigureAwait(false)));
                 tasks.Add(Task.Run(async () => rootGroup = await dataCenter.GetRootGroup(cancellationToken).ConfigureAwait(false)));
                 tasks.Add(Task.Run(async () => defaultSettings = await dataCenter.GetDefaultSettings(cancellationToken).ConfigureAwait(false)));
+                tasks.Add(Task.Run(async () => networkLimits = await dataCenter.GetNetworkLimits(cancellationToken).ConfigureAwait(false)));
 
                 await Task.WhenAll(tasks);
 
@@ -151,6 +153,7 @@ namespace CenturyLinkCloudSDK.Services
                     ComputeLimits = computeLimits,
                     RootGroup = rootGroup,
                     DefaultSettings = defaultSettings,
+                    NetworkLimits = networkLimits,
                     RecentActivity = recentActivity
                 };
 
@@ -452,6 +455,30 @@ namespace CenturyLinkCloudSDK.Services
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
             var result = await ServiceInvoker.Invoke<DefaultSettings>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the network limits.
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        internal async Task<NetworkLimits> GetNetworkLimitsByLink(string uri)
+        {
+            return await GetNetworkLimitsByLink(uri, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the network limits.
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        internal async Task<NetworkLimits> GetNetworkLimitsByLink(string uri, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
+            var result = await ServiceInvoker.Invoke<NetworkLimits>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
