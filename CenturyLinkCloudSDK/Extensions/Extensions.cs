@@ -1,4 +1,5 @@
 ﻿using CenturyLinkCloudSDK.Runtime;
+using CenturyLinkCloudSDK.ServiceModels;
 using Newtonsoft.Json.Linq;
 using System;
 
@@ -52,31 +53,116 @@ namespace CenturyLinkCloudSDK.Extensions
             return Constants.GeneralMessages.RoundingNotAccounted;
         }
 
-        internal static string ConvertMBToHigherUnit(this int number)
+        internal static AssetMeasure ConvertAssetMeasure(this int number, string unitOfMeasure)
         {
-            if (number < 0)
+            if (number < 0 || string.IsNullOrEmpty(unitOfMeasure))
             {
-                return Constants.GeneralMessages.NegativeNumberNotValid;
+                return null;
             }
 
-            if (number <= 1024)
+            var assetMeasure = new AssetMeasure();
+
+            if(unitOfMeasure == Constants.Metrics.Bytes)
             {
-                return string.Format("{0} {1}", number, "MB");
+                if (number < 1024)
+                {
+                    assetMeasure.Total = number;
+                    assetMeasure.UnitOfMeasure = unitOfMeasure;
+                    return assetMeasure;
+                }
+
+                if (number >= 1024 && number < 1048576)
+                {
+                    var convertedNumber = Math.Truncate((double)number / 1024);
+
+                    assetMeasure.Total = (int)convertedNumber;
+                    assetMeasure.UnitOfMeasure = Constants.Metrics.KiloBytes;
+                    return assetMeasure;
+                }
+
+                if (number >= 1048576 && number < 1073741824)
+                {
+                    var convertedNumber = Math.Truncate((double)number / 1048576);
+                    assetMeasure.Total = (int)convertedNumber;
+                    assetMeasure.UnitOfMeasure = Constants.Metrics.MegaBytes;
+                    return assetMeasure;
+                }
             }
 
-            if (number > 1024 && number < 1048576)
+            if (unitOfMeasure == Constants.Metrics.KiloBytes)
             {
-                var roundedNumber = Math.Truncate((double)number / 1024);
-                return string.Format("{0} {1}", roundedNumber, "GB");
+                if (number < 1024)
+                {
+                    assetMeasure.Total = number;
+                    assetMeasure.UnitOfMeasure = unitOfMeasure;
+                    return assetMeasure;
+                }
+
+                if (number >= 1024 && number < 1048576)
+                {
+                    var convertedNumber = Math.Truncate((double)number / 1024);
+
+                    assetMeasure.Total = (int)convertedNumber;
+                    assetMeasure.UnitOfMeasure = Constants.Metrics.MegaBytes;
+                    return assetMeasure;
+                }
+
+                if (number >= 1048576 && number < 1073741824)
+                {
+                    var convertedNumber = Math.Truncate((double)number / 1048576);
+                    assetMeasure.Total = (int)convertedNumber;
+                    assetMeasure.UnitOfMeasure = Constants.Metrics.GigaBytes;
+                    return assetMeasure;
+                }
             }
 
-            if (number >= 1048576)
+            if (unitOfMeasure == Constants.Metrics.MegaBytes)
             {
-                var roundedNumber = Math.Truncate((double)number / 1048576);
-                return string.Format("{0} {1}", roundedNumber, "TB");
+                if (number < 1024)
+                {
+                    assetMeasure.Total = number;
+                    assetMeasure.UnitOfMeasure = unitOfMeasure;
+                    return assetMeasure;
+                }
+
+                if (number >= 1024 && number < 1048576)
+                {
+                    var convertedNumber = Math.Truncate((double)number / 1024);
+
+                    assetMeasure.Total = (int)convertedNumber;
+                    assetMeasure.UnitOfMeasure = Constants.Metrics.GigaBytes;
+                    return assetMeasure;
+                }
+
+                if (number >= 1048576 && number < 1073741824)
+                {
+                    var convertedNumber = Math.Truncate((double)number / 1048576);
+                    assetMeasure.Total = (int)convertedNumber;
+                    assetMeasure.UnitOfMeasure = Constants.Metrics.TeraBytes;
+                    return assetMeasure;
+                }
             }
 
-            return Constants.GeneralMessages.RoundingNotAccounted;
+            if (unitOfMeasure == Constants.Metrics.GigaBytes)
+            {
+                if (number < 1024)
+                {
+                    assetMeasure.Total = number;
+                    assetMeasure.UnitOfMeasure = unitOfMeasure;
+                    return assetMeasure;
+                }
+
+                if (number >= 1024)
+                {
+                    var convertedNumber = Math.Truncate((double)number / 1024);
+
+                    assetMeasure.Total = (int)convertedNumber;
+                    assetMeasure.UnitOfMeasure = Constants.Metrics.TeraBytes;
+                    return assetMeasure;
+                }
+            }
+
+            return null;
         }
     }
 }

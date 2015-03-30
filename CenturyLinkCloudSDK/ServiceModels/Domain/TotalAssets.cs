@@ -14,8 +14,8 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public int Queue { get; set; }
 
-        public string MemoryGBFormatted { get; set; }
+        public AssetMeasure Memory { get; set; }
 
-        public string StorageGBFormatted { get; set; }
+        public AssetMeasure Storage { get; set; }
     }
 }

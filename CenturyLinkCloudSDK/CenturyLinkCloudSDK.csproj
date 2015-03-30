@@ -49,6 +49,7 @@
     <Compile Include="ServiceModels\Domain\AlertActionSettings.cs" />
     <Compile Include="ServiceModels\Domain\AlertPolicies.cs" />
     <Compile Include="ServiceModels\Domain\AlertTrigger.cs" />
+    <Compile Include="ServiceModels\Domain\AssetMeasure.cs" />
     <Compile Include="ServiceModels\Domain\Authentication.cs" />
     <Compile Include="ServiceModels\Domain\BillingDetail.cs" />
     <Compile Include="ServiceModels\Domain\DataCenter.cs">

@@ -93,6 +93,12 @@
             internal const string Cpu = "cpu";
             internal const string Memory = "memory";
             internal const string Disk = "disk";
+
+            internal const string Bytes = "B";
+            internal const string KiloBytes = "KB";
+            internal const string MegaBytes = "MB";
+            internal const string GigaBytes = "GB";
+            internal const string TeraBytes = "TB";
         }
 
         internal static class ExceptionMessages
