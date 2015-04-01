@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using CenturyLinkCloudSDK.Extensions;
+using System.Linq;
 
 namespace CenturyLinkCloudSDK.Services
 {
@@ -242,6 +243,97 @@ namespace CenturyLinkCloudSDK.Services
             }
 
             return serverIds;
+        }
+
+        /// <summary>
+        /// Gets the group hierarchy by GroupId with nested groups and servers optional.
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <param name="includeServers"></param>
+        /// <returns></returns>
+        public async Task<GroupHierarchy> GetGroupHierarchy(string groupId, bool includeServers)
+        {
+            return await GetGroupHierarchy(groupId, includeServers, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the group hierarchy by GroupId with nested groups and servers optional.
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <param name="includeServers"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<GroupHierarchy> GetGroupHierarchy(string groupId, bool includeServers, CancellationToken cancellationToken)
+        {
+            var group = await GetGroup(groupId).ConfigureAwait(false);
+            return await GetGroupHierarchy(group, includeServers, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the group hierarchy by Group with nested groups and servers optional.
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="includeServers"></param>
+        /// <returns></returns>
+        public async Task<GroupHierarchy> GetGroupHierarchy(Group group, bool includeServers)
+        {
+            return await GetGroupHierarchy(group, new GroupHierarchy(), includeServers, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the group hierarchy by Group with nested groups and servers optional.
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="includeServers"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<GroupHierarchy> GetGroupHierarchy(Group group, bool includeServers, CancellationToken cancellationToken)
+        {
+            return await GetGroupHierarchy(group, new GroupHierarchy(), includeServers, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Recursive method that loops through all nested groups within a group and returns the whole hierarchy tree with servers optional.
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="groupHierarchy"></param>
+        /// <param name="includeServers"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        internal async Task<GroupHierarchy> GetGroupHierarchy(Group group, GroupHierarchy groupHierarchy, bool includeServers, CancellationToken cancellationToken)
+        {
+            groupHierarchy.GroupId = group.Id;
+            groupHierarchy.GroupName = group.Name;
+
+            group.Authentication = authentication;
+
+            if (includeServers)
+            {
+                var groupServers = await group.GetServers(cancellationToken).ConfigureAwait(false);
+
+                if (groupServers != null)
+                {
+                    foreach (var server in groupServers)
+                    {
+                        var serverState = new ServerState()
+                        {
+                            ServerId = server.Id,
+                            ServerName = server.Name,
+                            PowerState = server.Details.PowerState,
+                            InMaintenanceMode = server.Details.InMaintenanceMode
+                        };
+
+                        groupHierarchy.Servers.Add(serverState);
+                    }
+                }
+            }
+
+            foreach (var subgroup in group.Groups)
+            {
+                groupHierarchy.Groups.Add(await GetGroupHierarchy(subgroup, new GroupHierarchy(), includeServers, cancellationToken).ConfigureAwait(false));
+            }
+
+            return groupHierarchy;
         }
 
         /// <summary>
