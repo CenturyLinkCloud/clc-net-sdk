@@ -119,6 +119,7 @@
         internal static class GeneralMessages
         {
             internal const string NegativeNumberNotValid = "Negative numbers are not valid in this context.";
+            internal const string NullNotValid = "Nulls are not valid in this context.";
             internal const string RoundingNotAccounted = "Number rounding not accounted for.";
         }
 

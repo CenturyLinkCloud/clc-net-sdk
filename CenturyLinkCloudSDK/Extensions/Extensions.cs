@@ -26,8 +26,13 @@ namespace CenturyLinkCloudSDK.Extensions
 
     internal static class NumberExtensions
     {
-        internal static string RoundNumberToNearestUpperLimit(this int number)
+        internal static string RoundNumberToNearestUpperLimit(this int? number)
         {
+            if (number == null)
+            {
+                return Constants.GeneralMessages.NullNotValid;
+            }
+
             if(number < 0)
             {
                 return Constants.GeneralMessages.NegativeNumberNotValid;
