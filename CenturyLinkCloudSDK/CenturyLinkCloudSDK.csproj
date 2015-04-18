@@ -44,6 +44,7 @@
     <Compile Include="Runtime\ServiceInvoker.cs" />
     <Compile Include="ServiceModels\Domain\Activity.cs" />
     <Compile Include="ServiceModels\Domain\AccountBillingDetail.cs" />
+    <Compile Include="ServiceModels\Domain\AdditionalDisk.cs" />
     <Compile Include="ServiceModels\Domain\Alert.cs" />
     <Compile Include="ServiceModels\Domain\AlertAction.cs" />
     <Compile Include="ServiceModels\Domain\AlertActionSettings.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="ServiceModels\Domain\ImportableOsType.cs" />
     <Compile Include="ServiceModels\Domain\IntegerLimit.cs" />
     <Compile Include="ServiceModels\Domain\NetworkLimits.cs" />
+    <Compile Include="ServiceModels\Domain\Package.cs" />
     <Compile Include="ServiceModels\Domain\Partition.cs" />
     <Compile Include="ServiceModels\Domain\ServerPricing.cs" />
     <Compile Include="ServiceModels\Domain\ServerState.cs" />
@@ -81,12 +83,14 @@
     <Compile Include="ServiceModels\Requests\Authentication\LoginRequest.cs" />
     <Compile Include="ServiceModels\Requests\DataCenter\GetRecentActivityRequest.cs" />
     <Compile Include="ServiceModels\Requests\Group\GetRecentActivityRequest.cs" />
+    <Compile Include="ServiceModels\Requests\Server\CreateServerRequest.cs" />
     <Compile Include="ServiceModels\Responses\Authentication\LoginResponse.cs" />
     <Compile Include="ServiceModels\Responses\DataCenters\GetDataCenterGroupsResponse.cs" />
     <Compile Include="ServiceModels\Responses\DataCenters\GetDataCenterResponse.cs" />
     <Compile Include="ServiceModels\Responses\DataCenters\GetDataCentersResponse.cs" />
     <Compile Include="ServiceModels\Responses\Groups\GetGroupResponse.cs" />
     <Compile Include="ServiceModels\Responses\Queues\GetStatusResponse.cs" />
+    <Compile Include="ServiceModels\Responses\Servers\CreateServerResponse.cs" />
     <Compile Include="ServiceModels\Responses\Servers\GetServerResponse.cs" />
     <Compile Include="ServiceModels\Responses\Servers\ServerPowerOpsResponse.cs" />
     <Compile Include="Services\AccountService.cs" />

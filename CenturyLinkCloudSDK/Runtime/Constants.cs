@@ -62,6 +62,8 @@
             {
                 internal static string GetServer { get { return "{0}/v2/servers/{1}/{2}"; } }
 
+                internal static string CreateServer { get { return "{0}/v2/servers/{1}"; } }   
+
                 internal static string PauseServer { get { return "{0}/v2/operations/{1}/servers/pause"; } }
 
                 internal static string PowerOnServer { get { return "{0}/v2/operations/{1}/servers/powerOn"; } }

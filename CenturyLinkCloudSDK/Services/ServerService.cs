@@ -1,5 +1,6 @@
 ﻿using CenturyLinkCloudSDK.Runtime;
 using CenturyLinkCloudSDK.ServiceModels;
+using CenturyLinkCloudSDK.ServiceModels.Requests.Server;
 using CenturyLinkCloudSDK.ServiceModels.Responses.Servers;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -289,6 +290,30 @@ namespace CenturyLinkCloudSDK.Services
         {
             var uri = string.Format(Constants.ServiceUris.Server.GetServerStatistics, Configuration.BaseUri, authentication.AccountAlias, serverId, Constants.ServiceUris.Querystring.GetLatestStatistics);
             return await GetServerStatisticsByLink(uri, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Creates a server.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<CreateServerResponse> CreateServer(CreateServerRequest request)
+        {
+            return await CreateServer(request, CancellationToken.None).ConfigureAwait(false); ;
+        }
+
+        /// <summary>
+        /// Creates a server.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<CreateServerResponse> CreateServer(CreateServerRequest request, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.CreateServer, Configuration.BaseUri, authentication.AccountAlias), request);
+            var result = await ServiceInvoker.Invoke<CreateServerResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            return result;
         }
 
         /// <summary>
