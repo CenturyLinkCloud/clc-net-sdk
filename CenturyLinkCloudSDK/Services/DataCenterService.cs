@@ -328,6 +328,30 @@ namespace CenturyLinkCloudSDK.Services
         }
 
         /// <summary>
+        /// Gets the deployment capabilities.
+        /// </summary>
+        /// <param name="dataCenterId"></param>
+        /// <returns></returns>
+        public async Task<DataCenterDeploymentCapability> GetDeploymentCapabilities(string dataCenterId)
+        {
+            return await GetDeploymentCapabilities(dataCenterId, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the deployment capabilities.
+        /// </summary>
+        /// <param name="dataCenterId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<DataCenterDeploymentCapability> GetDeploymentCapabilities(string dataCenterId, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDeploymentCapabilities, Configuration.BaseUri, authentication.AccountAlias, dataCenterId));
+            var result = await ServiceInvoker.Invoke<DataCenterDeploymentCapability>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+ 
+            return result;
+        }
+
+        /// <summary>
         /// Gets the information for a particular data center by accepting a hypermedia link.
         /// </summary>
         /// <param name="uri"></param>

@@ -9,7 +9,7 @@
         internal static class ServiceUris
         {
             internal const string JsonMediaType = "application/json";
-            internal const string ApiBaseAddress = "https://api.tier3.com";
+            internal const string ApiBaseAddress = "https://api.ctl.io";    //Old Address: "https://api.tier3.com";
 
             internal static class Account
             {
@@ -42,6 +42,8 @@
                 internal static string GetDataCenter { get { return "{0}/v2/datacenters/{1}/{2}{3}"; } }
 
                 internal static string GetRecentActivity { get { return Account.GetRecentActivity; } }
+
+                internal static string GetDeploymentCapabilities { get { return "{0}/v2/datacenters/{1}/{2}/deploymentCapabilities"; } }
             }
 
             internal static class Group
