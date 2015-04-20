@@ -72,6 +72,7 @@
     <Compile Include="ServiceModels\Domain\NetworkLimits.cs" />
     <Compile Include="ServiceModels\Domain\Package.cs" />
     <Compile Include="ServiceModels\Domain\Partition.cs" />
+    <Compile Include="ServiceModels\Domain\PatchOperation.cs" />
     <Compile Include="ServiceModels\Domain\PublicIpAddress.cs" />
     <Compile Include="ServiceModels\Domain\ServerCredential.cs" />
     <Compile Include="ServiceModels\Domain\ServerPricing.cs" />

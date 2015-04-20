@@ -87,6 +87,8 @@
                 internal static string AddPublicIpAddress { get { return "{0}/v2/servers/{1}/{2}/publicIPAddresses"; } }
 
                 internal static string RUDPublicIpAddress { get { return "{0}/v2/servers/{1}/{2}/publicIPAddresses/{3}"; } } 
+
+                internal static string SetCpuAndMemory { get { return "{0}/v2/servers/{1}/{2}"; } } 
             }
 
             internal static class Querystring

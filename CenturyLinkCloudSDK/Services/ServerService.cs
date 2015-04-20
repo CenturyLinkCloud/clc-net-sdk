@@ -447,6 +447,21 @@ namespace CenturyLinkCloudSDK.Services
             return result;
         }
 
+
+        public async Task<Link> SetCpuAndMemory(string serverId, IEnumerable<PatchOperation> operations)
+        {
+            return await SetCpuAndMemory(serverId, operations, CancellationToken.None).ConfigureAwait(false);
+        }
+
+
+        public async Task<Link> SetCpuAndMemory(string serverId, IEnumerable<PatchOperation> operations, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(new HttpMethod("PATCH"), string.Format(Constants.ServiceUris.Server.SetCpuAndMemory, Configuration.BaseUri, authentication.AccountAlias, serverId), operations);
+            var result = await ServiceInvoker.Invoke<Link>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            return result;
+        }
+
         /// <summary>
         /// Returns recent group activity.
         /// </summary>
