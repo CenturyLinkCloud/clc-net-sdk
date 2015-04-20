@@ -1,5 +1,6 @@
 ﻿using CenturyLinkCloudSDK.Runtime;
 using CenturyLinkCloudSDK.ServiceModels;
+using CenturyLinkCloudSDK.ServiceModels.Requests.Group;
 using CenturyLinkCloudSDK.ServiceModels.Requests.Server;
 using CenturyLinkCloudSDK.ServiceModels.Responses.Servers;
 using Newtonsoft.Json;
@@ -312,6 +313,108 @@ namespace CenturyLinkCloudSDK.Services
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.CreateServer, Configuration.BaseUri, authentication.AccountAlias), request);
             var result = await ServiceInvoker.Invoke<CreateServerResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the server credentials.
+        /// </summary>
+        /// <param name="serverId"></param>
+        /// <returns></returns>
+        public async Task<ServerCredential> GetServerCredentials(string serverId)
+        {
+            return await GetServerCredentials(serverId, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the server credentials.
+        /// </summary>
+        /// <param name="serverId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<ServerCredential> GetServerCredentials(string serverId, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Server.GetServerCredentials, Configuration.BaseUri, authentication.AccountAlias, serverId));
+            var result = await ServiceInvoker.Invoke<ServerCredential>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            return result;
+        }
+
+
+
+
+        /// <summary>
+        /// Returns recent group activity.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> referenceIds)
+        {
+
+            return await GetRecentActivity(referenceIds, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Returns recent group activity.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> referenceIds, CancellationToken cancellationToken)
+        {
+
+            return await GetRecentActivity(referenceIds, 10, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Returns recent group activity.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> referenceIds, int recordCountLimit)
+        {
+
+            return await GetRecentActivity(referenceIds, recordCountLimit, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Returns recent data center activity.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> accounts, IEnumerable<string> referenceIds, int recordCountLimit)
+        {
+            return await GetRecentActivity(accounts, referenceIds, recordCountLimit, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Returns recent group activity.
+        /// </summary>
+        /// <param name="referenceIds"></param>
+        /// <param name="recordCountLimit"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> referenceIds, int recordCountLimit, CancellationToken cancellationToken)
+        {
+            var accounts = new List<string>();
+            accounts.Add(authentication.AccountAlias);
+
+            return await GetRecentActivity(accounts, referenceIds, recordCountLimit, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Returns recent group activity.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> accounts, IEnumerable<string> referenceIds, int recordCountLimit, CancellationToken cancellationToken)
+        {
+            var requestModel = new GetRecentActivityRequest()
+            {
+                EntityTypes = new List<string>() { Constants.EntityTypes.Server },
+                ReferenceIds = referenceIds,
+                Accounts = accounts,
+                Limit = recordCountLimit
+            };
+
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Group.GetRecentActivity, Configuration.BaseUri), requestModel);
+            var result = await ServiceInvoker.Invoke<IEnumerable<Activity>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }

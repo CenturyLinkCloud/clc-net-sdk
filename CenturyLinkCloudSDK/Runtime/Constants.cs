@@ -81,6 +81,8 @@
                 internal static string StopMaintenance { get { return "{0}/v2/operations/{1}/servers/stopMaintenance"; } }
                 
                 internal static string GetServerStatistics { get { return "{0}/v2/servers/{1}/{2}/statistics{3}"; } }
+
+                internal static string GetServerCredentials { get { return "{0}/v2/servers/{1}/{2}/credentials"; } }
             }
 
             internal static class Querystring
