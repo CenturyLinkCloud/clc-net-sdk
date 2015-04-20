@@ -72,6 +72,7 @@
     <Compile Include="ServiceModels\Domain\NetworkLimits.cs" />
     <Compile Include="ServiceModels\Domain\Package.cs" />
     <Compile Include="ServiceModels\Domain\Partition.cs" />
+    <Compile Include="ServiceModels\Domain\PublicIpAddress.cs" />
     <Compile Include="ServiceModels\Domain\ServerCredential.cs" />
     <Compile Include="ServiceModels\Domain\ServerPricing.cs" />
     <Compile Include="ServiceModels\Domain\ServerState.cs" />
@@ -116,7 +117,7 @@
     <Compile Include="ServiceModels\Domain\CustomField.cs" />
     <Compile Include="ServiceModels\Domain\IpAddress.cs" />
     <Compile Include="ServiceModels\Domain\Link.cs" />
-    <Compile Include="ServiceModels\Domain\Port.cs" />
+    <Compile Include="ServiceModels\Domain\PortDetail.cs" />
     <Compile Include="ServiceModels\Domain\ServerDetail.cs" />
     <Compile Include="ServiceModels\Domain\Snapshot.cs" />
     <Compile Include="ServiceModels\Domain\SourceRestriction.cs" />

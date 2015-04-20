@@ -341,8 +341,111 @@ namespace CenturyLinkCloudSDK.Services
             return result;
         }
 
+        /// <summary>
+        /// Gets a public ip address.
+        /// </summary>
+        /// <param name="serverId"></param>
+        /// <param name="publicIp"></param>
+        /// <returns></returns>
+        public async Task<PublicIpAddress> GetPublicIpAddress(string serverId, string publicIp)
+        {
+            return await GetPublicIpAddress(serverId, publicIp, CancellationToken.None).ConfigureAwait(false);
+        }
 
+        /// <summary>
+        /// Gets a public ip address.
+        /// </summary>
+        /// <param name="serverId"></param>
+        /// <param name="publicIp"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<PublicIpAddress> GetPublicIpAddress(string serverId, string publicIp, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Server.RUDPublicIpAddress, Configuration.BaseUri, authentication.AccountAlias, serverId, publicIp));
+            var result = await ServiceInvoker.Invoke<PublicIpAddress>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
+            return result;
+        }
+
+        /// <summary>
+        /// Adds a public ip address.
+        /// </summary>
+        /// <param name="serverId"></param>
+        /// <param name="publicIpRequestContent"></param>
+        /// <returns></returns>
+        public async Task<Link> AddPublicIpAddress(string serverId, PublicIpAddress publicIpRequestContent)
+        {
+            return await AddPublicIpAddress(serverId, publicIpRequestContent, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Adds a public ip address.
+        /// </summary>
+        /// <param name="serverId"></param>
+        /// <param name="publicIpRequestContent"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<Link> AddPublicIpAddress(string serverId, PublicIpAddress publicIpRequestContent, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.AddPublicIpAddress, Configuration.BaseUri, authentication.AccountAlias, serverId), publicIpRequestContent);
+            var result = await ServiceInvoker.Invoke<Link>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Removes a public ip address.
+        /// </summary>
+        /// <param name="serverId"></param>
+        /// <param name="publicIp"></param>
+        /// <returns></returns>
+        public async Task<Link> RemovePublicIpAddress(string serverId, string publicIp)
+        {
+            return await RemovePublicIpAddress(serverId, publicIp, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Removes a public ip address.
+        /// </summary>
+        /// <param name="serverId"></param>
+        /// <param name="publicIp"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<Link> RemovePublicIpAddress(string serverId, string publicIp, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Delete, string.Format(Constants.ServiceUris.Server.RUDPublicIpAddress, Configuration.BaseUri, authentication.AccountAlias, serverId, publicIp));
+            var result = await ServiceInvoker.Invoke<Link>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Updates a public ip address.
+        /// </summary>
+        /// <param name="serverId"></param>
+        /// <param name="publicIp"></param>
+        /// <param name="publicIpRequestContent"></param>
+        /// <returns></returns>
+        public async Task<Link> UpdatePublicIpAddress(string serverId, string publicIp, PublicIpAddress publicIpRequestContent)
+        {
+            return await UpdatePublicIpAddress(serverId, publicIp, publicIpRequestContent, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Updates a public ip address.
+        /// </summary>
+        /// <param name="serverId"></param>
+        /// <param name="publicIp"></param>
+        /// <param name="publicIpRequestContent"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<Link> UpdatePublicIpAddress(string serverId, string publicIp, PublicIpAddress publicIpRequestContent, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Put, string.Format(Constants.ServiceUris.Server.RUDPublicIpAddress, Configuration.BaseUri, authentication.AccountAlias, serverId, publicIp), publicIpRequestContent);
+            var result = await ServiceInvoker.Invoke<Link>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            return result;
+        }
 
         /// <summary>
         /// Returns recent group activity.
