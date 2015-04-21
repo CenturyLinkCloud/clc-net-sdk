@@ -61,6 +61,8 @@
     <Compile Include="ServiceModels\Domain\DefaultSettings.cs" />
     <Compile Include="ServiceModels\Domain\DeployableNetwork.cs" />
     <Compile Include="ServiceModels\Domain\Disk.cs" />
+    <Compile Include="ServiceModels\Domain\DiskPatch.cs" />
+    <Compile Include="ServiceModels\Domain\DiskPatchOperation.cs" />
     <Compile Include="ServiceModels\Domain\DiskUsageStatistic.cs" />
     <Compile Include="ServiceModels\Domain\GroupBilling.cs" />
     <Compile Include="ServiceModels\Domain\GroupBillingDetail.cs" />
@@ -72,7 +74,7 @@
     <Compile Include="ServiceModels\Domain\NetworkLimits.cs" />
     <Compile Include="ServiceModels\Domain\Package.cs" />
     <Compile Include="ServiceModels\Domain\Partition.cs" />
-    <Compile Include="ServiceModels\Domain\PatchOperation.cs" />
+    <Compile Include="ServiceModels\Domain\CpuAndMemoryPatchOperation.cs" />
     <Compile Include="ServiceModels\Domain\PublicIpAddress.cs" />
     <Compile Include="ServiceModels\Domain\ServerCredential.cs" />
     <Compile Include="ServiceModels\Domain\ServerPricing.cs" />
