@@ -13,6 +13,8 @@ namespace CenturyLinkCloudSDK.ServiceModels
     {
         private Lazy<IEnumerable<Link>> serverLinks;
 
+        private Lazy<Link> selfLink;
+
         [JsonPropertyAttribute]
         private IEnumerable<Link> Links { get; set; }
 
@@ -26,6 +28,11 @@ namespace CenturyLinkCloudSDK.ServiceModels
             serverLinks = new Lazy<IEnumerable<Link>>(()=>
             {
                 return Links.Where(l => String.Equals(l.Rel, "server", StringComparison.CurrentCultureIgnoreCase)).ToList();
+            });
+
+            selfLink = new Lazy<Link>(() =>
+            {
+                return Links.Where(l => String.Equals(l.Rel, "self", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
             });
         }
 
@@ -79,6 +86,38 @@ namespace CenturyLinkCloudSDK.ServiceModels
             }
 
             return servers;
+        }
+
+        /// <summary>
+        /// Gets the triggers. If the Triggers property is null (coming from the GetServer method that is the case).
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<AlertTrigger>> GetTriggers()
+        {
+            return await GetTriggers(CancellationToken.None);
+        }
+
+        /// <summary>
+        ///  /// Gets the triggers. If the Triggers property is null (coming from the GetServer method that is the case).
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<AlertTrigger>> GetTriggers(CancellationToken cancellationToken)
+        {
+            if (Triggers == null)
+            {
+                if (selfLink.Value != null)
+                {
+                    var alertService = new AlertService(Authentication);
+                    return await alertService.GetTriggersByAlertPolicyLink(Configuration.BaseUri + selfLink.Value.Href, cancellationToken);
+                }
+
+                return null;
+            }
+            else
+            {
+                return Triggers;
+            } 
         }
     }
 }

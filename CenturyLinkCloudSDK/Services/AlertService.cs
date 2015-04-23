@@ -43,6 +43,32 @@ namespace CenturyLinkCloudSDK.Services
         }
 
         /// <summary>
+        /// Gets the alerts for a particular server.
+        /// </summary>
+        /// <param name="serverId"></param>
+        /// <param name="alertPolicies"></param>
+        /// <param name="statistics"></param>
+        /// <returns></returns>
+        public async Task<List<Alert>> GetServerAlerts(string serverId, IEnumerable<AlertPolicy> alertPolicies, Statistics statistics)
+        {
+            return await GetServerAlerts(serverId, alertPolicies, statistics, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the alerts for a particular server.
+        /// </summary>
+        /// <param name="serverId"></param>
+        /// <param name="alertPolicies"></param>
+        /// <param name="statistics"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<List<Alert>> GetServerAlerts(string serverId, IEnumerable<AlertPolicy> alertPolicies, Statistics statistics, CancellationToken cancellationToken)
+        {
+            var alerts = await ScanAlertPoliciesForAlerts(serverId, alertPolicies, statistics).ConfigureAwait(false);
+            return alerts;
+        }
+
+        /// <summary>
         /// Gets the alerts for all servers in the account that subscribe to an alert policy.
         /// </summary>
         /// <returns></returns>
@@ -84,7 +110,7 @@ namespace CenturyLinkCloudSDK.Services
                             {
                                 try
                                 {
-                                    var alert = GetServerAlert(alertPolicy, trigger, statistic, server);
+                                    var alert = GetServerAlert(alertPolicy, trigger, statistic, server.Id);
 
                                     if (alert != null)
                                     {
@@ -106,6 +132,76 @@ namespace CenturyLinkCloudSDK.Services
         }
 
         /// <summary>
+        /// Gets the triggers for an alert policy.
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        internal async Task<IEnumerable<AlertTrigger>> GetTriggersByAlertPolicyLink(string uri)
+        {
+            return await GetTriggersByAlertPolicyLink(uri, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the triggers for an alert policy.
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        internal async Task<IEnumerable<AlertTrigger>> GetTriggersByAlertPolicyLink(string uri, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
+            var alertPolicy = await ServiceInvoker.Invoke<AlertPolicy>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            return alertPolicy.Triggers;
+        }
+
+        /// <summary>
+        /// Loops through alert policies to determine if a server needs to be alerted.
+        /// </summary>
+        /// <param name="serverId"></param>
+        /// <param name="alertPolicies"></param>
+        /// <param name="statistics"></param>
+        /// <returns></returns>
+        private async Task<List<Alert>> ScanAlertPoliciesForAlerts(string serverId, IEnumerable<AlertPolicy> alertPolicies, Statistics statistics)
+        {
+            var alerts = new List<Alert>();
+
+            foreach (var alertPolicy in alertPolicies)
+            {
+                var statistic = statistics.Stats.FirstOrDefault();
+
+                if (statistic != null)
+                {
+                    alertPolicy.Authentication = authentication;
+                    var triggers = await alertPolicy.GetTriggers().ConfigureAwait(false);
+
+                    if (triggers != null)
+                    {
+                        foreach (var trigger in triggers)
+                        {
+                            try
+                            {
+                                var alert = GetServerAlert(alertPolicy, trigger, statistic, serverId);
+
+                                if (alert != null)
+                                {
+                                    alerts.Add(alert);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                var exception = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.AlertGenerationExceptionMessage, ex);
+                                throw exception;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return alerts;
+        }
+
+        /// <summary>
         /// Determines if a server has violated a certain alert policy and returns an alert if true;
         /// </summary>
         /// <param name="alertPolicy"></param>
@@ -113,13 +209,13 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="statistic"></param>
         /// <param name="server"></param>
         /// <returns></returns>
-        private Alert GetServerAlert(AlertPolicy alertPolicy, AlertTrigger trigger, ServerStatistic statistic, Server server)
+        private Alert GetServerAlert(AlertPolicy alertPolicy, AlertTrigger trigger, ServerStatistic statistic, string serverId)
         {
             if (string.Equals(trigger.Metric, Constants.Metrics.Cpu, StringComparison.CurrentCultureIgnoreCase))
             {
                 if (statistic.CpuPercent > trigger.Threshold / 100)
                 {
-                    return GenerateAlert(alertPolicy, trigger, statistic, server, Constants.AlertMessages.CpuAlert);
+                    return GenerateAlert(alertPolicy, trigger, statistic, serverId, Constants.AlertMessages.CpuAlert);
                 }
             }
 
@@ -127,7 +223,7 @@ namespace CenturyLinkCloudSDK.Services
             {
                 if (statistic.MemoryPercent > trigger.Threshold / 100)
                 {
-                    return GenerateAlert(alertPolicy, trigger, statistic, server, Constants.AlertMessages.MemoryAlert);
+                    return GenerateAlert(alertPolicy, trigger, statistic, serverId, Constants.AlertMessages.MemoryAlert);
                 }
             }
 
@@ -143,7 +239,7 @@ namespace CenturyLinkCloudSDK.Services
 
                 if (totalDiskUsage > trigger.Threshold / 100)
                 {
-                    return GenerateAlert(alertPolicy, trigger, statistic, server, Constants.AlertMessages.DiskUsageAlert);
+                    return GenerateAlert(alertPolicy, trigger, statistic, serverId, Constants.AlertMessages.DiskUsageAlert);
                 }
             }
 
@@ -159,12 +255,12 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="server"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        private Alert GenerateAlert(AlertPolicy alertPolicy, AlertTrigger trigger, ServerStatistic statistic, Server server, string message)
+        private Alert GenerateAlert(AlertPolicy alertPolicy, AlertTrigger trigger, ServerStatistic statistic, string serverId, string message)
         {
             var alert = new Alert()
             {
                 AlertPolicyId = alertPolicy.Id,
-                ServerId = server.Id,
+                ServerId = serverId,
                 Metric = trigger.Metric,
                 Message = message,
                 GeneratedOn = statistic.Timestamp

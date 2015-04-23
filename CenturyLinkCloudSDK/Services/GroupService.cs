@@ -293,6 +293,29 @@ namespace CenturyLinkCloudSDK.Services
         }
 
         /// <summary>
+        /// Gets the default settings that are inherited by the Data Center.
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <returns></returns>
+        public async Task<DefaultSettings> GetDefaultSettings(string groupId)
+        {
+            return await GetDefaultSettings(groupId, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the default settings that are inherited by the Data Center.
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<DefaultSettings> GetDefaultSettings(string groupId, CancellationToken cancellationToken)
+        {
+            var uri = string.Format(Constants.ServiceUris.Group.GetDefaultSettings, Configuration.BaseUri, authentication.AccountAlias, groupId);
+            var dataCenterService = new DataCenterService(authentication);
+            return await dataCenterService.GetDefaultSettingsByLink(uri, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Recursive method that loops through all nested groups within a group and returns the whole hierarchy tree with servers optional.
         /// </summary>
         /// <param name="group"></param>

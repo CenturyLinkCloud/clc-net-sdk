@@ -51,6 +51,8 @@
                 internal static string GetGroup { get { return "{0}/v2/groups/{1}/{2}"; } }
 
                 internal static string GetRecentActivity { get { return Account.GetRecentActivity; } }
+
+                internal static string GetDefaultSettings { get { return "{0}/v2/groups/{1}/{2}/defaults"; } }
             }
 
             internal static class Queue
