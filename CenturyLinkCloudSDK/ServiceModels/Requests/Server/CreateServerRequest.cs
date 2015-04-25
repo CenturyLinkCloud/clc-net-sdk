@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -46,7 +47,8 @@ namespace CenturyLinkCloudSDK.ServiceModels.Requests.Server
 
         public IEnumerable<AdditionalDisk> AdditionalDisks { get; set; }
 
-        public DateTime Ttl { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public DateTime? Ttl { get; set; }
 
         public IEnumerable<Package> Packages { get; set; }
     }
