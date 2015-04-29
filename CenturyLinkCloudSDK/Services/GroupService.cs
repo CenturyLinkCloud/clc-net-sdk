@@ -1,7 +1,6 @@
 ﻿using CenturyLinkCloudSDK.Runtime;
 using CenturyLinkCloudSDK.ServiceModels;
 using CenturyLinkCloudSDK.ServiceModels.Requests.Group;
-using CenturyLinkCloudSDK.ServiceModels.Responses.Groups;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;

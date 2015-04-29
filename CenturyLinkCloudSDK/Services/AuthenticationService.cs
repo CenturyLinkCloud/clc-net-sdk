@@ -1,7 +1,6 @@
 ﻿using CenturyLinkCloudSDK.Runtime;
 using CenturyLinkCloudSDK.ServiceModels;
 using CenturyLinkCloudSDK.ServiceModels.Requests.Authentication;
-using CenturyLinkCloudSDK.ServiceModels.Responses.Authentication;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Threading;

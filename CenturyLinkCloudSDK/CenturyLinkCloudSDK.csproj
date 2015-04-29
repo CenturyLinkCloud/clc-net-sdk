@@ -89,15 +89,7 @@
     <Compile Include="ServiceModels\Requests\DataCenter\GetRecentActivityRequest.cs" />
     <Compile Include="ServiceModels\Requests\Group\GetRecentActivityRequest.cs" />
     <Compile Include="ServiceModels\Requests\Server\CreateServerRequest.cs" />
-    <Compile Include="ServiceModels\Responses\Authentication\LoginResponse.cs" />
-    <Compile Include="ServiceModels\Responses\DataCenters\GetDataCenterGroupsResponse.cs" />
-    <Compile Include="ServiceModels\Responses\DataCenters\GetDataCenterResponse.cs" />
-    <Compile Include="ServiceModels\Responses\DataCenters\GetDataCentersResponse.cs" />
-    <Compile Include="ServiceModels\Responses\Groups\GetGroupResponse.cs" />
-    <Compile Include="ServiceModels\Responses\Queues\GetStatusResponse.cs" />
     <Compile Include="ServiceModels\Responses\Servers\CreateServerResponse.cs" />
-    <Compile Include="ServiceModels\Responses\Servers\GetServerResponse.cs" />
-    <Compile Include="ServiceModels\Responses\Servers\ServerPowerOpsResponse.cs" />
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\AlertService.cs" />
     <Compile Include="Services\BillingService.cs" />
@@ -112,7 +104,6 @@
     <Compile Include="ServiceModels\Domain\Server.cs" />
     <Compile Include="ServiceModels\Domain\ServerOperation.cs" />
     <Compile Include="ServiceModels\Domain\UserInfo.cs" />
-    <Compile Include="ServiceModels\Interfaces\IResponseRoot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="ServiceModels\Domain\AlertPolicy.cs" />
