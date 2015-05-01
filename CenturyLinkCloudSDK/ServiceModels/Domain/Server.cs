@@ -13,6 +13,8 @@ namespace CenturyLinkCloudSDK.ServiceModels
     {
         private Lazy<Link> statisticsLink;
 
+        private Lazy<Link> credentialsLink;
+
         [JsonPropertyAttribute]
         private IEnumerable<Link> Links { get; set; }
 
@@ -26,6 +28,11 @@ namespace CenturyLinkCloudSDK.ServiceModels
             statisticsLink = new Lazy<Link>(() =>
             {
                 return Links.FirstOrDefault(l => String.Equals(l.Rel, "statistics", StringComparison.CurrentCultureIgnoreCase));
+            });
+
+            credentialsLink = new Lazy<Link>(() =>
+            {
+                return Links.FirstOrDefault(l => String.Equals(l.Rel, "credentials", StringComparison.CurrentCultureIgnoreCase));
             });
         }
 
@@ -62,6 +69,15 @@ namespace CenturyLinkCloudSDK.ServiceModels
         }
 
         /// <summary>
+        /// Determines if the credentials link is available.
+        /// </summary>
+        /// <returns></returns>
+        private bool HasCredentials()
+        {
+            return credentialsLink.Value != null ? true : false;
+        }
+
+        /// <summary>
         /// Gets the servers that belong to this group.
         /// </summary>
         /// <returns></returns>
@@ -85,6 +101,34 @@ namespace CenturyLinkCloudSDK.ServiceModels
             var serverService = new ServerService(Authentication);
 
             var statistics = await serverService.GetServerStatisticsByLink(string.Format("{0}{1}{2}", Configuration.BaseUri, statisticsLink.Value.Href, Constants.ServiceUris.Querystring.GetLatestStatistics), cancellationToken).ConfigureAwait(false);
+
+            return statistics;
+        }
+
+        /// <summary>
+        /// Gets the server credentials.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ServerCredential> GetCredentials()
+        {
+            return await GetCredentials(CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the server credentials.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<ServerCredential> GetCredentials(CancellationToken cancellationToken)
+        {
+            if (!HasCredentials())
+            {
+                return null;
+            }
+
+            var serverService = new ServerService(Authentication);
+
+            var statistics = await serverService.GetServerCredentialsByLink(string.Format("{0}{1}", Configuration.BaseUri, credentialsLink.Value.Href), cancellationToken).ConfigureAwait(false);
 
             return statistics;
         }

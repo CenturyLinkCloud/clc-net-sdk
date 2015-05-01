@@ -335,10 +335,8 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         public async Task<ServerCredential> GetServerCredentials(string serverId, CancellationToken cancellationToken)
         {
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Server.GetServerCredentials, Configuration.BaseUri, authentication.AccountAlias, serverId));
-            var result = await ServiceInvoker.Invoke<ServerCredential>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
+            var uri = string.Format(Constants.ServiceUris.Server.GetServerCredentials, Configuration.BaseUri, authentication.AccountAlias, serverId);
+            return await GetServerCredentialsByLink(uri, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -622,6 +620,30 @@ namespace CenturyLinkCloudSDK.Services
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
             var result = await ServiceInvoker.Invoke<Server>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the server credentials
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
+        internal async Task<ServerCredential> GetServerCredentialsByLink(string uri)
+        {
+            return await GetServerCredentialsByLink(uri, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the server credentials
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        internal async Task<ServerCredential> GetServerCredentialsByLink(string uri, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
+            var result = await ServiceInvoker.Invoke<ServerCredential>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
