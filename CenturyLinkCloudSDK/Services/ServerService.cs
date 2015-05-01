@@ -621,6 +621,8 @@ namespace CenturyLinkCloudSDK.Services
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
             var result = await ServiceInvoker.Invoke<Server>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
+            result.Authentication = authentication;
+
             return result;
         }
 
