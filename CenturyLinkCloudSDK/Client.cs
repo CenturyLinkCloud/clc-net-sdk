@@ -1,5 +1,6 @@
 ﻿using CenturyLinkCloudSDK.ServiceModels;
 using CenturyLinkCloudSDK.Services;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK
@@ -35,7 +36,22 @@ namespace CenturyLinkCloudSDK
             if (userInfo != null)
             {
                 userIsAuthenticated = true;
-                authentication = new Authentication() { AccountAlias = userInfo.AccountAlias, BearerToken = userInfo.BearerToken };
+                authentication = new Authentication() 
+                { 
+                    AccountAlias = userInfo.AccountAlias, 
+                    BearerToken = userInfo.BearerToken, 
+                    LocationAlias = userInfo.LocationAlias
+                };
+
+                var roles = new List<string>();
+
+                foreach(var role in userInfo.Roles)
+                {
+                    roles.Add(role);
+                }
+
+                authentication.Roles = roles;
+
                 InitializeServices();
             }
             else

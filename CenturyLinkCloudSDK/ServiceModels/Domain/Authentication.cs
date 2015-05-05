@@ -11,5 +11,9 @@ namespace CenturyLinkCloudSDK.ServiceModels
         public string BearerToken { get; set; }
 
         public string AccountAlias { get; set; }
+
+        public string LocationAlias { get; set; }
+
+        public IEnumerable<string> Roles { get; set; }
     }
 }
