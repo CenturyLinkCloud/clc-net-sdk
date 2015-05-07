@@ -197,19 +197,15 @@ namespace CenturyLinkCloudSDK.Services
             {
                 var server = await serverService.GetServer(serverId, cancellationToken).ConfigureAwait(false);
 
-                if(server == null)
+                if(server != null)
                 {
-                    return null;
-                }
-
-                if(server.Details == null)
-                {
-                    return null;
-                }
-
-                totalAssets.Cpus += server.Details.Cpu;
-                totalAssets.MemoryGB += server.Details.MemoryMB;
-                totalAssets.StorageGB += server.Details.StorageGB;     
+                    if (server.Details != null)
+                    {
+                        totalAssets.Cpus += server.Details.Cpu;
+                        totalAssets.MemoryGB += server.Details.MemoryMB;
+                        totalAssets.StorageGB += server.Details.StorageGB;   
+                    }
+                }  
             }
 
             //The memory values we get for the servers is in MB so we need to convert to GB to display.

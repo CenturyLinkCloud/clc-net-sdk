@@ -72,9 +72,9 @@ namespace CenturyLinkCloudSDK.Services
         /// Gets the alerts for all servers in the account that subscribe to an alert policy.
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<Alert>> GetServerAlerts()
+        public async Task<IEnumerable<Alert>> GetAllServerAlerts()
         {
-            return await GetServerAlerts(CancellationToken.None).ConfigureAwait(false);
+            return await GetAllServerAlerts(CancellationToken.None).ConfigureAwait(false);
         }
 
        /// <summary>
@@ -82,7 +82,7 @@ namespace CenturyLinkCloudSDK.Services
        /// </summary>
        /// <param name="cancellationToken"></param>
        /// <returns></returns>
-        public async Task<IEnumerable<Alert>> GetServerAlerts(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Alert>> GetAllServerAlerts(CancellationToken cancellationToken)
         {
             var alerts = new List<Alert>();
 
