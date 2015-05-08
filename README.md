@@ -23,7 +23,7 @@ Access to these areas is provided through a Facade class that organizes the abov
 Since the SDK handles all serialization/deserialization operations, it provides access to more than 50 domain classes. This saves time to consumers of the SDK because they no longer have to develop all these classes themselves.
 
 ###Role-Based Links
-The SDK also simplifies access to certain linked API methods that depend on Role Based Access. If a domain model contains a certain Link to another resource it is extracted into a method as part of the domain model. (Note that only some links related to the mobile application MVP functionality have been coded. The pattern is there to be replicated for other links as needed.)
+The SDK also simplifies access to certain linked API methods that depend on Role Based Access. If a domain model contains a certain Link to another resource it is extracted into a method as part of the domain model. (Note that only some links - those related to core mobile application features - have been coded. The pattern is there to be replicated for other links as needed.)
 
 ###Alert Calculations
 The SDK simplifies Alert related operations, since it provides methods that combine several API calls in order to determine if Servers are violating associated Alert Policies. This makes it very easy to retrieve alerts either through the Alert Policies or through individual Servers.
