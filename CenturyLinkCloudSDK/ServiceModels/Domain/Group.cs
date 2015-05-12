@@ -38,6 +38,8 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         public ChangeInfo ChangeInfo { get; set; }
 
+        private Lazy<Link> createServerLink;
+
         [JsonPropertyAttribute]
         private IEnumerable<Link> Links { get; set; }
 
@@ -59,6 +61,11 @@ namespace CenturyLinkCloudSDK.ServiceModels
             defaultsLink = new Lazy<Link>(() =>
             {
                 return Links.FirstOrDefault(l => String.Equals(l.Rel, "defaults", StringComparison.CurrentCultureIgnoreCase));
+            });
+
+            createServerLink = new Lazy<Link>(() =>
+            {
+                return Links.FirstOrDefault(l => String.Equals(l.Rel, "createServer", StringComparison.CurrentCultureIgnoreCase));
             });
         }
 
@@ -86,6 +93,15 @@ namespace CenturyLinkCloudSDK.ServiceModels
         private bool HasDefaults()
         {
             return defaultsLink.Value != null ? true : false;
+        }
+
+        /// <summary>
+        /// Determines if the create server functionality is available.
+        /// </summary>
+        /// <returns></returns>
+        public bool CanCreateServer()
+        {
+            return createServerLink.Value != null ? true : false;
         }
 
         /// <summary>

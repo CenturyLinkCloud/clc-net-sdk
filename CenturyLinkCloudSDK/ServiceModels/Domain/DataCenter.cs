@@ -20,6 +20,8 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
         private Lazy<Link> networkLimitsLink;
 
+        private Lazy<Link> createServerLink;
+
         public Authentication Authentication { get; set; }
 
         /// <summary>
@@ -50,6 +52,11 @@ namespace CenturyLinkCloudSDK.ServiceModels
             networkLimitsLink = new Lazy<Link>(() =>
             {
                 return Links.FirstOrDefault(l => String.Equals(l.Rel, "networkLimits", StringComparison.CurrentCultureIgnoreCase));
+            });
+
+            createServerLink = new Lazy<Link>(() =>
+            {
+                return Links.FirstOrDefault(l => String.Equals(l.Rel, "createServer", StringComparison.CurrentCultureIgnoreCase));
             });
         }
 
@@ -104,6 +111,15 @@ namespace CenturyLinkCloudSDK.ServiceModels
         private bool HasNetworkLimits()
         {
             return networkLimitsLink.Value != null ? true : false;
+        }
+
+        /// <summary>
+        /// Determines if the create server functionality is available.
+        /// </summary>
+        /// <returns></returns>
+        public bool CanCreateServer()
+        {
+            return createServerLink.Value != null ? true : false;
         }
 
         /// <summary>
