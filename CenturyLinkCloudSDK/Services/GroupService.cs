@@ -348,7 +348,10 @@ namespace CenturyLinkCloudSDK.Services
 
             foreach (var subgroup in group.Groups)
             {
-                groupHierarchy.Groups.Add(await GetGroupHierarchy(subgroup, new GroupHierarchy(), includeServers, cancellationToken).ConfigureAwait(false));
+                if (subgroup.CanCreateServer())
+                {
+                    groupHierarchy.Groups.Add(await GetGroupHierarchy(subgroup, new GroupHierarchy(), includeServers, cancellationToken).ConfigureAwait(false));
+                }
             }
 
             return groupHierarchy;
