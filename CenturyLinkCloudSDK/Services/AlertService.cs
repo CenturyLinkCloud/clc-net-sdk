@@ -213,7 +213,7 @@ namespace CenturyLinkCloudSDK.Services
         {
             if (string.Equals(trigger.Metric, Constants.Metrics.Cpu, StringComparison.CurrentCultureIgnoreCase))
             {
-                if (statistic.CpuPercent > (trigger.Threshold / 100f))
+                if (statistic.CpuPercent > ((float)trigger.Threshold))
                 {
                     return GenerateAlert(alertPolicy, trigger, statistic, serverId, Constants.AlertMessages.CpuAlert);
                 }
@@ -221,7 +221,7 @@ namespace CenturyLinkCloudSDK.Services
 
             if (string.Equals(trigger.Metric, Constants.Metrics.Memory, StringComparison.CurrentCultureIgnoreCase))
             {
-                if (statistic.MemoryPercent > (trigger.Threshold / 100f))
+                if (statistic.MemoryPercent > ((float)trigger.Threshold))
                 {
                     return GenerateAlert(alertPolicy, trigger, statistic, serverId, Constants.AlertMessages.MemoryAlert);
                 }

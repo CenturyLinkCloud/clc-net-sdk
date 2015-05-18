@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -79,7 +80,7 @@ namespace CenturyLinkCloudSDK.Runtime
 
         private static async Task<TResponse> DeserializeResponse<TResponse>(HttpResponseMessage httpResponseMessage)
         {
-            string apiMessage = null;
+            var apiMessage = new StringBuilder();
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
@@ -96,25 +97,58 @@ namespace CenturyLinkCloudSDK.Runtime
                 }
 
                 var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.DefaultServiceExceptionMessage);
-                
-                var content = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var apiError = await DeserializeApiErrorMessage(httpResponseMessage).ConfigureAwait(false);
 
-                JObject jsonObject = content.TryParseJson();
-
-                if (jsonObject != null)
+                if(apiError != null)
                 {
-                    apiMessage = (string)jsonObject["message"];
-
-                    if (!string.IsNullOrEmpty(apiMessage))
+                    if(!string.IsNullOrEmpty(apiError.Message))
                     {
-                        serviceException.ApiMessage = apiMessage;
+                        apiMessage.Append(apiError.Message);
                     }
+
+                    if(apiError.ModelState != null)
+                    {
+                        if(apiError.ModelState.Count > 0)
+                        {
+                            foreach(var modelProperty in apiError.ModelState)
+                            {
+                                foreach(var errorMessage in modelProperty.Value)
+                                {
+                                    apiMessage.AppendLine(errorMessage);
+                                }
+                            }
+                        }
+                    }
+
                 }
+
+                if (apiMessage.Length == 0)
+                {
+                    apiMessage.Append(Constants.ExceptionMessages.DefaultServiceExceptionMessage);
+                }
+
+                serviceException.ApiMessage = apiMessage.ToString();
 
                 throw serviceException;
             }
 
             return default(TResponse);
+        }
+
+        private static async Task<ApiError> DeserializeApiErrorMessage(HttpResponseMessage httpResponseMessage)
+        {
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                var content = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+                JObject jsonObject = content.TryParseJson();
+
+                if (jsonObject != null)
+                {
+                    return await httpResponseMessage.Content.ReadAsAsync<ApiError>().ConfigureAwait(false);
+                }
+            }
+
+            return null;
         }
     }
 }
