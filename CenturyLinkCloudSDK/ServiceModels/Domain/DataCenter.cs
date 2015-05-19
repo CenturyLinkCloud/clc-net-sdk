@@ -72,7 +72,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// <summary>
         /// Determines if this data center has compute limits based on the Links collection.
         /// </summary>
-        private bool HasComputeLimits()
+        public bool HasComputeLimits()
         {
             return computeLimitsLink.Value != null ? true : false;
         }
@@ -81,7 +81,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// Determines if this data center has billing details based on the Links collection.
         /// </summary>
         /// <returns></returns>
-        private bool HasBillingDetails()
+        public bool HasBillingDetails()
         {
             return billingLink.Value != null ? true : false;
         }
@@ -90,7 +90,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// Determines if this data center has a root group based on the links collection.
         /// </summary>
         /// <returns></returns>
-        private bool HasRootGroup()
+        public bool HasRootGroup()
         {
             return rootGroupLink.Value != null ? true : false;
         }
@@ -99,7 +99,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// Determines if this data center has default settings based on the links collection.
         /// </summary>
         /// <returns></returns>
-        private bool HasDefaults()
+        public bool HasDefaults()
         {
             return defaultsLink.Value != null ? true : false;
         }
@@ -108,7 +108,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// Determines if this data center has network limits based on the links collection.
         /// </summary>
         /// <returns></returns>
-        private bool HasNetworkLimits()
+        public bool HasNetworkLimits()
         {
             return networkLimitsLink.Value != null ? true : false;
         }

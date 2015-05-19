@@ -72,7 +72,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// <summary>
         /// Determines if this Group has servers by examining the Links collection.
         /// </summary>
-        private bool HasServers()
+        public bool HasServers()
         {
             return serverLinks.Value.Count() > 0 ? true : false;
         }
@@ -81,7 +81,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// Determines if this group has billing details based on the Links collection.
         /// </summary>
         /// <returns></returns>
-        private bool HasBillingDetails()
+        public bool HasBillingDetails()
         {
             return billingLink.Value != null ? true : false;
         }
@@ -90,7 +90,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// Determines if this group has default settings based on the links collection.
         /// </summary>
         /// <returns></returns>
-        private bool HasDefaults()
+        public bool HasDefaults()
         {
             return defaultsLink.Value != null ? true : false;
         }

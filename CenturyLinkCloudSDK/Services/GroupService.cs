@@ -218,12 +218,13 @@ namespace CenturyLinkCloudSDK.Services
         }
 
         /// <summary>
-        /// Recursive method that gets the serverIds of the data center root group and all subgroups.
+        /// Optioonally recursive method that gets the serverIds of the data center root group and all subgroups.
         /// </summary>
         /// <param name="group"></param>
         /// <param name="serverIds"></param>
+        /// <param name="IsRecursive"></param>
         /// <returns></returns>
-        public List<string> GetServerIds(Group group, List<string> serverIds)
+        public List<string> GetServerIds(Group group, List<string> serverIds, bool IsRecursive = true)
         {
             var groupServerIds = group.GetServerIds();
 
@@ -232,9 +233,12 @@ namespace CenturyLinkCloudSDK.Services
                 serverIds.AddRange(groupServerIds);
             }
 
-            foreach (var subgroup in group.Groups)
+            if (IsRecursive)
             {
-                serverIds = GetServerIds(subgroup, serverIds);
+                foreach (var subgroup in group.Groups)
+                {
+                    serverIds = GetServerIds(subgroup, serverIds, IsRecursive);
+                }
             }
 
             return serverIds;

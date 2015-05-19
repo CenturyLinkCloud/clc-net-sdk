@@ -63,7 +63,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// <summary>
         /// Determines if this Group has servers by examining the Links collection.
         /// </summary>
-        private bool HasStatistics()
+        public bool HasStatistics()
         {
             return statisticsLink.Value != null ? true : false;
         }
@@ -72,7 +72,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// Determines if the credentials link is available.
         /// </summary>
         /// <returns></returns>
-        private bool HasCredentials()
+        public bool HasCredentials()
         {
             return credentialsLink.Value != null ? true : false;
         }
