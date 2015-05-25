@@ -44,7 +44,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns>An asynchronous Task of Queue.</returns>
         public async Task<Queue> GetStatus(string statusId, CancellationToken cancellationToken)
         {
-            var uri = string.Format(Constants.ServiceUris.Queue.GetStatus, authentication.AccountAlias, statusId);
+            var uri = string.Format(Constants.ServiceUris.Queue.GetStatus, Configuration.BaseUri, authentication.AccountAlias, statusId);
             return await GetStatusByLink(uri, cancellationToken).ConfigureAwait(false);
         }
 
