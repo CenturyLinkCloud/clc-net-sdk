@@ -1,6 +1,7 @@
 ﻿using CenturyLinkCloudSDK.Extensions;
 using CenturyLinkCloudSDK.ServiceModels;
 using CenturyLinkCloudSDK.ServiceModels.Responses.Servers;
+using ModernHttpClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -24,7 +25,7 @@ namespace CenturyLinkCloudSDK.Runtime
         /// <returns>An asynchronous Task of the generic TResponse.</returns>
         internal static async Task<TResponse> Invoke<TResponse>(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
         {
-            using (HttpClient httpClient = new HttpClient())
+            using (HttpClient httpClient = new HttpClient(new NativeMessageHandler()))
             {
                 httpClient.BaseAddress = new Uri(Configuration.BaseUri);
                 httpClient.DefaultRequestHeaders.Accept.Clear();
