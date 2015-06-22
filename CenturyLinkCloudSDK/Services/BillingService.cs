@@ -15,10 +15,11 @@ namespace CenturyLinkCloudSDK.Services
     /// </summary>
     public class BillingService : ServiceBase
     {
-        internal BillingService(Authentication authentication)
-            : base(authentication)
+        DataCenterService dataCenterService;
+        internal BillingService(Authentication authentication, IServiceInvoker serviceInvoker, DataCenterService dataCenterService)
+            : base(authentication, serviceInvoker)
         {
-
+            this.dataCenterService = dataCenterService;
         }
 
         /// <summary>
@@ -59,8 +60,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         public async Task<BillingDetail> GetDataCenterBillingDetails(string dataCenterId, CancellationToken cancellationToken)
         {
-            var billingDetail = new BillingDetail();
-            var dataCenterService = new DataCenterService(authentication);
+            var billingDetail = new BillingDetail();            
 
             var dataCenterGroup = await dataCenterService.GetDataCenterGroup(dataCenterId).ConfigureAwait(false);
             var rootGroup = await dataCenterGroup.GetRootHardwareGroup(cancellationToken).ConfigureAwait(false);
@@ -120,7 +120,7 @@ namespace CenturyLinkCloudSDK.Services
         public async Task<ServerPricing> GetServerResourceUnitPricing(string serverId, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Billing.GetServerResourceUnitPricing, Configuration.BaseUri, authentication.AccountAlias, serverId));
-            var result = await ServiceInvoker.Invoke<ServerPricing>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<ServerPricing>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
             return result;
         }
 
@@ -143,7 +143,7 @@ namespace CenturyLinkCloudSDK.Services
         internal async Task<AccountBillingDetail> GetAccountBillingDetailsByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await ServiceInvoker.Invoke<AccountBillingDetail>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<AccountBillingDetail>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
@@ -167,7 +167,7 @@ namespace CenturyLinkCloudSDK.Services
         internal async Task<GroupBillingDetail> GetGroupBillingDetailsByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await ServiceInvoker.Invoke<GroupBillingDetail>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<GroupBillingDetail>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
@@ -193,7 +193,7 @@ namespace CenturyLinkCloudSDK.Services
             var billingDetail = new BillingDetail();
 
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await ServiceInvoker.Invoke<GroupBillingDetail>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<GroupBillingDetail>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             foreach (var group in result.Groups)
             {

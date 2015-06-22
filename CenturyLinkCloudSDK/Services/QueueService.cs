@@ -11,8 +11,8 @@ namespace CenturyLinkCloudSDK.Services
     /// </summary>
     public class QueueService : ServiceBase
     {
-        internal QueueService(Authentication authentication)
-            : base(authentication)
+        internal QueueService(Authentication authentication, IServiceInvoker serviceInvoker)
+            : base(authentication, serviceInvoker)
         {
             this.authentication = authentication;
         }
@@ -75,7 +75,7 @@ namespace CenturyLinkCloudSDK.Services
         internal async Task<Queue> GetStatusByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await ServiceInvoker.Invoke<Queue>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<Queue>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }

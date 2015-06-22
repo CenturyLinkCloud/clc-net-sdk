@@ -13,8 +13,8 @@ namespace CenturyLinkCloudSDK.Services
     /// </summary>
     public class AuthenticationService : ServiceBase
     {
-        internal AuthenticationService()
-            : base(null)
+        internal AuthenticationService(IServiceInvoker serviceInvoker)
+            : base(null, serviceInvoker)
         {
 
         }
@@ -44,7 +44,7 @@ namespace CenturyLinkCloudSDK.Services
             var requestModel = new LoginRequest() { UserName = username, Password = password };
 
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Authentication.Login, Configuration.BaseUri), requestModel);
-            var result = await ServiceInvoker.Invoke<UserInfo>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<UserInfo>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }

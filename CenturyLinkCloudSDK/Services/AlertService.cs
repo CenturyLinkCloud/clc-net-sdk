@@ -14,8 +14,8 @@ namespace CenturyLinkCloudSDK.Services
     /// </summary>
     public class AlertService : ServiceBase
     {
-        internal AlertService(Authentication authentication)
-            : base(authentication)
+        internal AlertService(Authentication authentication, IServiceInvoker serviceInvoker)
+            : base(authentication, serviceInvoker)
         {
 
         }
@@ -37,7 +37,7 @@ namespace CenturyLinkCloudSDK.Services
         public async Task<AlertPolicies> GetAlertPolicies(CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Alerts.GetAlertPoliciesForAccount, Configuration.BaseUri, authentication.AccountAlias));
-            var result = await ServiceInvoker.Invoke<AlertPolicies>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<AlertPolicies>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
@@ -150,7 +150,7 @@ namespace CenturyLinkCloudSDK.Services
         internal async Task<IEnumerable<AlertTrigger>> GetTriggersByAlertPolicyLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
-            var alertPolicy = await ServiceInvoker.Invoke<AlertPolicy>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var alertPolicy = await serviceInvoker.Invoke<AlertPolicy>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return alertPolicy.Triggers;
         }

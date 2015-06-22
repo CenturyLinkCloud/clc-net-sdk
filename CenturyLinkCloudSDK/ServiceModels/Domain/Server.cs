@@ -98,7 +98,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
                 return null;
             }
 
-            var serverService = new ServerService(Authentication);
+            var serverService = Configuration.ServiceResolver.Resolve<ServerService>(Authentication);
 
             var statistics = await serverService.GetServerStatisticsByLink(string.Format("{0}{1}{2}", Configuration.BaseUri, statisticsLink.Value.Href, Constants.ServiceUris.Querystring.GetLatestStatistics), cancellationToken).ConfigureAwait(false);
 
@@ -126,7 +126,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
                 return null;
             }
 
-            var serverService = new ServerService(Authentication);
+            var serverService = Configuration.ServiceResolver.Resolve<ServerService>(Authentication);
 
             var statistics = await serverService.GetServerCredentialsByLink(string.Format("{0}{1}", Configuration.BaseUri, credentialsLink.Value.Href), cancellationToken).ConfigureAwait(false);
 

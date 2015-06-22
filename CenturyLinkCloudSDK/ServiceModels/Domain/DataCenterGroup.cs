@@ -68,7 +68,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
                 throw new InvalidOperationException(string.Format(Constants.ExceptionMessages.DataCenterGroupDoesNotHaveRootHardwareGroup, Name));
             }
 
-            var groupService = new GroupService(Authentication);
+            var groupService = Configuration.ServiceResolver.Resolve<GroupService>(Authentication); 
             var rootGroup = await groupService.GetGroupByLink(Configuration.BaseUri + rootHardwareGroupLink.Value, cancellationToken);
             return rootGroup;
         }

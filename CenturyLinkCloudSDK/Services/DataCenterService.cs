@@ -15,10 +15,11 @@ namespace CenturyLinkCloudSDK.Services
     /// </summary>
     public class DataCenterService : ServiceBase
     {
-        internal DataCenterService(Authentication authentication)
-            : base(authentication)
+        GroupService groupService;
+        internal DataCenterService(Authentication authentication, IServiceInvoker serviceInvoker, GroupService groupService)
+            : base(authentication, serviceInvoker)
         {
-
+            this.groupService = groupService;
         }
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace CenturyLinkCloudSDK.Services
         public async Task<IEnumerable<DataCenter>> GetDataCenters(CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenters, Configuration.BaseUri, authentication.AccountAlias, string.Empty));
-            var result = await ServiceInvoker.Invoke<IEnumerable<DataCenter>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<IEnumerable<DataCenter>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
@@ -139,9 +140,7 @@ namespace CenturyLinkCloudSDK.Services
                 await Task.WhenAll(tasks);
 
                 if (rootGroup != null)
-                {
-                    var groupService = new GroupService(authentication);
-
+                {                    
                     serverIds = groupService.GetServerIds(rootGroup, new List<string>());
                     recentActivity = await GetRecentActivity(serverIds, cancellationToken).ConfigureAwait(false);
                 }
@@ -196,13 +195,12 @@ namespace CenturyLinkCloudSDK.Services
         {
             var dataCentersWithTotals = new List<DataCenter>();
             var tasks = new List<Task<DataCenter>>();
-
-            var dataCenterService = new DataCenterService(authentication);
-            var dataCenters = await dataCenterService.GetDataCenters().ConfigureAwait(false);
+            
+            var dataCenters = await GetDataCenters().ConfigureAwait(false);
 
             foreach (var dataCenter in dataCenters)
             {
-                tasks.Add(Task.Run(async () => await dataCenterService.GetDataCenterWithTotalAssets(dataCenter.Id, cancellationToken).ConfigureAwait(false)));
+                tasks.Add(Task.Run(async () => await GetDataCenterWithTotalAssets(dataCenter.Id, cancellationToken).ConfigureAwait(false)));
             }
 
             await Task.WhenAll(tasks);
@@ -235,7 +233,7 @@ namespace CenturyLinkCloudSDK.Services
         {
             //var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenter, Configuration.BaseUri, authentication.AccountAlias, dataCenterId, Constants.ServiceUris.Querystring.IncludeGroupLinksAndTotalAssets));
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenter, Configuration.BaseUri, authentication.AccountAlias, dataCenterId, Constants.ServiceUris.Querystring.IncludeTotalAssets));
-            var result = await ServiceInvoker.Invoke<DataCenter>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<DataCenter>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
             result.Authentication = authentication;
 
             return result;
@@ -260,7 +258,7 @@ namespace CenturyLinkCloudSDK.Services
         public async Task<DataCenter> GetDataCenterWithGroupsAndTotalAssets(string dataCenterId, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenter, Configuration.BaseUri, authentication.AccountAlias, dataCenterId, Constants.ServiceUris.Querystring.IncludeGroupLinksAndTotalAssets));
-            var result = await ServiceInvoker.Invoke<DataCenter>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<DataCenter>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
             result.Authentication = authentication;
 
             return result;
@@ -336,7 +334,7 @@ namespace CenturyLinkCloudSDK.Services
             };
 
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.DataCenter.GetRecentActivity, Configuration.BaseUri), requestModel);
-            var result = await ServiceInvoker.Invoke<IEnumerable<Activity>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<IEnumerable<Activity>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
@@ -360,7 +358,7 @@ namespace CenturyLinkCloudSDK.Services
         public async Task<DataCenterDeploymentCapability> GetDeploymentCapabilities(string dataCenterId, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDeploymentCapabilities, Configuration.BaseUri, authentication.AccountAlias, dataCenterId));
-            var result = await ServiceInvoker.Invoke<DataCenterDeploymentCapability>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<DataCenterDeploymentCapability>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
  
             return result;
         }
@@ -384,7 +382,7 @@ namespace CenturyLinkCloudSDK.Services
         internal async Task<DataCenter> GetDataCenterByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await ServiceInvoker.Invoke<DataCenter>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<DataCenter>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
             result.Authentication = authentication;
 
             return result;
@@ -413,7 +411,7 @@ namespace CenturyLinkCloudSDK.Services
         internal async Task<DataCenterGroup> GetDataCenterGroupByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await ServiceInvoker.Invoke<DataCenterGroup>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<DataCenterGroup>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
             result.Authentication = authentication;
 
             return result;
@@ -438,7 +436,7 @@ namespace CenturyLinkCloudSDK.Services
         internal async Task<ComputeLimits> GetComputeLimitsByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await ServiceInvoker.Invoke<ComputeLimits>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<ComputeLimits>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -468,7 +466,7 @@ namespace CenturyLinkCloudSDK.Services
         internal async Task<Group> GetRootGroupByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await ServiceInvoker.Invoke<Group>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<Group>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             result.Authentication = authentication;
 
@@ -494,7 +492,7 @@ namespace CenturyLinkCloudSDK.Services
         internal async Task<DefaultSettings> GetDefaultSettingsByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await ServiceInvoker.Invoke<DefaultSettings>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<DefaultSettings>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
@@ -518,7 +516,7 @@ namespace CenturyLinkCloudSDK.Services
         internal async Task<NetworkLimits> GetNetworkLimitsByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await ServiceInvoker.Invoke<NetworkLimits>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<NetworkLimits>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }

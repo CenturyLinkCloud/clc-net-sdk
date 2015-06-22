@@ -72,7 +72,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
             if (HasServers())
             {
-                var serverService = new ServerService(Authentication);
+                var serverService = Configuration.ServiceResolver.Resolve<ServerService>(Authentication);
 
                 foreach (var serverLink in serverLinks.Value)
                 {
@@ -108,7 +108,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
             {
                 if (selfLink.Value != null)
                 {
-                    var alertService = new AlertService(Authentication);
+                    var alertService = Configuration.ServiceResolver.Resolve<AlertService>(Authentication);
                     return await alertService.GetTriggersByAlertPolicyLink(Configuration.BaseUri + selfLink.Value.Href, cancellationToken);
                 }
 

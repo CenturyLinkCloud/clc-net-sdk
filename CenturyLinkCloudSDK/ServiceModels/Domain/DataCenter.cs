@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CenturyLinkCloudSDK.Runtime;
 
 namespace CenturyLinkCloudSDK.ServiceModels
 {
@@ -143,7 +144,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
                 return null;
             }
 
-            var billingService = new BillingService(Authentication);
+            var billingService = Configuration.ServiceResolver.Resolve<BillingService>(Authentication);
             var billingDetails = await billingService.GetGroupBillingDetailsByLink(string.Format("{0}{1}", Configuration.BaseUri, billingLink.Value.Href), cancellationToken).ConfigureAwait(false);
             return billingDetails;
         }
@@ -169,7 +170,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
                 return null;
             }
 
-            var billingService = new BillingService(Authentication);
+            var billingService = Configuration.ServiceResolver.Resolve<BillingService>(Authentication);
             var billingTotals = await billingService.GetGroupBillingTotalsByLink(string.Format("{0}{1}", Configuration.BaseUri, billingLink.Value.Href), cancellationToken).ConfigureAwait(false);
             return billingTotals;
         }
@@ -195,7 +196,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
                 return null;
             }
 
-            var dataCenterService = new DataCenterService(Authentication);
+            var dataCenterService = Configuration.ServiceResolver.Resolve<DataCenterService>(Authentication);
             var computeLimits = await dataCenterService.GetComputeLimitsByLink(string.Format("{0}{1}", Configuration.BaseUri, computeLimitsLink.Value.Href), cancellationToken).ConfigureAwait(false);
             return computeLimits;
         }
@@ -221,7 +222,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
                 return null;
             }
 
-            var dataCenterService = new DataCenterService(Authentication);
+            var dataCenterService = Configuration.ServiceResolver.Resolve<DataCenterService>(Authentication);
             var rootGroup = await dataCenterService.GetRootGroupByLink(string.Format("{0}{1}", Configuration.BaseUri, rootGroupLink.Value.Href), cancellationToken).ConfigureAwait(false);
             return rootGroup;
         }
@@ -247,7 +248,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
                 return null;
             }
 
-            var dataCenterService = new DataCenterService(Authentication);
+            var dataCenterService = Configuration.ServiceResolver.Resolve<DataCenterService>(Authentication);
             var defaultSettings = await dataCenterService.GetDefaultSettingsByLink(string.Format("{0}{1}", Configuration.BaseUri, defaultsLink.Value.Href), cancellationToken).ConfigureAwait(false);
             return defaultSettings;
         }
@@ -273,7 +274,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
                 return null;
             }
 
-            var dataCenterService = new DataCenterService(Authentication);
+            var dataCenterService = Configuration.ServiceResolver.Resolve<DataCenterService>(Authentication);
             var networkLimits = await dataCenterService.GetNetworkLimitsByLink(string.Format("{0}{1}", Configuration.BaseUri, networkLimitsLink.Value.Href), cancellationToken).ConfigureAwait(false);
             return networkLimits;
         }

@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CenturyLinkCloudSdk", "CenturyLinkCloudSDK\CenturyLinkCloudSdk.csproj", "{2C618193-0304-4EC6-B27E-E712F505C5AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CenturyLinkCloudSDK.IntegrationTests", "CenturyLinkCloudSDK.Integration.Tests\CenturyLinkCloudSDK.IntegrationTests.csproj", "{97C04A3B-CB00-471A-9F78-1AFC1939AD8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CenturyLinkCloudSDK.Tests", "CenturyLinkCloudSDK.Tests\CenturyLinkCloudSDK.Tests.csproj", "{045D7A9F-3DE3-47B2-9433-714AEA468AEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{97C04A3B-CB00-471A-9F78-1AFC1939AD8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97C04A3B-CB00-471A-9F78-1AFC1939AD8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97C04A3B-CB00-471A-9F78-1AFC1939AD8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{045D7A9F-3DE3-47B2-9433-714AEA468AEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{045D7A9F-3DE3-47B2-9433-714AEA468AEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{045D7A9F-3DE3-47B2-9433-714AEA468AEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{045D7A9F-3DE3-47B2-9433-714AEA468AEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

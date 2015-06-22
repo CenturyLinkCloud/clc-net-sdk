@@ -14,10 +14,12 @@ namespace CenturyLinkCloudSDK.Services
     /// This class contains operations associated with server groups.
     /// </summary>
     public class GroupService : ServiceBase
-    {
-        internal GroupService(Authentication authentication)
-            : base(authentication)
+    {        
+        ServerService serverService;
+        internal GroupService(Authentication authentication, IServiceInvoker serviceInvoker, ServerService serverService)
+            : base(authentication, serviceInvoker)
         {
+            this.serverService = serverService;
         }
 
         /// <summary>
@@ -113,7 +115,7 @@ namespace CenturyLinkCloudSDK.Services
             };
 
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Group.GetRecentActivity, Configuration.BaseUri), requestModel);
-            var result = await ServiceInvoker.Invoke<IEnumerable<Activity>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<IEnumerable<Activity>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
@@ -187,8 +189,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public async Task<TotalAssets> GetTotalAssets(List<string> serverIds, CancellationToken cancellationToken)
-        {
-            var serverService =  new ServerService(authentication);
+        {            
             var totalAssets =  new TotalAssets();
 
             totalAssets.Servers = serverIds.Count;
@@ -292,6 +293,19 @@ namespace CenturyLinkCloudSDK.Services
         }
 
         /// <summary>
+        /// Gets the default settings.
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        internal async Task<DefaultSettings> GetDefaultSettingsByLink(string uri, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
+            var result = await serviceInvoker.Invoke<DefaultSettings>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            return result;
+        }
+        /// <summary>
         /// Gets the default settings that are inherited by the Data Center.
         /// </summary>
         /// <param name="groupId"></param>
@@ -309,9 +323,8 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         public async Task<DefaultSettings> GetDefaultSettings(string groupId, CancellationToken cancellationToken)
         {
-            var uri = string.Format(Constants.ServiceUris.Group.GetDefaultSettings, Configuration.BaseUri, authentication.AccountAlias, groupId);
-            var dataCenterService = new DataCenterService(authentication);
-            return await dataCenterService.GetDefaultSettingsByLink(uri, cancellationToken).ConfigureAwait(false);
+            var uri = string.Format(Constants.ServiceUris.Group.GetDefaultSettings, Configuration.BaseUri, authentication.AccountAlias, groupId);            
+            return await GetDefaultSettingsByLink(uri, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -380,7 +393,7 @@ namespace CenturyLinkCloudSDK.Services
         internal async Task<Group> GetGroupByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await ServiceInvoker.Invoke<Group>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<Group>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             result.Authentication = authentication;
 

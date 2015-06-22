@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace CenturyLinkCloudSDK.Runtime
 {
-    internal static class ServiceInvoker
+    internal class DefaultServiceInvoker : IServiceInvoker
     {
         /// <summary>
         /// This is the main method through which all api requests are made.
@@ -23,7 +23,8 @@ namespace CenturyLinkCloudSDK.Runtime
         /// <param name="httpRequestMessage"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>An asynchronous Task of the generic TResponse.</returns>
-        internal static async Task<TResponse> Invoke<TResponse>(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
+        public async Task<TResponse> Invoke<TResponse>(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
+            where TResponse : class
         {
             using (HttpClient httpClient = new HttpClient(new NativeMessageHandler()))
             {

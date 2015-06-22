@@ -127,7 +127,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
                 return null;
             }
 
-            var serverService = new ServerService(Authentication);
+            var serverService = Configuration.ServiceResolver.Resolve<ServerService>(Authentication);
 
             foreach (var serverLink in serverLinks.Value)
             {
@@ -189,7 +189,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
                 return null;
             }
 
-            var billingService = new BillingService(Authentication);
+            var billingService = Configuration.ServiceResolver.Resolve<BillingService>(Authentication);
             var billingDetails = await billingService.GetGroupBillingDetailsByLink(string.Format("{0}{1}", Configuration.BaseUri, billingLink.Value.Href), cancellationToken).ConfigureAwait(false);
             return billingDetails;
         }
@@ -215,7 +215,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
                 return null;
             }
 
-            var billingService = new BillingService(Authentication);
+            var billingService = Configuration.ServiceResolver.Resolve<BillingService>(Authentication);
             var billingTotals = await billingService.GetGroupBillingTotalsByLink(string.Format("{0}{1}", Configuration.BaseUri, billingLink.Value.Href), cancellationToken).ConfigureAwait(false);
             return billingTotals;
         }
@@ -241,7 +241,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
                 return null;
             }
 
-            var dataCenterService = new DataCenterService(Authentication);
+            var dataCenterService = Configuration.ServiceResolver.Resolve<DataCenterService>(Authentication);
             var defaultSettings = await dataCenterService.GetDefaultSettingsByLink(string.Format("{0}{1}", Configuration.BaseUri, defaultsLink.Value.Href), cancellationToken).ConfigureAwait(false);
             return defaultSettings;
         }

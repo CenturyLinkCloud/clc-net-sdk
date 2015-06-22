@@ -2,6 +2,7 @@
 using CenturyLinkCloudSDK.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CenturyLinkCloudSDK.Runtime;
 
 namespace CenturyLinkCloudSDK
 {
@@ -9,19 +10,7 @@ namespace CenturyLinkCloudSDK
     /// This is the facade that provides access to all API services.
     /// </summary>
     public class Client
-    {
-        private UserInfo userInfo = null;
-        private Authentication authentication = null;
-        private bool userIsAuthenticated = false;
-        private AuthenticationService authenticationService;
-        private DataCenterService dataCenters;
-        private GroupService groups;
-        private QueueService queues;
-        private ServerService servers;
-        private AlertService alerts;
-        private BillingService billing;
-        private AccountService account;
-
+    {                
         /// <summary>
         /// Constructor called when the user needs to be authenticated. It sets the userInfo and authenticationInfo fields
         /// that can then be accessed by the corresponding readonly properties. The UserInfo for User Info display and the AuthenticationInfo
@@ -31,32 +20,26 @@ namespace CenturyLinkCloudSDK
         /// <param name="password"></param>
         public Client(string userName, string password)
         {
-            userInfo = AuthenticateUser(userName, password).Result;
+            UserIsAuthenticated = false;
+
+            var userInfo = AuthenticateUser(userName, password).Result;
 
             if (userInfo != null)
             {
-                userIsAuthenticated = true;
-                authentication = new Authentication() 
+                UserIsAuthenticated = true;
+                Authentication = new Authentication() 
                 { 
                     AccountAlias = userInfo.AccountAlias, 
                     BearerToken = userInfo.BearerToken, 
-                    LocationAlias = userInfo.LocationAlias
+                    LocationAlias = userInfo.LocationAlias,                    
+                    Roles = userInfo.Roles
                 };
-
-                var roles = new List<string>();
-
-                foreach(var role in userInfo.Roles)
-                {
-                    roles.Add(role);
-                }
-
-                authentication.Roles = roles;
 
                 InitializeServices();
             }
             else
             {
-                userIsAuthenticated = false;
+                UserIsAuthenticated = false;
             }
         }
 
@@ -69,113 +52,45 @@ namespace CenturyLinkCloudSDK
         {
             if (authenticationInfo != null)
             {
-                userIsAuthenticated = true;
-                this.authentication = authenticationInfo;
+                UserIsAuthenticated = true;
+                Authentication = authenticationInfo;
                 InitializeServices();
             }
             else
             {
-                userIsAuthenticated = false;
+                UserIsAuthenticated = false;
             }
         }
+        
+        public Authentication Authentication { get; private set; }
+        public bool UserIsAuthenticated { get; private set; }
 
-        public UserInfo UserInfo 
-        { 
-            get
-            {
-                return userInfo;
-            }
-        }
-
-        public Authentication Authentication
-        {
-            get
-            {
-                return authentication;
-            }
-        }
-
-        public bool UserIsAuthenticated 
-        {
-            get
-            {
-                return userIsAuthenticated;
-            }
-        }
-
-        public DataCenterService DataCenters
-        {
-            get
-            {
-                return dataCenters;
-            }
-        }
-
-        public GroupService Groups
-        {
-            get
-            {
-                return groups;
-            }
-        }
-
-        public QueueService Queues
-        {
-            get
-            {
-                return queues;
-            }
-        }
-
-        public ServerService Servers
-        {
-            get
-            {
-                return servers;
-            }
-        }
-
-        public AlertService Alerts
-        {
-            get
-            {
-                return alerts;
-            }
-        }
-
-        public BillingService Billing
-        {
-            get
-            {
-                return billing;
-            }
-        }
-
-        public AccountService Account
-        {
-            get
-            {
-                return account;
-            }
-        }
+        public DataCenterService DataCenters { get; private set; }        
+        public GroupService Groups { get; private set; }
+        public QueueService Queues { get; private set; }
+        public ServerService Servers { get; private set; }        
+        public AlertService Alerts { get; private set; }
+        public BillingService Billing { get; private set; }
+        public AccountService Account { get; private set; }
 
         private async Task<UserInfo> AuthenticateUser(string userName, string password)
         {
-            var authentication = new AuthenticationService();
-            var result = await authentication.Login(userName, password).ConfigureAwait(false);
+            var authenticationService = Configuration.ServiceResolver.Resolve<AuthenticationService>(null);
+            var result = await authenticationService.Login(userName, password).ConfigureAwait(false);
             return result;
         }
 
         private void InitializeServices()
         {
-            authenticationService = new AuthenticationService();
-            dataCenters = new DataCenterService(authentication);
-            groups = new GroupService(authentication);
-            queues = new QueueService(authentication);
-            servers = new ServerService(authentication);
-            alerts = new AlertService(authentication);
-            billing = new BillingService(authentication);
-            account = new AccountService(authentication);
+            var invoker = Configuration.ServiceInvoker;
+            var resolver = Configuration.ServiceResolver;            
+            DataCenters = resolver.Resolve<DataCenterService>(Authentication, invoker);
+            Groups = resolver.Resolve<GroupService>(Authentication, invoker);
+            Queues = resolver.Resolve<QueueService>(Authentication, invoker);
+            Servers = resolver.Resolve<ServerService>(Authentication, invoker);
+            Alerts = resolver.Resolve<AlertService>(Authentication, invoker);
+            Billing = resolver.Resolve<BillingService>(Authentication, invoker);
+            Account = resolver.Resolve<AccountService>(Authentication, invoker);
         }
     }
 }

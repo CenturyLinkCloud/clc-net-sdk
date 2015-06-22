@@ -10,10 +10,12 @@ namespace CenturyLinkCloudSDK.Runtime
     public abstract class ServiceBase
     {
         protected Authentication authentication;
+        protected IServiceInvoker serviceInvoker;
 
-        protected ServiceBase(Authentication authentication)
+        protected ServiceBase(Authentication authentication, IServiceInvoker serviceInvoker)
         {
             this.authentication = authentication;
+            this.serviceInvoker = serviceInvoker;
         }
 
 
