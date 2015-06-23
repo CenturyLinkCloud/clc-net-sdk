@@ -25,9 +25,9 @@ namespace CenturyLinkCloudSDK.Runtime
         /// <param name="httpMethod"></param>
         /// <param name="serviceUri"></param>
         /// <returns></returns>
-        protected HttpRequestMessage CreateHttpRequestMessage(HttpMethod httpMethod, string serviceUri)
+        protected HttpRequestMessage CreateAuthorizedHttpRequestMessage(HttpMethod httpMethod, string serviceUri)
         {
-            return CreateHttpRequestMessage<Object>(httpMethod, serviceUri, null);
+            return CreateAuthorizedHttpRequestMessage(httpMethod, serviceUri, null);
         }
 
         /// <summary>
@@ -38,32 +38,12 @@ namespace CenturyLinkCloudSDK.Runtime
         /// <param name="serviceUri"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        protected HttpRequestMessage CreateHttpRequestMessage<TContent>(HttpMethod httpMethod, string serviceUri, TContent content)
+        protected HttpRequestMessage CreateAuthorizedHttpRequestMessage(HttpMethod httpMethod, string serviceUri, object content)
         {
-            var httpRequestMessage = new HttpRequestMessage(httpMethod, serviceUri);
-            httpRequestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.ServiceUris.JsonMediaType));
-
-            try
-            {
-                if (content != null)
-                {
-                    var serializedContent = JsonConvert.SerializeObject(content);
-                    httpRequestMessage.Content = new StringContent(serializedContent, new UTF8Encoding(), Constants.ServiceUris.JsonMediaType);
-                }
-
-                if (authentication != null)
-                {
-                    httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authentication.BearerToken);
-                }
-            }
-            catch(Exception ex)
-            {
-                var serviceException = new CenturyLinkCloudServiceException(Constants.ExceptionMessages.DefaultServiceExceptionMessage, ex);
-                serviceException.HttpRequestMessage = httpRequestMessage;
-                throw serviceException;
-            }
-
-            return httpRequestMessage;
+            return
+                Configuration
+                    .HttpMessageFormatter
+                    .CreateHttpRequestMessage(httpMethod, serviceUri, authentication, content);            
         }
     }
 }

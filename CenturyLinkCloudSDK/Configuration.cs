@@ -27,5 +27,8 @@ namespace CenturyLinkCloudSDK
 
         private static IServiceResolver serviceResolver = new DefaultServiceResolver();
         internal static IServiceResolver ServiceResolver { get { return serviceResolver; } }
+
+        private static IHttpMessageFormatter httpMessageFormatter = new DefaultHttpMessageFormatter();
+        internal static IHttpMessageFormatter HttpMessageFormatter { get { return httpMessageFormatter; } }
     }
 }

@@ -114,7 +114,7 @@ namespace CenturyLinkCloudSDK.Services
                 Limit = recordCountLimit
             };
 
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Group.GetRecentActivity, Configuration.BaseUri), requestModel);
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Group.GetRecentActivity, Configuration.BaseUri), requestModel);
             var result = await serviceInvoker.Invoke<IEnumerable<Activity>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
@@ -300,7 +300,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         internal async Task<DefaultSettings> GetDefaultSettingsByLink(string uri, CancellationToken cancellationToken)
         {
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
             var result = await serviceInvoker.Invoke<DefaultSettings>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
@@ -392,7 +392,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         internal async Task<Group> GetGroupByLink(string uri, CancellationToken cancellationToken)
         {
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
             var result = await serviceInvoker.Invoke<Group>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             result.Authentication = authentication;

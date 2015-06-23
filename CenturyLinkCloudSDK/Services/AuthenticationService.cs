@@ -43,7 +43,7 @@ namespace CenturyLinkCloudSDK.Services
         {
             var requestModel = new LoginRequest() { UserName = username, Password = password };
 
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Authentication.Login, Configuration.BaseUri), requestModel);
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Authentication.Login, Configuration.BaseUri), requestModel);
             var result = await serviceInvoker.Invoke<UserInfo>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;

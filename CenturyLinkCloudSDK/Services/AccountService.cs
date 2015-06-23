@@ -83,7 +83,7 @@ namespace CenturyLinkCloudSDK.Services
         {
             var requestModel = new GetRecentActivityRequest() { Accounts = accounts, Limit = recordCountLimit };
 
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Account.GetRecentActivity, Configuration.BaseUri), requestModel);
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Account.GetRecentActivity, Configuration.BaseUri), requestModel);
             var result = await serviceInvoker.Invoke<IEnumerable<Activity>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;

@@ -40,7 +40,9 @@
     <Compile Include="Client.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Runtime\Constants.cs" />
+    <Compile Include="Runtime\DefaultHttpMessageFormatter.cs" />
     <Compile Include="Runtime\DefaultServiceResolver.cs" />
+    <Compile Include="Runtime\IHttpMessageFormatter.cs" />
     <Compile Include="Runtime\IServiceInvoker.cs" />
     <Compile Include="Runtime\IServiceResolver.cs" />
     <Compile Include="Runtime\ServiceBase.cs" />

@@ -74,7 +74,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         internal async Task<Queue> GetStatusByLink(string uri, CancellationToken cancellationToken)
         {
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
             var result = await serviceInvoker.Invoke<Queue>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;

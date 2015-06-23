@@ -119,7 +119,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         public async Task<ServerPricing> GetServerResourceUnitPricing(string serverId, CancellationToken cancellationToken)
         {
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Billing.GetServerResourceUnitPricing, Configuration.BaseUri, authentication.AccountAlias, serverId));
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Billing.GetServerResourceUnitPricing, Configuration.BaseUri, authentication.AccountAlias, serverId));
             var result = await serviceInvoker.Invoke<ServerPricing>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
             return result;
         }
@@ -142,7 +142,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         internal async Task<AccountBillingDetail> GetAccountBillingDetailsByLink(string uri, CancellationToken cancellationToken)
         {
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
             var result = await serviceInvoker.Invoke<AccountBillingDetail>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
@@ -166,7 +166,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <returns></returns>
         internal async Task<GroupBillingDetail> GetGroupBillingDetailsByLink(string uri, CancellationToken cancellationToken)
         {
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
             var result = await serviceInvoker.Invoke<GroupBillingDetail>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
@@ -192,7 +192,7 @@ namespace CenturyLinkCloudSDK.Services
         {
             var billingDetail = new BillingDetail();
 
-            var httpRequestMessage = CreateHttpRequestMessage(HttpMethod.Get, uri);
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
             var result = await serviceInvoker.Invoke<GroupBillingDetail>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             foreach (var group in result.Groups)
