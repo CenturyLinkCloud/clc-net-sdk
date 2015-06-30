@@ -5,6 +5,7 @@ using CenturyLinkCloudSDK.ServiceModels.Requests.Server;
 using CenturyLinkCloudSDK.ServiceModels.Responses.Servers;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -73,233 +74,58 @@ namespace CenturyLinkCloudSDK.Services
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
             return await serviceInvoker.Invoke<Statistics>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
         }
-
-
-        /*
         
-
-        /// <summary>
-        /// Sends the pause operation to a list of servers and adds operation to queue.
-        /// Use this operation when you want to pause a single server or group of servers. 
-        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the pause command.
-        /// </summary>
-        /// <param name="accountAlias"></param>
-        /// <param name="serverIds"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<ServerOperation>> PauseServer(List<string> serverIds)
-        {
-            return await PauseServer(serverIds, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Sends the pause operation to a list of servers and adds operation to queue.
-        /// Use this operation when you want to pause a single server or group of servers. 
-        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the pause command.
-        /// </summary>
-        /// <param name="serverIds"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<ServerOperation>> PauseServer(List<string> serverIds, CancellationToken cancellationToken)
+        internal async Task<IEnumerable<ServerOperation>> PauseServers(IEnumerable<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PauseServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
+            return await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Sends the power on operation to a list of servers and adds operation to queue.
-        /// Use this operation when you want to power on a single server or group of servers. 
-        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the power on command.
-        /// </summary>
-        /// <param name="accountAlias"></param>
-        /// <param name="serverIds"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<ServerOperation>> PowerOnServer(List<string> serverIds)
-        {
-            return await PowerOnServer(serverIds, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Sends the power on operation to a list of servers and adds operation to queue.
-        /// Use this operation when you want to power on a single server or group of servers. 
-        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the power on command. 
-        /// </summary>
-        /// <param name="serverIds"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<ServerOperation>> PowerOnServer(List<string> serverIds, CancellationToken cancellationToken)
+        internal async Task<IEnumerable<ServerOperation>> PowerOnServers(IEnumerable<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PowerOnServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
+            return await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Sends the power off operation to a list of servers and adds operation to queue. 
-        /// Use this operation when you want to power off a single server or group of servers. 
-        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the power off command.
-        /// </summary>
-        /// <param name="accountAlias"></param>
-        /// <param name="serverIds"></param>
-        /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
-        public async Task<IEnumerable<ServerOperation>> PowerOffServer(List<string> serverIds)
-        {
-            return await PowerOffServer(serverIds, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Sends the power off operation to a list of servers and adds operation to queue. 
-        /// Use this operation when you want to power off a single server or group of servers. 
-        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the power off command.
-        /// </summary>
-        /// <param name="serverIds"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<ServerOperation>> PowerOffServer(List<string> serverIds, CancellationToken cancellationToken)
+        internal async Task<IEnumerable<ServerOperation>> PowerOffServers(IEnumerable<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PowerOffServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
+            return await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Sends the reboot operation to a list of servers and adds operation to queue.
-        /// Use this operation when you want to reboot a single server or group of servers. 
-        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the reboot command.
-        /// </summary>
-        /// <param name="accountAlias"></param>
-        /// <param name="serverIds"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<ServerOperation>> RebootServer(List<string> serverIds)
-        {
-            return await RebootServer(serverIds, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Sends the reboot operation to a list of servers and adds operation to queue.
-        /// Use this operation when you want to reboot a single server or group of servers. 
-        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the reboot command. 
-        /// </summary>
-        /// <param name="serverIds"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<ServerOperation>> RebootServer(List<string> serverIds, CancellationToken cancellationToken)
+        internal async Task<IEnumerable<ServerOperation>> RebootServers(IEnumerable<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.RebootServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
+            return await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Sends the shut down operation to a list of servers and adds operation to queue.
-        /// Use this operation when you want to shut down a single server or group of servers. 
-        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the shut down command.
-        /// </summary>
-        /// <param name="accountAlias"></param>
-        /// <param name="serverIds"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<ServerOperation>> ShutDownServer(List<string> serverIds)
-        {
-            return await ShutDownServer(serverIds, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Sends the shut down operation to a list of servers and adds operation to queue.
-        /// Use this operation when you want to shut down a single server or group of servers. 
-        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the shut down command.
-        /// </summary>
-        /// <param name="serverIds"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<ServerOperation>> ShutDownServer(List<string> serverIds, CancellationToken cancellationToken)
+        internal async Task<IEnumerable<ServerOperation>> ShutDownServers(IEnumerable<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.ShutDownServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
+            return await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Sends the reset operation to a list of servers and adds operation to queue.
-        /// Use this operation when you want to reset a single server or group of servers. 
-        /// It should be used in conjunction with the  Queue GetStatus operation to check the result of the reset command.
-        /// </summary>
-        /// <param name="accountAlias"></param>
-        /// <param name="serverIds"></param>
-        /// <returns>An asynchronous Task of IEnumerable of ServerOperation.</returns>
-        public async Task<IEnumerable<ServerOperation>> ResetServer(List<string> serverIds)
-        {
-            return await ResetServer(serverIds, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Sends the reset operation to a list of servers and adds operation to queue.
-        /// Use this operation when you want to reset a single server or group of servers. 
-        /// It should be used in conjunction with the  Queue GetStatus operation to check the result of the reset command. 
-        /// </summary>
-        /// <param name="serverIds"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<ServerOperation>> ResetServer(List<string> serverIds, CancellationToken cancellationToken)
+        internal async Task<IEnumerable<ServerOperation>> ResetServers(IEnumerable<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.ResetServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
+            return await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Starts server maintenance.
-        /// </summary>
-        /// <param name="serverIds"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<ServerOperation>> StartMaintenance(List<string> serverIds)
-        {
-            return await StartMaintenance(serverIds, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Starts server maintenance.
-        /// </summary>
-        /// <param name="serverIds"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<ServerOperation>> StartMaintenance(List<string> serverIds, CancellationToken cancellationToken)
+        internal async Task<IEnumerable<ServerOperation>> StartMaintenance(IEnumerable<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.StartMaintenance, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
+            return await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Stops server maintenance.
-        /// </summary>
-        /// <param name="serverIds"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<ServerOperation>> StopMaintenance(List<string> serverIds)
-        {
-            return await StopMaintenance(serverIds, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Stops server maintenance.
-        /// </summary>
-        /// <param name="serverIds"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<ServerOperation>> StopMaintenance(List<string> serverIds, CancellationToken cancellationToken)
+        internal async Task<IEnumerable<ServerOperation>> StopMaintenance(IEnumerable<string> serverIds, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.StopMaintenance, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            var result = await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
+            return await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
         }
 
+        /*                
+
+        
         /// <summary>
         /// Gets the server statistics.
         /// </summary>

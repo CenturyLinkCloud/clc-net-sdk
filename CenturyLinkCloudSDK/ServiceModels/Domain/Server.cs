@@ -109,6 +109,160 @@ namespace CenturyLinkCloudSDK.ServiceModels
             }
 
             return await ServerService.GetServerStatisticsByLink(string.Format("{0}{1}{2}", Configuration.BaseUri, statisticsLink.Value.Href, Constants.ServiceUris.Querystring.GetLatestStatistics), cancellationToken).ConfigureAwait(false);
-        }        
+        }
+
+        #region Power operations
+        /// <summary>
+        /// Adds a job to the queue to pause this server.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>                
+        public Task<ServerOperation> Pause()
+        {
+            return Pause(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to pause this server.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>        
+        public async Task<ServerOperation> Pause(CancellationToken cancellationToken)
+        {
+            var result = await ServerService.PauseServers(new[] { Id }, cancellationToken).ConfigureAwait(false);
+            return result.Single();
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to power on this server.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>                
+        public Task<ServerOperation> PowerOn()
+        {
+            return PowerOn(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to power on this server.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>        
+        public async Task<ServerOperation> PowerOn(CancellationToken cancellationToken)
+        {
+            var result = await ServerService.PowerOnServers(new[] { Id }, cancellationToken).ConfigureAwait(false);
+            return result.Single();
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to power off this server.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>                
+        public Task<ServerOperation> PowerOff()
+        {
+            return PowerOff(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to power off this server.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>        
+        public async Task<ServerOperation> PowerOff(CancellationToken cancellationToken)
+        {
+            var result = await ServerService.PowerOffServers(new[] { Id }, cancellationToken).ConfigureAwait(false);
+            return result.Single();
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to reboot this server.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>                
+        public Task<ServerOperation> Reboot()
+        {
+            return Reboot(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to reboot this server.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>        
+        public async Task<ServerOperation> Reboot(CancellationToken cancellationToken)
+        {
+            var result = await ServerService.RebootServers(new[] { Id }, cancellationToken).ConfigureAwait(false);
+            return result.Single();
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to reset this server.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>                
+        public Task<ServerOperation> Reset()
+        {
+            return Reset(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to reset this server.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>        
+        public async Task<ServerOperation> Reset(CancellationToken cancellationToken)
+        {
+            var result = await ServerService.ResetServers(new[] { Id }, cancellationToken).ConfigureAwait(false);
+            return result.Single();
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to shutdown this server.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>                
+        public Task<ServerOperation> ShutDown()
+        {
+            return ShutDown(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to shutdown this server.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>        
+        public async Task<ServerOperation> ShutDown(CancellationToken cancellationToken)
+        {
+            var result = await ServerService.ShutDownServers(new[] { Id }, cancellationToken).ConfigureAwait(false);
+            return result.Single();
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to start maintenance on this server.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>                
+        public Task<ServerOperation> StartMaintenance()
+        {
+            return StartMaintenance(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to start maintenance on this server.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>        
+        public async Task<ServerOperation> StartMaintenance(CancellationToken cancellationToken)
+        {
+            var result = await ServerService.StartMaintenance(new[] { Id }, cancellationToken).ConfigureAwait(false);
+            return result.Single();
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to stop maintenance on this server.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>                
+        public Task<ServerOperation> StopMaintenance()
+        {
+            return StopMaintenance(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to stop maintenance on this server.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>        
+        public async Task<ServerOperation> StopMaintenance(CancellationToken cancellationToken)
+        {
+            var result = await ServerService.StopMaintenance(new[] { Id }, cancellationToken).ConfigureAwait(false);
+            return result.Single();
+        }
+        #endregion
     }
 }

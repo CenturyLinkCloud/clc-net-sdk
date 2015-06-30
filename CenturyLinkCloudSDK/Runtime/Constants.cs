@@ -69,23 +69,16 @@
                 internal static string GetServer { get { return "{0}/v2/servers/{1}/{2}"; } }
 /*
                 internal static string CreateServer { get { return "{0}/v2/servers/{1}"; } }   
-
+                */
                 internal static string PauseServer { get { return "{0}/v2/operations/{1}/servers/pause"; } }
-
                 internal static string PowerOnServer { get { return "{0}/v2/operations/{1}/servers/powerOn"; } }
-
                 internal static string PowerOffServer { get { return "{0}/v2/operations/{1}/servers/powerOff"; } }
-
                 internal static string RebootServer { get { return "{0}/v2/operations/{1}/servers/reboot"; } }
-
                 internal static string ShutDownServer { get { return "{0}/v2/operations/{1}/servers/shutDown"; } }
-
                 internal static string ResetServer { get { return "{0}/v2/operations/{1}/servers/reset"; } }
-
                 internal static string StartMaintenance { get { return "{0}/v2/operations/{1}/servers/startMaintenance"; } }
-
                 internal static string StopMaintenance { get { return "{0}/v2/operations/{1}/servers/stopMaintenance"; } }
-                
+                /*
                 internal static string GetServerStatistics { get { return "{0}/v2/servers/{1}/{2}/statistics{3}"; } }
 
                 internal static string GetServerCredentials { get { return "{0}/v2/servers/{1}/{2}/credentials"; } }
