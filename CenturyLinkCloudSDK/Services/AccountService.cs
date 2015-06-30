@@ -14,6 +14,8 @@ namespace CenturyLinkCloudSDK.Services
     /// </summary>
     public class AccountService : ServiceBase
     {
+        static readonly string[] ServerAndGroupEntityTypes = new[] { Constants.EntityTypes.Server, Constants.EntityTypes.Group };
+
         DataCenterService dataCenterService;
         internal AccountService(Authentication authentication, IServiceInvoker serviceInvoker, DataCenterService dataCenterService)
             : base(authentication, serviceInvoker)
@@ -21,74 +23,231 @@ namespace CenturyLinkCloudSDK.Services
             this.dataCenterService = dataCenterService;
         }
 
+        #region Get global recent activity
         /// <summary>
         /// Returns recent account activity.
-        /// </summary>
-        /// <param name="recordCountLimit"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<Activity>> GetRecentActivity()
+        /// </summary>        
+        /// <returns>The recent activity for the account</returns>
+        public Task<IEnumerable<Activity>> GetRecentActivity()
         {
-            return await GetRecentActivity(CancellationToken.None).ConfigureAwait(false);
+            return GetRecentActivity(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Returns recent account activity.
+        /// </summary>  
+        /// <param name="recordLimit">The maximum number of records to return</param>
+        /// <returns>The recent activity for the account</returns>
+        public Task<IEnumerable<Activity>> GetRecentActivity(int recordLimit)
+        {
+            return GetRecentActivity(recordLimit, CancellationToken.None);
         }
 
         /// <summary>
         /// Returns recent account activity.
         /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<Activity>> GetRecentActivity(CancellationToken cancellationToken)
+        /// <returns>The recent activity for the account</returns>
+        public Task<IEnumerable<Activity>> GetRecentActivity(CancellationToken cancellationToken)
         {
-            var accounts = new List<String>();
-            accounts.Add(authentication.AccountAlias);
-
-            return await GetRecentActivity(accounts, 10, cancellationToken).ConfigureAwait(false);
+            return GetRecentActivity(10, cancellationToken);
         }
-
+       
         /// <summary>
         /// Returns recent account activity.
         /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<Activity>> GetRecentActivity(int recordCountLimit)
+        /// <param name="recordLimit">The maximum number of records to return</param>
+        /// <returns>The recent activity for the account</returns>
+        public Task<IEnumerable<Activity>> GetRecentActivity(int recordLimit, CancellationToken cancellationToken)
         {
-            return await GetRecentActivity(recordCountLimit, CancellationToken.None).ConfigureAwait(false);
+            return GetRecentActivity(null, recordLimit, cancellationToken);
+        }
+        #endregion
+
+        #region Get data center recent activity
+        /// <summary>
+        /// Returns the recent activity for the indicated data center
+        /// </summary>
+        /// <param name="dc">The data center</param>
+        /// <returns>The data center recent activity</returns>
+        public Task<IEnumerable<Activity>> GetRecentActivityFor(DataCenter dc)
+        {
+            return GetRecentActivityFor(dc, CancellationToken.None);
         }
 
         /// <summary>
-        /// Returns recent account activity.
+        /// Returns the recent activity for the indicated data center
         /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<Activity>> GetRecentActivity(int recordCountLimit, CancellationToken cancellationToken)
+        /// <param name="dc">The data center</param>
+        /// <param name="recordLimit">The maximum number of records to return</param>
+        /// <returns>The data center recent activity</returns>
+        public Task<IEnumerable<Activity>> GetRecentActivityFor(DataCenter dc, int recordLimit)
         {
-            var accounts = new List<String>();
-            accounts.Add(authentication.AccountAlias);
-
-            return await GetRecentActivity(accounts, recordCountLimit, cancellationToken).ConfigureAwait(false);
+            return GetRecentActivityFor(dc, recordLimit, CancellationToken.None);
         }
 
         /// <summary>
-        /// Returns recent account activity.
+        /// Returns the recent activity for the indicated data center
         /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> accounts, int recordCountLimit)
+        /// <param name="dc">The data center</param>
+        /// <returns>The data center recent activity</returns>
+        public Task<IEnumerable<Activity>> GetRecentActivityFor(DataCenter dc, CancellationToken cancellationToken)
         {
-            return await GetRecentActivity(accounts, recordCountLimit, CancellationToken.None).ConfigureAwait(false);
+            return GetRecentActivityFor(dc, 10, cancellationToken);
         }
 
         /// <summary>
-        /// Returns recent account activity.
+        /// Returns the recent activity for the indicated data center
         /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> accounts, int recordCountLimit, CancellationToken cancellationToken)
+        /// <param name="dc">The data center</param>
+        /// <param name="recordLimit">The maximum number of records to return</param>
+        /// <returns>The data center recent activity</returns>
+        public async Task<IEnumerable<Activity>> GetRecentActivityFor(DataCenter dc, int recordLimit, CancellationToken cancellationToken)
         {
-            var requestModel = new GetRecentActivityRequest() { Accounts = accounts, Limit = recordCountLimit };
+            var rootGroup = await dc.GetRootGroup(cancellationToken).ConfigureAwait(false);
+            return await GetRecentActivityFor(rootGroup, recordLimit, cancellationToken).ConfigureAwait(false);
+        }
+
+        #endregion
+
+        #region Get group recent activity
+        /// <summary>
+        /// Returns the recent activity for the indicated group
+        /// </summary>
+        /// <param name="g">The group</param>
+        /// <returns>The group recent activity</returns>
+        public Task<IEnumerable<Activity>> GetRecentActivityFor(Group g)
+        {
+            return GetRecentActivityFor(g, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Returns the recent activity for the indicated group
+        /// </summary>
+        /// <param name="g">The group</param>
+        /// <param name="recordLimit">The maximum number of records to return</param>
+        /// <returns>The group recent activity</returns>
+        public Task<IEnumerable<Activity>> GetRecentActivityFor(Group g, int recordLimit)
+        {
+            return GetRecentActivityFor(g, recordLimit, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Returns the recent activity for the indicated group
+        /// </summary>
+        /// <param name="g">The group</param>
+        /// <returns>The group recent activity</returns>
+        public Task<IEnumerable<Activity>> GetRecentActivityFor(Group g, CancellationToken cancellationToken)
+        {
+            return GetRecentActivityFor(g, 10, cancellationToken);
+        }
+
+        /// <summary>
+        /// Returns the recent activity for the indicated group
+        /// </summary>
+        /// <param name="g">The group</param>
+        /// <param name="recordLimit">The maximum number of records to return</param>
+        /// <returns>The group recent activity</returns>
+        public Task<IEnumerable<Activity>> GetRecentActivityFor(Group g, int recordLimit, CancellationToken cancellationToken)
+        {
+            var groupAndServerIds = new List<string>();
+            g.AppendContainedGroupAndServerIds(groupAndServerIds);
+            return GetRecentActivity(groupAndServerIds, recordLimit, cancellationToken);
+        }
+        #endregion
+
+        #region Get server recent activity
+        /// <summary>
+        /// Returns the recent activity for the indicated server
+        /// </summary>
+        /// <param name="s">The server</param>
+        /// <returns>The server recent activity</returns>
+        public Task<IEnumerable<Activity>> GetRecentActivityFor(Server s)
+        {
+            return GetRecentActivityFor(s, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Returns the recent activity for the indicated server
+        /// </summary>
+        /// <param name="s">The server</param>
+        /// <param name="recordLimit">The maximum number of records to return</param>
+        /// <returns>The server recent activity</returns>
+        public Task<IEnumerable<Activity>> GetRecentActivityFor(Server s, int recordLimit)
+        {
+            return GetRecentActivityFor(s, recordLimit, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Returns the recent activity for the indicated server
+        /// </summary>
+        /// <param name="s">The server</param>
+        /// <returns>The server recent activity</returns>
+        public Task<IEnumerable<Activity>> GetRecentActivityFor(Server s, CancellationToken cancellationToken)
+        {
+            return GetRecentActivityFor(s, 10, cancellationToken);
+        }
+
+        /// <summary>
+        /// Returns the recent activity for the indicated server
+        /// </summary>
+        /// <param name="s">The server</param>
+        /// <param name="recordLimit">The maximum number of records to return</param>
+        /// <returns>The server recent activity</returns>
+        public Task<IEnumerable<Activity>> GetRecentActivityFor(Server s, int recordLimit, CancellationToken cancellationToken)
+        {
+            return GetRecentActivity(new[] { s.Id }, recordLimit, cancellationToken);
+        }
+        #endregion
+
+        async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> referenceIds, int recordLimit, CancellationToken cancellationToken)
+        {
+            var accounts = new List<String> { authentication.AccountAlias };
+            var requestModel = 
+                new GetRecentActivityRequest
+                { 
+                    Accounts = accounts, 
+                    Limit = recordLimit,
+                    ReferenceIds = referenceIds,
+                    EntityTypes = (referenceIds == null) ? null : ServerAndGroupEntityTypes
+                };
 
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Account.GetRecentActivity, Configuration.BaseUri), requestModel);
-            var result = await serviceInvoker.Invoke<IEnumerable<Activity>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            return await serviceInvoker.Invoke<IEnumerable<Activity>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+        }
+
+
+        /*
+        /// <summary>
+        /// Gets the total billing details for the account.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<AccountBillingDetail> GetBillingDetails()
+        {
+            return await GetBillingDetails(CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the total billing details for the account.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<AccountBillingDetail> GetBillingDetails(CancellationToken cancellationToken)
+        {
+            var uri = string.Format(Constants.ServiceUris.Billing.GetAccountBillingDetails, Configuration.BaseUri, authentication.AccountAlias);
+            return await GetBillingDetailsByLink(uri, cancellationToken).ConfigureAwait(false);
+        }
+
+        
+        internal async Task<AccountBillingDetail> GetBillingDetailsByLink(string uri, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
+            var result = await serviceInvoker.Invoke<AccountBillingDetail>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
-
+        */
+        /*
+        
         /// <summary>
         /// Gets the account total assets.
         /// </summary>
@@ -130,5 +289,6 @@ namespace CenturyLinkCloudSDK.Services
 
             return totalAssets;
         }
+         */
     }
 }

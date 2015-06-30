@@ -22,17 +22,21 @@ namespace CenturyLinkCloudSDK.Services
 
         }
 
+        void SetInternalServerProperties(Server server)
+        {
+            server.ServerService = this;
+        }
+
         /// <summary>
         /// Gets the details for a individual server.
         /// Use this operation when you want to find out all the details for a server. 
         /// It can be used to look for changes, its status, or to retrieve links to associated resources.
-        /// </summary>
-        /// <param name="accountAlias"></param>
-        /// <param name="serverId"></param>
-        /// <returns></returns>
-        public async Task<Server> GetServer(string serverId)
+        /// </summary>        
+        /// <param name="serverId">The id of the server</param>
+        /// <returns>The server</returns>
+        public Task<Server> GetServer(string serverId)
         {
-            return await GetServer(serverId, CancellationToken.None).ConfigureAwait(false);
+            return GetServer(serverId, CancellationToken.None);
         }
 
         /// <summary>
@@ -40,14 +44,39 @@ namespace CenturyLinkCloudSDK.Services
         /// Use this operation when you want to find out all the details for a server. 
         /// It can be used to look for changes, its status, or to retrieve links to associated resources.
         /// </summary>
-        /// <param name="serverId"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<Server> GetServer(string serverId, CancellationToken cancellationToken)
+        /// <param name="serverId">The id of the server</param>        
+        /// <returns>The server</returns>
+        public Task<Server> GetServer(string serverId, CancellationToken cancellationToken)
         {
             var uri = string.Format(Constants.ServiceUris.Server.GetServer, Configuration.BaseUri, authentication.AccountAlias, serverId);
-            return await GetServerByLink(uri, cancellationToken).ConfigureAwait(false);
+            return GetServerByLink(uri, cancellationToken);
         }
+
+        internal async Task<Server> GetServerByLink(string uri, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
+            var result = await serviceInvoker.Invoke<Server>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+
+            SetInternalServerProperties(result);
+            
+            return result;
+        }
+
+        internal async Task<ServerCredential> GetServerCredentialsByLink(string uri, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
+            return await serviceInvoker.Invoke<ServerCredential>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+        }
+
+        internal async Task<Statistics> GetServerStatisticsByLink(string uri, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
+            return await serviceInvoker.Invoke<Statistics>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+        }
+
+
+        /*
+        
 
         /// <summary>
         /// Sends the pause operation to a list of servers and adds operation to queue.
@@ -318,28 +347,6 @@ namespace CenturyLinkCloudSDK.Services
         }
 
         /// <summary>
-        /// Gets the server credentials.
-        /// </summary>
-        /// <param name="serverId"></param>
-        /// <returns></returns>
-        public async Task<ServerCredential> GetServerCredentials(string serverId)
-        {
-            return await GetServerCredentials(serverId, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets the server credentials.
-        /// </summary>
-        /// <param name="serverId"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<ServerCredential> GetServerCredentials(string serverId, CancellationToken cancellationToken)
-        {
-            var uri = string.Format(Constants.ServiceUris.Server.GetServerCredentials, Configuration.BaseUri, authentication.AccountAlias, serverId);
-            return await GetServerCredentialsByLink(uri, cancellationToken).ConfigureAwait(false);
-        }
-
-        /// <summary>
         /// Gets a public ip address.
         /// </summary>
         /// <param name="serverId"></param>
@@ -497,157 +504,7 @@ namespace CenturyLinkCloudSDK.Services
             return result;
         }
 
-        /// <summary>
-        /// Returns recent group activity.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> referenceIds)
-        {
-
-            return await GetRecentActivity(referenceIds, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Returns recent group activity.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> referenceIds, CancellationToken cancellationToken)
-        {
-
-            return await GetRecentActivity(referenceIds, 10, cancellationToken).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Returns recent group activity.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> referenceIds, int recordCountLimit)
-        {
-
-            return await GetRecentActivity(referenceIds, recordCountLimit, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Returns recent data center activity.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> accounts, IEnumerable<string> referenceIds, int recordCountLimit)
-        {
-            return await GetRecentActivity(accounts, referenceIds, recordCountLimit, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Returns recent group activity.
-        /// </summary>
-        /// <param name="referenceIds"></param>
-        /// <param name="recordCountLimit"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> referenceIds, int recordCountLimit, CancellationToken cancellationToken)
-        {
-            var accounts = new List<string>();
-            accounts.Add(authentication.AccountAlias);
-
-            return await GetRecentActivity(accounts, referenceIds, recordCountLimit, cancellationToken).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Returns recent group activity.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> accounts, IEnumerable<string> referenceIds, int recordCountLimit, CancellationToken cancellationToken)
-        {
-            var requestModel = new GetRecentActivityRequest()
-            {
-                EntityTypes = new List<string>() { Constants.EntityTypes.Server },
-                ReferenceIds = referenceIds,
-                Accounts = accounts,
-                Limit = recordCountLimit
-            };
-
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Group.GetRecentActivity, Configuration.BaseUri), requestModel);
-            var result = await serviceInvoker.Invoke<IEnumerable<Activity>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the server statistics.
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <returns></returns>
-        internal async Task<Statistics> GetServerStatisticsByLink(string uri)
-        {
-            return await GetServerStatisticsByLink(uri, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets the server statistics. 
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        internal async Task<Statistics> GetServerStatisticsByLink(string uri, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await serviceInvoker.Invoke<Statistics>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the details for a individual server by hypermedia link.
-        /// Use this operation when you want to find out all the details for a server. 
-        /// It can be used to look for changes, its status, or to retrieve links to associated resources. 
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <returns></returns>
-        internal async Task<Server> GetServerByLink(string uri)
-        {
-            return await GetServerByLink(uri, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets the details for a individual server by hypermedia link.
-        /// Use this operation when you want to find out all the details for a server. 
-        /// It can be used to look for changes, its status, or to retrieve links to associated resources. 
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        internal async Task<Server> GetServerByLink(string uri, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await serviceInvoker.Invoke<Server>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            result.Authentication = authentication;
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the server credentials
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <returns></returns>
-        internal async Task<ServerCredential> GetServerCredentialsByLink(string uri)
-        {
-            return await GetServerCredentialsByLink(uri, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets the server credentials
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        internal async Task<ServerCredential> GetServerCredentialsByLink(string uri, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await serviceInvoker.Invoke<ServerCredential>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
-        }
+        
+*/
     }
 }

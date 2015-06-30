@@ -25,9 +25,8 @@ namespace CenturyLinkCloudSDK.Services
         /// <summary>
         /// Gets the details for a individual server group and any sub-groups and servers that it contains. 
         /// </summary>
-        /// <param name="accountAlias"></param>
-        /// <param name="groupId"></param>
-        /// <returns></returns>
+        /// <param name="groupId">The id of the group</param>
+        /// <returns>The group</returns>
         public async Task<Group> GetGroup(string groupId)
         {
             return await GetGroup(groupId, CancellationToken.None).ConfigureAwait(false);
@@ -36,15 +35,22 @@ namespace CenturyLinkCloudSDK.Services
         /// <summary>
         /// Gets the details for a individual server group and any sub-groups and servers that it contains.
         /// </summary>
-        /// <param name="groupId"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="groupId">The id of the group</param>        
+        /// <returns>The group</returns>
         public async Task<Group> GetGroup(string groupId, CancellationToken cancellationToken)
         {
             var uri = string.Format(Constants.ServiceUris.Group.GetGroup, Configuration.BaseUri, authentication.AccountAlias, groupId);
             return await GetGroupByLink(uri, cancellationToken).ConfigureAwait(false);
         }
+        
+        internal async Task<Group> GetGroupByLink(string uri, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
+            return await serviceInvoker.Invoke<Group>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+        }
 
+        /*
+        
         /// <summary>
         /// Returns recent group activity.
         /// </summary>
@@ -384,20 +390,6 @@ namespace CenturyLinkCloudSDK.Services
             return await GetGroupByLink(uri, CancellationToken.None).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Gets the details for a individual server group and any sub-groups and servers that it contains by hypermedia link.
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        internal async Task<Group> GetGroupByLink(string uri, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await serviceInvoker.Invoke<Group>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            result.Authentication = authentication;
-
-            return result;
-        }
+*/
     }
 }

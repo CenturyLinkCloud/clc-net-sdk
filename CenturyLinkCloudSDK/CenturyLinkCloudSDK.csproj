@@ -92,7 +92,6 @@
     <Compile Include="ServiceModels\Domain\TotalAssets.cs" />
     <Compile Include="ServiceModels\Requests\Account\GetRecentActivityRequest.cs" />
     <Compile Include="ServiceModels\Requests\Authentication\LoginRequest.cs" />
-    <Compile Include="ServiceModels\Requests\DataCenter\GetRecentActivityRequest.cs" />
     <Compile Include="ServiceModels\Requests\Group\GetRecentActivityRequest.cs" />
     <Compile Include="ServiceModels\Requests\Server\CreateServerRequest.cs" />
     <Compile Include="ServiceModels\Responses\Servers\CreateServerResponse.cs" />
@@ -103,7 +102,6 @@
     <Compile Include="Services\GroupService.cs" />
     <Compile Include="Services\QueueService.cs" />
     <Compile Include="Services\ServerService.cs" />
-    <Compile Include="ServiceModels\Domain\DataCenterGroup.cs" />
     <Compile Include="ServiceModels\Domain\Group.cs" />
     <Compile Include="ServiceModels\Domain\ComputeLimits.cs" />
     <Compile Include="ServiceModels\Domain\Queue.cs" />

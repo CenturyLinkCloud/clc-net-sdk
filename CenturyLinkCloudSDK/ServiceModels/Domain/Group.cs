@@ -12,33 +12,20 @@ namespace CenturyLinkCloudSDK.ServiceModels
 {
     public class Group
     {
-        private Lazy<IEnumerable<Link>> serverLinks;
-
-        private Lazy<Link> billingLink;
-
-        private Lazy<Link> defaultsLink;
-
-        public Authentication Authentication { get; set; }
+        Lazy<IEnumerable<Link>> serverLinks;
+        Lazy<Link> billingLink;
+        Lazy<Link> defaultsLink;
+        Lazy<Link> createServerLink;
 
         public string Id { get; set; }
-
         public string Name { get; set; }
-
         public string Description { get; set; }
-
         public string Type { get; set; }
-
         public string Status { get; set; }
-
         public int ServersCount { get; set; }
-
         public ComputeLimits Limits { get; set; }
-
         public IEnumerable<Group> Groups { get; set; }
-
-        public ChangeInfo ChangeInfo { get; set; }
-
-        private Lazy<Link> createServerLink;
+        public ChangeInfo ChangeInfo { get; set; }        
 
         [JsonPropertyAttribute]
         private IEnumerable<Link> Links { get; set; }
@@ -70,40 +57,66 @@ namespace CenturyLinkCloudSDK.ServiceModels
         }
 
         /// <summary>
-        /// Determines if this Group has servers by examining the Links collection.
+        /// Determines if this Group has servers
         /// </summary>
-        public bool HasServers()
+        public bool HasServers
         {
-            return serverLinks.Value.Count() > 0 ? true : false;
+            get { return serverLinks.Value.Count() > 0; }
         }
 
         /// <summary>
-        /// Determines if this group has billing details based on the Links collection.
+        /// Determines if this group has billing details
         /// </summary>
         /// <returns></returns>
-        public bool HasBillingDetails()
+        public bool HasBillingDetails
         {
-            return billingLink.Value != null ? true : false;
+            get { return billingLink.Value != null; }
         }
 
         /// <summary>
-        /// Determines if this group has default settings based on the links collection.
+        /// Determines if this group has default settings
         /// </summary>
         /// <returns></returns>
-        public bool HasDefaults()
+        public bool HasDefaults
         {
-            return defaultsLink.Value != null ? true : false;
+            get { return defaultsLink.Value != null; }
         }
 
         /// <summary>
         /// Determines if the create server functionality is available.
         /// </summary>
         /// <returns></returns>
-        public bool CanCreateServer()
+        public bool CanCreateServer
         {
-            return createServerLink.Value != null ? true : false;
+            get { return createServerLink.Value != null; }
         }
 
+        internal void AppendContainedGroupAndServerIds(List<string> ids)
+        {
+            ids.Add(Id);
+            if(HasServers)
+            {
+                ids.AddRange(GetServerIds());
+            }
+            
+            foreach(Group g in Groups)
+            {
+                g.AppendContainedGroupAndServerIds(ids);
+            }
+        }
+        
+        IEnumerable<string> GetServerIds()
+        {
+            return
+                !HasServers ?
+                    Enumerable.Empty<string>() :
+                    serverLinks
+                        .Value
+                        .Select(l => l.Id)
+                        .ToList();
+        }
+
+        /*
         /// <summary>
         /// Gets the servers that belong to this group.
         /// </summary>
@@ -150,24 +163,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         {
             return GetServerIds(CancellationToken.None);
         }
-
-        /// <summary>
-        /// Returns the server Ids for all groups and subgroups.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public IEnumerable<string> GetServerIds(CancellationToken cancellationToken)
-        {
-            var serverIds = new List<string>();
-
-            if (!HasServers())
-            {
-                return null;
-            }
-
-            return serverLinks.Value.Select(l => l.Id).ToList();
-        }
-
+        
         /// <summary>
         /// Gets the billing details.
         /// </summary>
@@ -244,6 +240,6 @@ namespace CenturyLinkCloudSDK.ServiceModels
             var dataCenterService = Configuration.ServiceResolver.Resolve<DataCenterService>(Authentication);
             var defaultSettings = await dataCenterService.GetDefaultSettingsByLink(string.Format("{0}{1}", Configuration.BaseUri, defaultsLink.Value.Href), cancellationToken).ConfigureAwait(false);
             return defaultSettings;
-        }
+        }*/
     }
 }

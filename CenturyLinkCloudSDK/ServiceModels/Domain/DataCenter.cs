@@ -11,19 +11,12 @@ namespace CenturyLinkCloudSDK.ServiceModels
 {
     public class DataCenter
     {
-        private Lazy<Link> computeLimitsLink;
-
-        private Lazy<Link> billingLink;
-
-        private Lazy<Link> rootGroupLink;
-
-        private Lazy<Link> defaultsLink;
-
-        private Lazy<Link> networkLimitsLink;
-
-        private Lazy<Link> createServerLink;
-
-        public Authentication Authentication { get; set; }
+        Lazy<Link> computeLimitsLink;
+        Lazy<Link> networkLimitsLink;
+        Lazy<Link> billingLink;
+        Lazy<Link> rootGroupLink;
+        Lazy<Link> defaultsLink;       
+        Lazy<Link> createServerLink;        
 
         /// <summary>
         /// Default constructor.
@@ -62,67 +55,97 @@ namespace CenturyLinkCloudSDK.ServiceModels
         }
 
         public string Id { get; set; }
-
         public string Name { get; set; }
 
+        /// <summary>
+        /// Whether the total assets were loaded when the data center was fetched
+        /// </summary>
+        public bool HasTotalAssets { get; internal set; }
         public TotalAssets Totals { get; set; }
+
+        internal GroupService GroupService { get; set; }
 
         [JsonPropertyAttribute]
         private IEnumerable<Link> Links { get; set; }
 
         /// <summary>
-        /// Determines if this data center has compute limits based on the Links collection.
+        /// Determines if this data center has compute limits available
         /// </summary>
-        public bool HasComputeLimits()
+        public bool HasComputeLimits
         {
-            return computeLimitsLink.Value != null ? true : false;
+            get { return computeLimitsLink.Value != null; }
         }
 
         /// <summary>
-        /// Determines if this data center has billing details based on the Links collection.
+        /// Determines if this data center has billing details available
         /// </summary>
         /// <returns></returns>
-        public bool HasBillingDetails()
+        public bool HasBillingDetails
         {
-            return billingLink.Value != null ? true : false;
+            get { return billingLink.Value != null; }
         }
 
         /// <summary>
-        /// Determines if this data center has a root group based on the links collection.
+        /// Determines if this data center has a root hardware group available
         /// </summary>
         /// <returns></returns>
-        public bool HasRootGroup()
+        public bool HasRootGroup
         {
-            return rootGroupLink.Value != null ? true : false;
+            get { return rootGroupLink.Value != null; }
         }
 
         /// <summary>
-        /// Determines if this data center has default settings based on the links collection.
+        /// Determines if this data center has default settings available
         /// </summary>
         /// <returns></returns>
-        public bool HasDefaults()
+        public bool HasDefaults
         {
-            return defaultsLink.Value != null ? true : false;
+            get { return defaultsLink.Value != null; }
         }
 
         /// <summary>
-        /// Determines if this data center has network limits based on the links collection.
+        /// Determines if this data center has network limits available
         /// </summary>
         /// <returns></returns>
-        public bool HasNetworkLimits()
+        public bool HasNetworkLimits
         {
-            return networkLimitsLink.Value != null ? true : false;
+            get { return networkLimitsLink.Value != null; }
         }
 
         /// <summary>
-        /// Determines if the create server functionality is available.
+        /// Determines if the account is authorized to create servers.
         /// </summary>
         /// <returns></returns>
-        public bool CanCreateServer()
+        public bool CanCreateServer
         {
-            return createServerLink.Value != null ? true : false;
+            get { return createServerLink.Value != null; }
+        }
+        
+        /// <summary>
+        /// Gets the root group containing all the data center hardware.
+        /// </summary>
+        /// <returns>The root group</returns>
+        public Task<Group> GetRootGroup()
+        {
+            return GetRootGroup(CancellationToken.None);
         }
 
+        /// <summary>
+        /// Gets the root group containing all the data center hardware.
+        /// </summary>        
+        /// <returns>The root group</returns>
+        public Task<Group> GetRootGroup(CancellationToken cancellationToken)
+        {
+            if (!HasRootGroup)
+            {
+                return null;
+            }
+
+            var uri = string.Format("{0}{1}", Configuration.BaseUri, rootGroupLink.Value.Href);
+            return GroupService.GetGroupByLink(uri, cancellationToken);            
+        }
+
+        /*
         /// <summary>
         /// Gets the billing details.
         /// </summary>
@@ -199,33 +222,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
             var dataCenterService = Configuration.ServiceResolver.Resolve<DataCenterService>(Authentication);
             var computeLimits = await dataCenterService.GetComputeLimitsByLink(string.Format("{0}{1}", Configuration.BaseUri, computeLimitsLink.Value.Href), cancellationToken).ConfigureAwait(false);
             return computeLimits;
-        }
-
-        /// <summary>
-        /// Gets the root group.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<Group> GetRootGroup()
-        {
-            return await GetRootGroup(CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets the root group.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<Group> GetRootGroup(CancellationToken cancellationToken)
-        {
-            if (!HasRootGroup())
-            {
-                return null;
-            }
-
-            var dataCenterService = Configuration.ServiceResolver.Resolve<DataCenterService>(Authentication);
-            var rootGroup = await dataCenterService.GetRootGroupByLink(string.Format("{0}{1}", Configuration.BaseUri, rootGroupLink.Value.Href), cancellationToken).ConfigureAwait(false);
-            return rootGroup;
-        }
+        }        
 
         /// <summary>
         /// Get the default settings.
@@ -277,6 +274,6 @@ namespace CenturyLinkCloudSDK.ServiceModels
             var dataCenterService = Configuration.ServiceResolver.Resolve<DataCenterService>(Authentication);
             var networkLimits = await dataCenterService.GetNetworkLimitsByLink(string.Format("{0}{1}", Configuration.BaseUri, networkLimitsLink.Value.Href), cancellationToken).ConfigureAwait(false);
             return networkLimits;
-        }
+        }*/
     }
 }

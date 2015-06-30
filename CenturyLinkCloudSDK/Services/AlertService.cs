@@ -19,7 +19,7 @@ namespace CenturyLinkCloudSDK.Services
         {
 
         }
-
+        /*
         /// <summary>
         /// Gets the account alert policies.
         /// </summary>
@@ -267,6 +267,6 @@ namespace CenturyLinkCloudSDK.Services
             };
 
             return alert;
-        }
+        }*/
     }
 }

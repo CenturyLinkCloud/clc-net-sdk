@@ -22,26 +22,7 @@ namespace CenturyLinkCloudSDK.Services
             this.dataCenterService = dataCenterService;
         }
 
-        /// <summary>
-        /// Gets the total billing details for the account.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<AccountBillingDetail> GetAccountBillingDetails()
-        {
-            return await GetAccountBillingDetails(CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// ets the total billing details for the account.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<AccountBillingDetail> GetAccountBillingDetails(CancellationToken cancellationToken)
-        {
-            var uri = string.Format(Constants.ServiceUris.Billing.GetAccountBillingDetails, Configuration.BaseUri, authentication.AccountAlias);
-            return await GetAccountBillingDetailsByLink(uri, cancellationToken).ConfigureAwait(false);
-        }
-
+        /*
         /// <summary>
         /// Gets the billing details of a data center.
         /// </summary>
@@ -134,19 +115,7 @@ namespace CenturyLinkCloudSDK.Services
             return await GetAccountBillingDetailsByLink(uri, CancellationToken.None).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Gets the total billing details for the account.
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        internal async Task<AccountBillingDetail> GetAccountBillingDetailsByLink(string uri, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await serviceInvoker.Invoke<AccountBillingDetail>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
-        }
+        
 
         /// <summary>
         /// Gets the billing details for a group.
@@ -206,6 +175,6 @@ namespace CenturyLinkCloudSDK.Services
             }
 
             return billingDetail;
-        }
+        }*/
     }
 }

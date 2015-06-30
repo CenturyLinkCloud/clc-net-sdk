@@ -52,6 +52,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
             return serverLinks.Value.Count() > 0 ? true : false;
         }
 
+        /*
         /// <summary>
         /// Gets the servers that are subscribed to this alert policy.
         /// </summary>
@@ -118,6 +119,6 @@ namespace CenturyLinkCloudSDK.ServiceModels
             {
                 return Triggers;
             } 
-        }
+        }*/
     }
 }

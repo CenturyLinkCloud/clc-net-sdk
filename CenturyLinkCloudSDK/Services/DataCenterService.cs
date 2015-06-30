@@ -1,6 +1,5 @@
 ﻿using CenturyLinkCloudSDK.Runtime;
 using CenturyLinkCloudSDK.ServiceModels;
-using CenturyLinkCloudSDK.ServiceModels.Requests.DataCenter;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -22,29 +21,43 @@ namespace CenturyLinkCloudSDK.Services
             this.groupService = groupService;
         }
 
-        /// <summary>
-        /// Gets the list of data centers that a given account has access to. 
-        /// Use this operation when you need the list of data center names and codes that you have access to. 
-        /// Using that list of data centers, you can then query for the root group, and all the child groups in an entire data center.
-        /// </summary>
-        /// <param name="accountAlias"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<DataCenter>> GetDataCenters()
+        void SetInternalDataCenterProperties(DataCenter dc, bool includeTotalAssets)
         {
-            return await GetDataCenters(CancellationToken.None).ConfigureAwait(false);
+            dc.HasTotalAssets = includeTotalAssets;
+            dc.GroupService = groupService;
         }
 
         /// <summary>
         /// Gets the list of data centers that a given account has access to. 
-        /// Use this operation when you need the list of data center names and codes that you have access to. 
-        /// Using that list of data centers, you can then query for the root group, and all the child groups in an entire data center.
         /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<DataCenter>> GetDataCenters(CancellationToken cancellationToken)
+        /// <param name="includeTotalAssets">Whether or not to include total assets.  Including
+        /// total assets is a more time consuming operation</param>
+        /// <returns>The data centers for the account</returns>
+        public Task<IEnumerable<DataCenter>> GetDataCenters(bool includeTotalAssets)
         {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDataCenters, Configuration.BaseUri, authentication.AccountAlias, string.Empty));
+            return GetDataCenters(includeTotalAssets, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Gets the list of data centers that a given account has access to. 
+        /// </summary>        
+        /// <param name="includeTotalAssets">Whether or not to include total assets.  Including
+        /// total assets is a more time consuming operation</param>
+        /// <returns>The data centers for the account</returns>
+        public async Task<IEnumerable<DataCenter>> GetDataCenters(bool includeTotalAssets, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = 
+                CreateAuthorizedHttpRequestMessage(
+                    HttpMethod.Get, 
+                    string.Format(
+                        Constants.ServiceUris.DataCenter.GetDataCenters, 
+                        Configuration.BaseUri, 
+                        authentication.AccountAlias, 
+                        includeTotalAssets ? 
+                            Constants.ServiceUris.Querystring.IncludeGroupLinksAndTotalAssets :
+                            Constants.ServiceUris.Querystring.IncludeGroupLinks));
             var result = await serviceInvoker.Invoke<IEnumerable<DataCenter>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            foreach (var dc in result) SetInternalDataCenterProperties(dc, includeTotalAssets);
 
             return result;
         }
@@ -52,25 +65,47 @@ namespace CenturyLinkCloudSDK.Services
         /// <summary>
         /// Gets the information for a particular data center.
         /// </summary>
-        /// <param name="accountAlias"></param>
-        /// <param name="dataCenterId"></param>
-        /// <returns></returns>
-        public async Task<DataCenter> GetDataCenter(string dataCenterId)
+        /// <param name="dataCenterId">The id of the data center</param>
+        /// <param name="includeTotalAssets">Whether or not to include total assets.  Including
+        /// total assets is a more time consuming operation</param>
+        /// <returns>The data center</returns>
+        public Task<DataCenter> GetDataCenter(string dataCenterId, bool includeTotalAssets)
         {
-            return await GetDataCenter(dataCenterId, CancellationToken.None).ConfigureAwait(false);
+            return GetDataCenter(dataCenterId, includeTotalAssets, CancellationToken.None);
         }
 
         /// <summary>
         /// Gets the information for a particular data center.
         /// </summary>
-        /// <param name="dataCenterId"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<DataCenter> GetDataCenter(string dataCenterId, CancellationToken cancellationToken)
+        /// <param name="dataCenterId">The id of the data center</param>
+        /// <param name="includeTotalAssets">Whether or not to include total assets.  Including
+        /// total assets is a more time consuming operation</param>
+        /// <returns>The data center</returns>
+        public Task<DataCenter> GetDataCenter(string dataCenterId, bool includeTotalAssets, CancellationToken cancellationToken)
         {
-            var uri = string.Format(Constants.ServiceUris.DataCenter.GetDataCenter, Configuration.BaseUri, authentication.AccountAlias, dataCenterId, string.Empty);
-            return await GetDataCenterByLink(uri, cancellationToken).ConfigureAwait(false);
+            var uri =
+                string.Format(
+                    Constants.ServiceUris.DataCenter.GetDataCenter,
+                    Configuration.BaseUri,
+                    authentication.AccountAlias,
+                    dataCenterId,
+                    includeTotalAssets ?
+                        Constants.ServiceUris.Querystring.IncludeGroupLinksAndTotalAssets :
+                        Constants.ServiceUris.Querystring.IncludeGroupLinks);
+            return GetDataCenterByLink(uri, includeTotalAssets, cancellationToken);            
         }
+
+        internal async Task<DataCenter> GetDataCenterByLink(string uri, bool includeTotalAssets, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
+            var result = await serviceInvoker.Invoke<DataCenter>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            SetInternalDataCenterProperties(result, includeTotalAssets);
+
+            return result;
+        }
+
+        /*
+        
 
         /// <summary>
         /// Gets the full hierarchy of groups that exist within a particular account and data center. 
@@ -373,20 +408,6 @@ namespace CenturyLinkCloudSDK.Services
             return await GetDataCenterByLink(uri, CancellationToken.None).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Gets the information for a particular data center by accepting a hypermedia link.
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        internal async Task<DataCenter> GetDataCenterByLink(string uri, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await serviceInvoker.Invoke<DataCenter>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-            result.Authentication = authentication;
-
-            return result;
-        }
 
         /// <summary>
         /// Gets the full hierarchy of groups that exist within a particular account and data center by a hypermedia link. 
@@ -519,6 +540,6 @@ namespace CenturyLinkCloudSDK.Services
             var result = await serviceInvoker.Invoke<NetworkLimits>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
-        }
+        } */
     }
 }

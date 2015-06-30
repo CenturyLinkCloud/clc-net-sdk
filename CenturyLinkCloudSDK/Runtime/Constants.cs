@@ -10,22 +10,23 @@
         {
             internal const string JsonMediaType = "application/json";
             internal const string ApiBaseAddress = "https://api.ctl.io";    //Old Address: "https://api.tier3.com";
-
+            
             internal static class Account
             {
                 internal static string GetRecentActivity { get { return "{0}/v2/search/activities"; } }
             }
 
+            /*
             internal static class Alerts
             {
                 internal static string GetAlertPoliciesForAccount { get { return "{0}/v2/alertPolicies/{1}"; } }
             }
-
+            */
             internal static class Authentication
             {
                 internal static string Login { get { return "{0}/v2/authentication/login"; } }
             }
-
+            /*
             internal static class Billing
             {
                 internal static string GetAccountBillingDetails { get { return "{0}/v2/billing/{1}/total"; } }
@@ -34,36 +35,39 @@
 
                 internal static string GetServerResourceUnitPricing { get { return "{0}/v2/billing/{1}/serverPricing/{2}"; } }
             }
-
+            */
             internal static class DataCenter
             {
                 internal static string GetDataCenters { get { return "{0}/v2/datacenters/{1}{2}"; } }
-
                 internal static string GetDataCenter { get { return "{0}/v2/datacenters/{1}/{2}{3}"; } }
 
+                /*
                 internal static string GetRecentActivity { get { return Account.GetRecentActivity; } }
 
                 internal static string GetDeploymentCapabilities { get { return "{0}/v2/datacenters/{1}/{2}/deploymentCapabilities"; } }
+                 */
             }
-
+            
             internal static class Group
             {
                 internal static string GetGroup { get { return "{0}/v2/groups/{1}/{2}"; } }
 
+                /*
                 internal static string GetRecentActivity { get { return Account.GetRecentActivity; } }
 
                 internal static string GetDefaultSettings { get { return "{0}/v2/groups/{1}/{2}/defaults"; } }
+                 */
             }
-
+            
             internal static class Queue
             {
                 internal static string GetStatus { get { return "{0}/v2/operations/{1}/status/{2}"; } }
             }
-
+            
             internal static class Server
             {
                 internal static string GetServer { get { return "{0}/v2/servers/{1}/{2}"; } }
-
+/*
                 internal static string CreateServer { get { return "{0}/v2/servers/{1}"; } }   
 
                 internal static string PauseServer { get { return "{0}/v2/operations/{1}/servers/pause"; } }
@@ -91,15 +95,19 @@
                 internal static string RUDPublicIpAddress { get { return "{0}/v2/servers/{1}/{2}/publicIPAddresses/{3}"; } } 
 
                 internal static string UpdateResources { get { return "{0}/v2/servers/{1}/{2}"; } } 
-            }
-
+ */
+            }            
+            
             internal static class Querystring
             {
-                internal const string IncludeGroupLinks = "?groupLinks=true";
+                internal const string IncludeGroupLinks = "?groupLinks=true";                
+                internal const string IncludeGroupLinksAndTotalAssets = "?groupLinks=true&totals=true";                
                 internal const string GetLatestStatistics = "?type=latest";
+                /*
                 internal const string IncludeTotalAssets = "?totals=true";
-                internal const string IncludeGroupLinksAndTotalAssets = "?groupLinks=true&totals=true";
-            }   
+                 */
+            }  
+            
         }
 
         internal static class Metrics
