@@ -123,31 +123,20 @@ namespace CenturyLinkCloudSDK.Services
             return await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
         }
 
-        /*                
 
+        internal async Task<Link> SetDisks(string serverId, IEnumerable<DiskPatchOperation> operations, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(new HttpMethod("PATCH"), string.Format(Constants.ServiceUris.Server.UpdateResources, Configuration.BaseUri, authentication.AccountAlias, serverId), operations);
+            return await serviceInvoker.Invoke<Link>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+        }
+
+        internal async Task<Link> SetCpuAndMemory(string serverId, IEnumerable<CpuMemoryPatchOperation> operations, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(new HttpMethod("PATCH"), string.Format(Constants.ServiceUris.Server.UpdateResources, Configuration.BaseUri, authentication.AccountAlias, serverId), operations);
+            return await serviceInvoker.Invoke<Link>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+        }
         
-        /// <summary>
-        /// Gets the server statistics.
-        /// </summary>
-        /// <param name="serverId"></param>
-        /// <returns></returns>
-        public async Task<Statistics> GetServerStatistics(string serverId)
-        {
-            return await GetServerStatistics(serverId, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets the server statistics.
-        /// </summary>
-        /// <param name="serverId"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<Statistics> GetServerStatistics(string serverId, CancellationToken cancellationToken)
-        {
-            var uri = string.Format(Constants.ServiceUris.Server.GetServerStatistics, Configuration.BaseUri, authentication.AccountAlias, serverId, Constants.ServiceUris.Querystring.GetLatestStatistics);
-            return await GetServerStatisticsByLink(uri, cancellationToken).ConfigureAwait(false);
-        }
-
+        /*                
         /// <summary>
         /// Creates a server.
         /// </summary>
@@ -276,60 +265,8 @@ namespace CenturyLinkCloudSDK.Services
             var result = await serviceInvoker.Invoke<Link>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
-        }
-
-        /// <summary>
-        /// Sets cpu and memory
-        /// </summary>
-        /// <param name="serverId"></param>
-        /// <param name="operations"></param>
-        /// <returns></returns>
-        public async Task<Link> SetCpuAndMemory(string serverId, IEnumerable<CpuMemoryPatchOperation> operations)
-        {
-            return await SetCpuAndMemory(serverId, operations, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Sets cpu and memory
-        /// </summary>
-        /// <param name="serverId"></param>
-        /// <param name="operations"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<Link> SetCpuAndMemory(string serverId, IEnumerable<CpuMemoryPatchOperation> operations, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(new HttpMethod("PATCH"), string.Format(Constants.ServiceUris.Server.UpdateResources, Configuration.BaseUri, authentication.AccountAlias, serverId), operations);
-            var result = await serviceInvoker.Invoke<Link>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Sets disk properties
-        /// </summary>
-        /// <param name="serverId"></param>
-        /// <param name="operations"></param>
-        /// <returns></returns>
-        public async Task<Link> SetDisks(string serverId, IEnumerable<DiskPatchOperation> operations)
-        {
-            return await SetDisks(serverId, operations, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Sets disk properties
-        /// </summary>
-        /// <param name="serverId"></param>
-        /// <param name="operations"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<Link> SetDisks(string serverId, IEnumerable<DiskPatchOperation> operations, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(new HttpMethod("PATCH"), string.Format(Constants.ServiceUris.Server.UpdateResources, Configuration.BaseUri, authentication.AccountAlias, serverId), operations);
-            var result = await serviceInvoker.Invoke<Link>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
-        }
-
+        }        
+        
         
 */
     }

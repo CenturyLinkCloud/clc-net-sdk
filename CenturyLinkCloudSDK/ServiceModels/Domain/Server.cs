@@ -264,5 +264,28 @@ namespace CenturyLinkCloudSDK.ServiceModels
             return result.Single();
         }
         #endregion
+
+        #region Resource operations
+        public Task<Link> SetDisks(IEnumerable<DiskPatchOperation> operations)
+        {
+            return SetDisks(operations, CancellationToken.None);
+        }
+
+        public Task<Link> SetDisks(IEnumerable<DiskPatchOperation> operations, CancellationToken cancellationToken)
+        {
+            return ServerService.SetDisks(Id, operations, cancellationToken);
+        }
+
+        public Task<Link> SetCpuAndMemory(IEnumerable<CpuMemoryPatchOperation> operations)
+        {
+            return SetCpuAndMemory(operations, CancellationToken.None);
+        }
+
+        public Task<Link> SetCpuAndMemory(IEnumerable<CpuMemoryPatchOperation> operations, CancellationToken cancellationToken)
+        {
+            return ServerService.SetCpuAndMemory(Id, operations, cancellationToken);
+        }
+        #endregion
+
     }
 }
