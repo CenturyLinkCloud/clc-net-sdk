@@ -16,26 +16,26 @@
                 internal static string GetRecentActivity { get { return "{0}/v2/search/activities"; } }
             }
 
-            /*
             internal static class Alerts
             {
                 internal static string GetAlertPoliciesForAccount { get { return "{0}/v2/alertPolicies/{1}"; } }
             }
-            */
+
             internal static class Authentication
             {
                 internal static string Login { get { return "{0}/v2/authentication/login"; } }
             }
-            /*
+            
             internal static class Billing
             {
                 internal static string GetAccountBillingDetails { get { return "{0}/v2/billing/{1}/total"; } }
-
+                /*
                 internal static string GetGroupBillingDetails { get { return "{0}/v2/groups/{1}/{2}/billing"; } }
 
                 internal static string GetServerResourceUnitPricing { get { return "{0}/v2/billing/{1}/serverPricing/{2}"; } }
+                 */
             }
-            */
+            
             internal static class DataCenter
             {
                 internal static string GetDataCenters { get { return "{0}/v2/datacenters/{1}{2}"; } }

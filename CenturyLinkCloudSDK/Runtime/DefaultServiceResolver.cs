@@ -16,7 +16,7 @@ namespace CenturyLinkCloudSDK.Runtime
                 { typeof(AuthenticationService), 
                     (a, i) => new AuthenticationService(i) },
                 { typeof(DataCenterService),
-                    (a, i) => new DataCenterService(a, i, ResolveImpl<GroupService>(a, i)) },
+                    (a, i) => new DataCenterService(a, i, ResolveImpl<GroupService>(a, i), ResolveImpl<AccountService>(a, i), ResolveImpl<BillingService>(a, i)) },
                 { typeof(GroupService),
                     (a, i) => new GroupService(a, i, ResolveImpl<ServerService>(a, i)) },
                 { typeof(ServerService),
@@ -24,11 +24,11 @@ namespace CenturyLinkCloudSDK.Runtime
                 { typeof(QueueService),
                     (a, i) => new QueueService(a, i) },
                 { typeof(AlertService),
-                    (a, i) => new AlertService(a, i) },
+                    (a, i) => new AlertService(a, i, ResolveImpl<ServerService>(a, i)) },
                 { typeof(BillingService),
-                    (a, i) => new BillingService(a, i, ResolveImpl<DataCenterService>(a, i)) },
+                    (a, i) => new BillingService(a, i) },
                 { typeof(AccountService),
-                    (a, i) => new AccountService(a, i, ResolveImpl<DataCenterService>(a, i)) }
+                    (a, i) => new AccountService(a, i) }
             };
 
         static T ResolveImpl<T>(Authentication authentication, IServiceInvoker serviceInvoker)

@@ -15,12 +15,11 @@ namespace CenturyLinkCloudSDK.Services
     public class AccountService : ServiceBase
     {
         static readonly string[] ServerAndGroupEntityTypes = new[] { Constants.EntityTypes.Server, Constants.EntityTypes.Group };
-
-        DataCenterService dataCenterService;
-        internal AccountService(Authentication authentication, IServiceInvoker serviceInvoker, DataCenterService dataCenterService)
+        
+        internal AccountService(Authentication authentication, IServiceInvoker serviceInvoker)
             : base(authentication, serviceInvoker)
         {
-            this.dataCenterService = dataCenterService;
+
         }
 
         #region Get global recent activity
@@ -217,34 +216,7 @@ namespace CenturyLinkCloudSDK.Services
 
 
         /*
-        /// <summary>
-        /// Gets the total billing details for the account.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<AccountBillingDetail> GetBillingDetails()
-        {
-            return await GetBillingDetails(CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets the total billing details for the account.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<AccountBillingDetail> GetBillingDetails(CancellationToken cancellationToken)
-        {
-            var uri = string.Format(Constants.ServiceUris.Billing.GetAccountBillingDetails, Configuration.BaseUri, authentication.AccountAlias);
-            return await GetBillingDetailsByLink(uri, cancellationToken).ConfigureAwait(false);
-        }
-
         
-        internal async Task<AccountBillingDetail> GetBillingDetailsByLink(string uri, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await serviceInvoker.Invoke<AccountBillingDetail>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
-        }
         */
         /*
         

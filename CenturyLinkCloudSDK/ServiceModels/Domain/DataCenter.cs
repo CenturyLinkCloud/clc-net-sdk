@@ -64,6 +64,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         public TotalAssets Totals { get; set; }
 
         internal GroupService GroupService { get; set; }
+        internal DataCenterService DataCenterService { get; set; }
 
         [JsonPropertyAttribute]
         private IEnumerable<Link> Links { get; set; }
@@ -121,6 +122,11 @@ namespace CenturyLinkCloudSDK.ServiceModels
             get { return createServerLink.Value != null; }
         }
         
+        public string RootGroupId
+        {
+            get { return HasRootGroup ? rootGroupLink.Value.Id : null; }            
+        }
+
         /// <summary>
         /// Gets the root group containing all the data center hardware.
         /// </summary>
@@ -143,6 +149,75 @@ namespace CenturyLinkCloudSDK.ServiceModels
 
             var uri = string.Format("{0}{1}", Configuration.BaseUri, rootGroupLink.Value.Href);
             return GroupService.GetGroupByLink(uri, cancellationToken);            
+        }
+
+        /// <summary>
+        /// Gets the compute limits.
+        /// </summary>
+        /// <returns>The compute limits</returns>
+        public Task<ComputeLimits> GetComputeLimits()
+        {
+            return GetComputeLimits(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Gets the compute limits.
+        /// </summary>
+        /// <returns>The compute limits</returns>
+        public Task<ComputeLimits> GetComputeLimits(CancellationToken cancellationToken)
+        {
+            if (!HasComputeLimits)
+            {
+                return null;
+            }
+            
+            return DataCenterService.GetComputeLimitsByLink(string.Format("{0}{1}", Configuration.BaseUri, computeLimitsLink.Value.Href), cancellationToken);            
+        }
+
+        /// <summary>
+        /// Get the default settings.
+        /// </summary>
+        /// <returns>The default settings</returns>
+        public Task<DefaultSettings> GetDefaultSettings()
+        {
+            return GetDefaultSettings(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Gets the default settings.
+        /// </summary>
+        /// <returns>The default settings</returns>
+        public Task<DefaultSettings> GetDefaultSettings(CancellationToken cancellationToken)
+        {
+            if (!HasDefaults)
+            {
+                return null;
+            }
+
+            return DataCenterService.GetDefaultSettingsByLink(string.Format("{0}{1}", Configuration.BaseUri, defaultsLink.Value.Href), cancellationToken);
+        }
+
+        /// <summary>
+        /// Get the network limits.
+        /// </summary>
+        /// <returns>The network limits</returns>
+        public Task<NetworkLimits> GetNetworkLimits()
+        {
+            return GetNetworkLimits(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Gets the network limits.
+        /// </summary>
+        /// <returns>The network limits</returns>
+        public Task<NetworkLimits> GetNetworkLimits(CancellationToken cancellationToken)
+        {
+            if (!HasNetworkLimits)
+            {
+                return null;
+            }
+
+            return DataCenterService.GetNetworkLimitsByLink(string.Format("{0}{1}", Configuration.BaseUri, networkLimitsLink.Value.Href), cancellationToken);
         }
 
         /*
@@ -198,82 +273,6 @@ namespace CenturyLinkCloudSDK.ServiceModels
             return billingTotals;
         }
 
-        /// <summary>
-        /// Gets the compute limits.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<ComputeLimits> GetComputeLimits()
-        {
-            return await GetComputeLimits(CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets the compute limits.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<ComputeLimits> GetComputeLimits(CancellationToken cancellationToken)
-        {
-            if(!HasComputeLimits())
-            {
-                return null;
-            }
-
-            var dataCenterService = Configuration.ServiceResolver.Resolve<DataCenterService>(Authentication);
-            var computeLimits = await dataCenterService.GetComputeLimitsByLink(string.Format("{0}{1}", Configuration.BaseUri, computeLimitsLink.Value.Href), cancellationToken).ConfigureAwait(false);
-            return computeLimits;
-        }        
-
-        /// <summary>
-        /// Get the default settings.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<DefaultSettings> GetDefaultSettings()
-        {
-            return await GetDefaultSettings(CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets the default settings.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<DefaultSettings> GetDefaultSettings(CancellationToken cancellationToken)
-        {
-            if (!HasDefaults())
-            {
-                return null;
-            }
-
-            var dataCenterService = Configuration.ServiceResolver.Resolve<DataCenterService>(Authentication);
-            var defaultSettings = await dataCenterService.GetDefaultSettingsByLink(string.Format("{0}{1}", Configuration.BaseUri, defaultsLink.Value.Href), cancellationToken).ConfigureAwait(false);
-            return defaultSettings;
-        }
-
-        /// <summary>
-        /// Get the network limits.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<NetworkLimits> GetNetworkLimits()
-        {
-            return await GetNetworkLimits(CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets the network limits.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<NetworkLimits> GetNetworkLimits(CancellationToken cancellationToken)
-        {
-            if (!HasNetworkLimits())
-            {
-                return null;
-            }
-
-            var dataCenterService = Configuration.ServiceResolver.Resolve<DataCenterService>(Authentication);
-            var networkLimits = await dataCenterService.GetNetworkLimitsByLink(string.Format("{0}{1}", Configuration.BaseUri, networkLimitsLink.Value.Href), cancellationToken).ConfigureAwait(false);
-            return networkLimits;
-        }*/
+*/
     }
 }

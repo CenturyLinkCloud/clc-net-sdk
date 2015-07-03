@@ -15,7 +15,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         Lazy<IEnumerable<Link>> serverLinks;
         Lazy<Link> billingLink;
         Lazy<Link> defaultsLink;
-        Lazy<Link> createServerLink;
+        Lazy<Link> createServerLink;        
 
         public string Id { get; set; }
         public string Name { get; set; }
@@ -62,16 +62,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         public bool HasServers
         {
             get { return serverLinks.Value.Count() > 0; }
-        }
-
-        /// <summary>
-        /// Determines if this group has billing details
-        /// </summary>
-        /// <returns></returns>
-        public bool HasBillingDetails
-        {
-            get { return billingLink.Value != null; }
-        }
+        }        
 
         /// <summary>
         /// Determines if this group has default settings
@@ -80,6 +71,21 @@ namespace CenturyLinkCloudSDK.ServiceModels
         public bool HasDefaults
         {
             get { return defaultsLink.Value != null; }
+        }
+
+        /// <summary>
+        /// Determines if this group has billing details
+        /// internal because we are using BillingService to handle all billing concerns
+        /// </summary>
+        /// <returns></returns>
+        internal bool HasBillingDetails
+        {
+            get { return billingLink.Value != null; }
+        }
+
+        internal string BillingDetailsLink
+        {
+            get { return HasBillingDetails ? billingLink.Value.Href : null; }
         }
 
         /// <summary>
@@ -96,7 +102,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
             ids.Add(Id);
             if(HasServers)
             {
-                ids.AddRange(GetServerIds());
+                ids.AddRange(ServerIds);
             }
             
             foreach(Group g in Groups)
@@ -105,56 +111,45 @@ namespace CenturyLinkCloudSDK.ServiceModels
             }
         }
         
-        IEnumerable<string> GetServerIds()
+        /// <summary>
+        /// Returns the ids of the servers in this group
+        /// </summary>
+        public IEnumerable<string> ServerIds
         {
-            return
-                !HasServers ?
-                    Enumerable.Empty<string>() :
-                    serverLinks
-                        .Value
-                        .Select(l => l.Id)
-                        .ToList();
+            get
+            {
+                return
+                    !HasServers ?
+                        Enumerable.Empty<string>() :
+                        serverLinks
+                            .Value
+                            .Select(l => l.Id)
+                            .ToList();
+            }
+        }
+
+        internal ServerService ServerService { get; set; }
+        
+        /// <summary>
+        /// Gets the servers that belong to this group.
+        /// </summary>
+        /// <returns>The servers in this group</returns>
+        public Task<IEnumerable<Server>> GetServers()
+        {
+            return GetServers(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Gets the servers that belong to this group.
+        /// </summary>        
+        /// <returns>The servers in this group</returns>
+        public Task<IEnumerable<Server>> GetServers(CancellationToken cancellationToken)
+        {
+            return ServerService.GetServers(ServerIds, cancellationToken);
         }
 
         /*
-        /// <summary>
-        /// Gets the servers that belong to this group.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<Server>> GetServers()
-        {
-            return await GetServers(CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets the servers that belong to this group.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<Server>> GetServers(CancellationToken cancellationToken)
-        {
-            var servers = new List<Server>();
-
-            if (!HasServers())
-            {
-                return null;
-            }
-
-            var serverService = Configuration.ServiceResolver.Resolve<ServerService>(Authentication);
-
-            foreach (var serverLink in serverLinks.Value)
-            {
-                var server = await serverService.GetServerByLink(Configuration.BaseUri + serverLink.Href, cancellationToken);
-
-                if (server != null)
-                {
-                    servers.Add(server);
-                }
-            }
-
-            return servers;
-        }
-
+             
         /// <summary>
         /// Returns the server Ids for all groups and subgroups.
         /// </summary>

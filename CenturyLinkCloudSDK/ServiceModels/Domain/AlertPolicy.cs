@@ -12,13 +12,12 @@ namespace CenturyLinkCloudSDK.ServiceModels
     public class AlertPolicy
     {
         private Lazy<IEnumerable<Link>> serverLinks;
-
         private Lazy<Link> selfLink;
 
         [JsonPropertyAttribute]
         private IEnumerable<Link> Links { get; set; }
 
-        public Authentication Authentication { get; set; }
+        internal ServerService ServerService { get; set; }
 
         /// <summary>
         /// Default constructor.
@@ -37,57 +36,44 @@ namespace CenturyLinkCloudSDK.ServiceModels
         }
 
         public string Id { get; set; }
-
         public string Name { get; set; }
-
         public IEnumerable<AlertAction> Actions { get; set; }
-
         public IEnumerable<AlertTrigger> Triggers { get; set; }
 
         /// <summary>
-        /// Determines if this Group has servers by examining the Links collection.
+        /// Determines if this alert policy is applied to servers
         /// </summary>
-        private bool HasServers()
+        private bool HasServers
         {
-            return serverLinks.Value.Count() > 0 ? true : false;
+            get { return serverLinks.Value.Count() > 0; }
+        }
+
+        /// <summary>
+        /// Gets the servers that are subscribed to this alert policy.
+        /// </summary>
+        /// <returns>The servers for this policy</returns>
+        public Task<IEnumerable<Server>> GetServers()
+        {
+            return GetServers(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Gets the servers that are subscribed to this alert policy.
+        /// </summary>
+        /// <returns>The servers for this policy</returns>
+        public Task<IEnumerable<Server>> GetServers(CancellationToken cancellationToken)
+        {
+            return
+                ServerService
+                    .GetServers(
+                        HasServers ?
+                            serverLinks.Value.Select(l => l.Id) :
+                            Enumerable.Empty<string>(),
+                        cancellationToken);
         }
 
         /*
-        /// <summary>
-        /// Gets the servers that are subscribed to this alert policy.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<Server>> GetServers()
-        {
-            return await GetServers(CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets the servers that are subscribed to this alert policy.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<Server>> GetServers(CancellationToken cancellationToken)
-        {
-            var servers = new List<Server>();
-
-            if (HasServers())
-            {
-                var serverService = Configuration.ServiceResolver.Resolve<ServerService>(Authentication);
-
-                foreach (var serverLink in serverLinks.Value)
-                {
-                    var server = await serverService.GetServerByLink(Configuration.BaseUri + serverLink.Href, cancellationToken);
-
-                    if (server != null)
-                    {
-                        servers.Add(server);
-                    }
-                }
-            }
-
-            return servers;
-        }
+        
 
         /// <summary>
         /// Gets the triggers. If the Triggers property is null (coming from the GetServer method that is the case).

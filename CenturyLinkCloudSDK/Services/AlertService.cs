@@ -14,92 +14,45 @@ namespace CenturyLinkCloudSDK.Services
     /// </summary>
     public class AlertService : ServiceBase
     {
-        internal AlertService(Authentication authentication, IServiceInvoker serviceInvoker)
+        ServerService serverService;
+        internal AlertService(Authentication authentication, IServiceInvoker serviceInvoker, ServerService serverService)
             : base(authentication, serviceInvoker)
         {
-
+            this.serverService = serverService;
         }
-        /*
-        /// <summary>
-        /// Gets the account alert policies.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<AlertPolicies> GetAlertPolicies()
+
+        void SetInternalAlertPolicyProperties(AlertPolicy policy)
         {
-            return await GetAlertPolicies(CancellationToken.None).ConfigureAwait(false);
+            policy.ServerService = serverService;
         }
-
-        /// <summary>
-        /// Gets the account alert policies.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<AlertPolicies> GetAlertPolicies(CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Alerts.GetAlertPoliciesForAccount, Configuration.BaseUri, authentication.AccountAlias));
-            var result = await serviceInvoker.Invoke<AlertPolicies>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the alerts for a particular server.
-        /// </summary>
-        /// <param name="serverId"></param>
-        /// <param name="alertPolicies"></param>
-        /// <param name="statistics"></param>
-        /// <returns></returns>
-        public async Task<List<Alert>> GetServerAlerts(string serverId, IEnumerable<AlertPolicy> alertPolicies, Statistics statistics)
-        {
-            return await GetServerAlerts(serverId, alertPolicies, statistics, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets the alerts for a particular server.
-        /// </summary>
-        /// <param name="serverId"></param>
-        /// <param name="alertPolicies"></param>
-        /// <param name="statistics"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<List<Alert>> GetServerAlerts(string serverId, IEnumerable<AlertPolicy> alertPolicies, Statistics statistics, CancellationToken cancellationToken)
-        {
-            var alerts = await ScanAlertPoliciesForAlerts(serverId, alertPolicies, statistics).ConfigureAwait(false);
-            return alerts;
-        }
-
+        
         /// <summary>
         /// Gets the alerts for all servers in the account that subscribe to an alert policy.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>All alerts</returns>
         public async Task<IEnumerable<Alert>> GetAllServerAlerts()
         {
             return await GetAllServerAlerts(CancellationToken.None).ConfigureAwait(false);
         }
 
-       /// <summary>
+        /// <summary>
         /// Gets the alerts for all servers in the account that subscribe to an alert policy.
-       /// </summary>
-       /// <param name="cancellationToken"></param>
-       /// <returns></returns>
+        /// </summary>        
+        /// <returns>All alerts</returns>
         public async Task<IEnumerable<Alert>> GetAllServerAlerts(CancellationToken cancellationToken)
         {
             var alerts = new List<Alert>();
 
-            var alertPolicies = await GetAlertPolicies(cancellationToken).ConfigureAwait(false);
+            var alertPolicies = await GetAlertPoliciesByLink(cancellationToken).ConfigureAwait(false);
 
+            //TODO: fetch concurrently
             foreach (var alertPolicy in alertPolicies.Items)
             {
-                alertPolicy.Authentication = authentication;
-
                 var servers = await alertPolicy.GetServers().ConfigureAwait(false);
 
                 foreach (var server in servers)
-                {
-                    server.Authentication = authentication;
-
+                {                    
                     var statistics = await server.GetStatistics().ConfigureAwait(false);
-
                     if (statistics != null)
                     {
                         var statistic = statistics.Stats.FirstOrDefault();
@@ -131,6 +84,118 @@ namespace CenturyLinkCloudSDK.Services
             return alerts;
         }
 
+        /// <summary>
+        /// Gets the account alert policies.
+        /// </summary>
+        /// <returns>The alerty policies for this account</returns>
+        public Task<AlertPolicies> GetAlertPolicies()
+        {
+            return GetAlertPolicies(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Gets the account alert policies.
+        /// </summary>
+        /// <returns>The alerty policies for this account</returns>
+        public Task<AlertPolicies> GetAlertPolicies(CancellationToken cancellationToken)
+        {
+            return GetAlertPoliciesByLink(cancellationToken);
+        }
+
+        internal async Task<AlertPolicies> GetAlertPoliciesByLink(CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Alerts.GetAlertPoliciesForAccount, Configuration.BaseUri, authentication.AccountAlias));
+            var result = await serviceInvoker.Invoke<AlertPolicies>(httpRequestMessage, cancellationToken).ConfigureAwait(false);            
+            if(result.Items != null)
+            {
+                foreach (var p in result.Items) { SetInternalAlertPolicyProperties(p); }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Determines if a server has violated a certain alert policy and returns an alert if true;
+        /// </summary>
+        private Alert GetServerAlert(AlertPolicy alertPolicy, AlertTrigger trigger, ServerStatistic statistic, string serverId)
+        {
+            if (string.Equals(trigger.Metric, Constants.Metrics.Cpu, StringComparison.CurrentCultureIgnoreCase))
+            {
+                if (statistic.CpuPercent > ((float)trigger.Threshold))
+                {
+                    return GenerateAlert(alertPolicy, trigger, statistic, serverId, Constants.AlertMessages.CpuAlert);
+                }
+            }
+
+            if (string.Equals(trigger.Metric, Constants.Metrics.Memory, StringComparison.CurrentCultureIgnoreCase))
+            {
+                if (statistic.MemoryPercent > ((float)trigger.Threshold))
+                {
+                    return GenerateAlert(alertPolicy, trigger, statistic, serverId, Constants.AlertMessages.MemoryAlert);
+                }
+            }
+
+            if (string.Equals(trigger.Metric, Constants.Metrics.Disk, StringComparison.CurrentCultureIgnoreCase))
+            {
+                float totalDiskUsage = 0;
+
+                foreach (var guestDiskUsage in statistic.GuestDiskUsage)
+                {
+                    float usage = (guestDiskUsage.ConsumedMB / guestDiskUsage.CapacityMB);
+                    totalDiskUsage += usage;
+                }
+
+                if (totalDiskUsage > (trigger.Threshold / 100f))
+                {
+                    return GenerateAlert(alertPolicy, trigger, statistic, serverId, Constants.AlertMessages.DiskUsageAlert);
+                }
+            }
+
+            return null;
+        }
+        
+        private Alert GenerateAlert(AlertPolicy alertPolicy, AlertTrigger trigger, ServerStatistic statistic, string serverId, string message)
+        {
+            var alert = new Alert()
+            {
+                AlertPolicyId = alertPolicy.Id,
+                ServerId = serverId,
+                Metric = trigger.Metric,
+                Message = message,
+                GeneratedOn = statistic.Timestamp
+            };
+
+            return alert;
+        }
+
+        /*
+       
+        /// <summary>
+        /// Gets the alerts for a particular server.
+        /// </summary>
+        /// <param name="serverId"></param>
+        /// <param name="alertPolicies"></param>
+        /// <param name="statistics"></param>
+        /// <returns></returns>
+        public async Task<List<Alert>> GetServerAlerts(string serverId, IEnumerable<AlertPolicy> alertPolicies, Statistics statistics)
+        {
+            return await GetServerAlerts(serverId, alertPolicies, statistics, CancellationToken.None).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the alerts for a particular server.
+        /// </summary>
+        /// <param name="serverId"></param>
+        /// <param name="alertPolicies"></param>
+        /// <param name="statistics"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<List<Alert>> GetServerAlerts(string serverId, IEnumerable<AlertPolicy> alertPolicies, Statistics statistics, CancellationToken cancellationToken)
+        {
+            var alerts = await ScanAlertPoliciesForAlerts(serverId, alertPolicies, statistics).ConfigureAwait(false);
+            return alerts;
+        }
+
+        
         /// <summary>
         /// Gets the triggers for an alert policy.
         /// </summary>
@@ -201,72 +266,9 @@ namespace CenturyLinkCloudSDK.Services
             return alerts;
         }
 
-        /// <summary>
-        /// Determines if a server has violated a certain alert policy and returns an alert if true;
-        /// </summary>
-        /// <param name="alertPolicy"></param>
-        /// <param name="trigger"></param>
-        /// <param name="statistic"></param>
-        /// <param name="server"></param>
-        /// <returns></returns>
-        private Alert GetServerAlert(AlertPolicy alertPolicy, AlertTrigger trigger, ServerStatistic statistic, string serverId)
-        {
-            if (string.Equals(trigger.Metric, Constants.Metrics.Cpu, StringComparison.CurrentCultureIgnoreCase))
-            {
-                if (statistic.CpuPercent > ((float)trigger.Threshold))
-                {
-                    return GenerateAlert(alertPolicy, trigger, statistic, serverId, Constants.AlertMessages.CpuAlert);
-                }
-            }
 
-            if (string.Equals(trigger.Metric, Constants.Metrics.Memory, StringComparison.CurrentCultureIgnoreCase))
-            {
-                if (statistic.MemoryPercent > ((float)trigger.Threshold))
-                {
-                    return GenerateAlert(alertPolicy, trigger, statistic, serverId, Constants.AlertMessages.MemoryAlert);
-                }
-            }
-
-            if (string.Equals(trigger.Metric, Constants.Metrics.Disk, StringComparison.CurrentCultureIgnoreCase))
-            {
-                float totalDiskUsage = 0;
-
-                foreach (var guestDiskUsage in statistic.GuestDiskUsage)
-                {
-                    float usage = (guestDiskUsage.ConsumedMB / guestDiskUsage.CapacityMB);
-                    totalDiskUsage += usage;
-                }
-
-                if (totalDiskUsage > (trigger.Threshold / 100f))
-                {
-                    return GenerateAlert(alertPolicy, trigger, statistic, serverId, Constants.AlertMessages.DiskUsageAlert);
-                }
-            }
-
-            return null;
-        }
 
         /// <summary>
-        /// Creates an alert.
-        /// </summary>
-        /// <param name="alertPolicy"></param>
-        /// <param name="trigger"></param>
-        /// <param name="statistic"></param>
-        /// <param name="server"></param>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        private Alert GenerateAlert(AlertPolicy alertPolicy, AlertTrigger trigger, ServerStatistic statistic, string serverId, string message)
-        {
-            var alert = new Alert()
-            {
-                AlertPolicyId = alertPolicy.Id,
-                ServerId = serverId,
-                Metric = trigger.Metric,
-                Message = message,
-                GeneratedOn = statistic.Timestamp
-            };
-
-            return alert;
-        }*/
+       */
     }
 }

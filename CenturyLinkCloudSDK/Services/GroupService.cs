@@ -22,6 +22,11 @@ namespace CenturyLinkCloudSDK.Services
             this.serverService = serverService;
         }
 
+        void SetInternalGroupProperties(Group group)
+        {
+            group.ServerService = serverService;
+        }
+
         /// <summary>
         /// Gets the details for a individual server group and any sub-groups and servers that it contains. 
         /// </summary>
@@ -46,7 +51,10 @@ namespace CenturyLinkCloudSDK.Services
         internal async Task<Group> GetGroupByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
-            return await serviceInvoker.Invoke<Group>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            var result = await serviceInvoker.Invoke<Group>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            SetInternalGroupProperties(result);
+
+            return result;
         }
 
         /*

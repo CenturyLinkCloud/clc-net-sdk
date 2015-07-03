@@ -53,6 +53,33 @@ namespace CenturyLinkCloudSDK.Services
             return GetServerByLink(uri, cancellationToken);
         }
 
+        /// <summary>
+        /// Gets the details for a set of servers in parallel where possible
+        /// </summary>
+        /// <param name="serverIds">The list of servers to load</param>
+        /// <returns></returns>
+        public Task<IEnumerable<Server>> GetServers(IEnumerable<string> serverIds)
+        {
+            return GetServers(serverIds, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Gets the details for a set of servers in parallel where possible
+        /// </summary>
+        /// <param name="serverIds">The list of servers to load</param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Server>> GetServers(IEnumerable<string> serverIds, CancellationToken cancellationToken)
+        {
+            //TODO: fetch concurrently
+            var servers = new List<Server>();
+            foreach(var s in serverIds)
+            {
+                servers.Add(await GetServer(s, cancellationToken));
+            }
+
+            return servers;
+        }
+
         internal async Task<Server> GetServerByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
@@ -265,9 +292,7 @@ namespace CenturyLinkCloudSDK.Services
             var result = await serviceInvoker.Invoke<Link>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
             return result;
-        }        
-        
-        
+        }                
 */
     }
 }
