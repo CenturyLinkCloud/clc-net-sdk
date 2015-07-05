@@ -29,9 +29,10 @@
             internal static class Billing
             {
                 internal static string GetAccountBillingDetails { get { return "{0}/v2/billing/{1}/total"; } }
-                /*
+                
+                //use this as a shortcut to directly fetch server billing details without having to fetch the group first (BillingService)
                 internal static string GetGroupBillingDetails { get { return "{0}/v2/groups/{1}/{2}/billing"; } }
-
+                /*             
                 internal static string GetServerResourceUnitPricing { get { return "{0}/v2/billing/{1}/serverPricing/{2}"; } }
                  */
             }

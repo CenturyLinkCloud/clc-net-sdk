@@ -91,6 +91,38 @@ namespace CenturyLinkCloudSDK.Services
             return groupDetails.GetTotals();
         }
 
+        /// <summary>
+        /// Gets the billing details for a server.
+        /// </summary>
+        /// <param name="server">The server</param>
+        /// <returns>The billing details</returns>
+        public Task<BillingDetail> GetBillingDetailsFor(Server server)
+        {
+            return GetBillingDetailsFor(server, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Gets the billing details for a server.
+        /// </summary>
+        /// <param name="server">The server</param>        
+        /// <returns>The billing details</returns>
+        public async Task<BillingDetail> GetBillingDetailsFor(Server server, CancellationToken cancellationToken)
+        {          
+            BillingDetail billingDetails = null;
+            var uri = string.Format(Constants.ServiceUris.Billing.GetGroupBillingDetails, Configuration.BaseUri, authentication.AccountAlias, server.GroupId);
+            var groupDetails = await GetGroupBillingDetailsByLink(uri, cancellationToken).ConfigureAwait(false);
+            if (groupDetails.Groups.ContainsKey(server.GroupId))
+            {
+                var parentGroupDetails = groupDetails.Groups[server.GroupId];
+                if(parentGroupDetails.Servers.ContainsKey(server.Id))
+                {
+                    billingDetails = parentGroupDetails.Servers[server.Id];
+                }
+            }
+            
+            return billingDetails;
+        }
+
         internal Task<GroupBillingDetail> GetGroupBillingDetailsByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
