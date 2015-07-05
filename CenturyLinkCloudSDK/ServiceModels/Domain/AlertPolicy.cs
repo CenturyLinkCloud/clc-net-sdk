@@ -70,41 +70,6 @@ namespace CenturyLinkCloudSDK.ServiceModels
                             serverLinks.Value.Select(l => l.Id) :
                             Enumerable.Empty<string>(),
                         cancellationToken);
-        }
-
-        /*
-        
-
-        /// <summary>
-        /// Gets the triggers. If the Triggers property is null (coming from the GetServer method that is the case).
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<AlertTrigger>> GetTriggers()
-        {
-            return await GetTriggers(CancellationToken.None);
-        }
-
-        /// <summary>
-        ///  /// Gets the triggers. If the Triggers property is null (coming from the GetServer method that is the case).
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<AlertTrigger>> GetTriggers(CancellationToken cancellationToken)
-        {
-            if (Triggers == null)
-            {
-                if (selfLink.Value != null)
-                {
-                    var alertService = Configuration.ServiceResolver.Resolve<AlertService>(Authentication);
-                    return await alertService.GetTriggersByAlertPolicyLink(Configuration.BaseUri + selfLink.Value.Href, cancellationToken);
-                }
-
-                return null;
-            }
-            else
-            {
-                return Triggers;
-            } 
-        }*/
+        }        
     }
 }

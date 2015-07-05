@@ -128,32 +128,32 @@ namespace CenturyLinkCloudSDK.Services
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
             return serviceInvoker.Invoke<GroupBillingDetail>(httpRequestMessage, cancellationToken);
         }
+
+        /// <summary>
+        /// Gets unit pricing info for server resources.
+        /// </summary>
+        /// <param name="serverId">The server id</param>
+        /// <returns>The pricing for the server</returns>
+        public Task<ServerPricing> GetServerResourceUnitPricing(string serverId)
+        {
+            return GetServerResourceUnitPricing(serverId, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Gets unit pricing info for server resources.
+        /// </summary>
+        /// <param name="serverId">The server id</param>        
+        /// <returns>The pricing for the server</returns>
+        public Task<ServerPricing> GetServerResourceUnitPricing(string serverId, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Billing.GetServerResourceUnitPricing, Configuration.BaseUri, authentication.AccountAlias, serverId));
+            return serviceInvoker.Invoke<ServerPricing>(httpRequestMessage, cancellationToken);
+        }
+
         /*
         
 
-        /// <summary>
-        /// Gets unit pricing info for server resources.
-        /// </summary>
-        /// <param name="serverId"></param>
-        /// <returns></returns>
-        public async Task<ServerPricing> GetServerResourceUnitPricing(string serverId)
-        {
-            return await GetServerResourceUnitPricing(serverId, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets unit pricing info for server resources.
-        /// </summary>
-        /// <param name="serverId"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<ServerPricing> GetServerResourceUnitPricing(string serverId, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Billing.GetServerResourceUnitPricing, Configuration.BaseUri, authentication.AccountAlias, serverId));
-            var result = await serviceInvoker.Invoke<ServerPricing>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-            return result;
-        }
-
+        
         /// <summary>
         /// Gets the total billing details for the account.
         /// </summary>

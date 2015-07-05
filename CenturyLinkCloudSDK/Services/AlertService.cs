@@ -196,7 +196,7 @@ namespace CenturyLinkCloudSDK.Services
             var statistics = await statisticsTask.ConfigureAwait(false);
             var alertPolicies = alertPoliciesTasks.Select(a => a.Result);
 
-            return await ScanAlertPoliciesForAlerts(server, alertPolicies, statistics).ConfigureAwait(false);            
+            return ScanAlertPoliciesForAlerts(server, alertPolicies, statistics);            
         }
 
         async Task<AlertPolicy> GetAlertPolicyByLink(string uri, CancellationToken cancellationToken)
@@ -217,7 +217,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="alertPolicies"></param>
         /// <param name="statistics"></param>
         /// <returns></returns>
-        private async Task<List<Alert>> ScanAlertPoliciesForAlerts(Server server, IEnumerable<AlertPolicy> alertPolicies, Statistics statistics)
+        private List<Alert> ScanAlertPoliciesForAlerts(Server server, IEnumerable<AlertPolicy> alertPolicies, Statistics statistics)
         {
             var alerts = new List<Alert>();
 
