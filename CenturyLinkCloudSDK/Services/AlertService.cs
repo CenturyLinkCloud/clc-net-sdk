@@ -30,9 +30,9 @@ namespace CenturyLinkCloudSDK.Services
         /// Gets the alerts for all servers in the account that subscribe to an alert policy.
         /// </summary>
         /// <returns>All alerts</returns>
-        public async Task<IEnumerable<Alert>> GetAllServerAlerts()
+        public Task<IEnumerable<Alert>> GetAllServerAlerts()
         {
-            return await GetAllServerAlerts(CancellationToken.None).ConfigureAwait(false);
+            return GetAllServerAlerts(CancellationToken.None);
         }
 
         /// <summary>

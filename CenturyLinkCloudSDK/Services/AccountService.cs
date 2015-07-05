@@ -198,7 +198,7 @@ namespace CenturyLinkCloudSDK.Services
         }
         #endregion
 
-        async Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> referenceIds, int recordLimit, CancellationToken cancellationToken)
+        Task<IEnumerable<Activity>> GetRecentActivity(IEnumerable<string> referenceIds, int recordLimit, CancellationToken cancellationToken)
         {
             var accounts = new List<String> { authentication.AccountAlias };
             var requestModel = 
@@ -211,13 +211,9 @@ namespace CenturyLinkCloudSDK.Services
                 };
 
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Account.GetRecentActivity, Configuration.BaseUri), requestModel);
-            return await serviceInvoker.Invoke<IEnumerable<Activity>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            return serviceInvoker.Invoke<IEnumerable<Activity>>(httpRequestMessage, cancellationToken);
         }
 
-
-        /*
-        
-        */
         /*
         
         /// <summary>

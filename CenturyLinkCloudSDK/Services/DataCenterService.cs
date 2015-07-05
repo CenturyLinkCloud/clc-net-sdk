@@ -114,9 +114,9 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="dataCenterId">The id of the data center</param>
         /// <returns>A detailed overview of the data center</returns>
-        public async Task<DataCenterOverview> GetDataCenterOverview(string dataCenterId)
+        public Task<DataCenterOverview> GetDataCenterOverview(string dataCenterId)
         {
-            return await GetDataCenterOverview(dataCenterId, CancellationToken.None).ConfigureAwait(false);
+            return GetDataCenterOverview(dataCenterId, CancellationToken.None);
         }
 
         /// <summary>
@@ -177,16 +177,10 @@ namespace CenturyLinkCloudSDK.Services
             return result;
         }
       
-        internal async Task<DefaultSettings> GetDefaultSettingsByLink(string uri, CancellationToken cancellationToken)
+        internal Task<NetworkLimits> GetNetworkLimitsByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
-            return await serviceInvoker.Invoke<DefaultSettings>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-        }
-
-        internal async Task<NetworkLimits> GetNetworkLimitsByLink(string uri, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
-            return await serviceInvoker.Invoke<NetworkLimits>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            return serviceInvoker.Invoke<NetworkLimits>(httpRequestMessage, cancellationToken);
         } 
         /*
        

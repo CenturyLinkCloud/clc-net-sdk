@@ -26,9 +26,9 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<UserInfo> Login(string username, string password)
+        public Task<UserInfo> Login(string username, string password)
         {
-            return await Login(username, password, CancellationToken.None).ConfigureAwait(false);
+            return Login(username, password, CancellationToken.None);
         }
 
         /// <summary>
@@ -39,14 +39,12 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="password"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<UserInfo> Login(string username, string password, CancellationToken cancellationToken)
+        public Task<UserInfo> Login(string username, string password, CancellationToken cancellationToken)
         {
             var requestModel = new LoginRequest() { UserName = username, Password = password };
 
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Authentication.Login, Configuration.BaseUri), requestModel);
-            var result = await serviceInvoker.Invoke<UserInfo>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
+            return serviceInvoker.Invoke<UserInfo>(httpRequestMessage, cancellationToken);
         }
     }
 }

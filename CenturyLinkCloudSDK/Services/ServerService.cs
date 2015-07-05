@@ -80,6 +80,170 @@ namespace CenturyLinkCloudSDK.Services
             return servers;
         }
 
+        #region Power operations
+        /// <summary>
+        /// Adds a job to the queue to pause the servers.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>                
+        /// <param name="serverIds">The server ids</param>
+        public Task<IEnumerable<ServerOperation>> Pause(IEnumerable<string> serverIds)
+        {
+            return Pause(serverIds, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to pause the servers.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>        
+        /// <param name="serverIds">The server ids</param>
+        public Task<IEnumerable<ServerOperation>> Pause(IEnumerable<string> serverIds, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PauseServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
+            return serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to power on the servers.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>                
+        /// <param name="serverIds">The server ids</param>
+        public Task<IEnumerable<ServerOperation>> PowerOn(IEnumerable<string> serverIds)
+        {
+            return PowerOn(serverIds, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to power on the servers.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>  
+        /// <param name="serverIds">The server ids</param>
+        public Task<IEnumerable<ServerOperation>> PowerOn(IEnumerable<string> serverIds, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PowerOnServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
+            return serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to power off the servers.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>                
+        /// <param name="serverIds">The server ids</param>
+        public Task<IEnumerable<ServerOperation>> PowerOff(IEnumerable<string> serverIds)
+        {
+            return PowerOff(serverIds, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to power off the servers.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>        
+        public Task<IEnumerable<ServerOperation>> PowerOff(IEnumerable<string> serverIds, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PowerOffServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
+            return serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken);          
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to reboot the servers.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>                
+        /// <param name="serverIds">The server ids</param>
+        public Task<IEnumerable<ServerOperation>> Reboot(IEnumerable<string> serverIds)
+        {
+            return Reboot(serverIds, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to reboot the servers.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>        
+        public Task<IEnumerable<ServerOperation>> Reboot(IEnumerable<string> serverIds, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.RebootServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
+            return serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken);          
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to reset the servers.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary> 
+        /// <param name="serverIds">The server ids</param>
+        public Task<IEnumerable<ServerOperation>> Reset(IEnumerable<string> serverIds)
+        {
+            return Reset(serverIds, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to reset the servers.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>    
+        /// <param name="serverIds">The server ids</param>
+        public Task<IEnumerable<ServerOperation>> Reset(IEnumerable<string> serverIds, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.ResetServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
+            return serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to shutdown the servers.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>    
+        /// <param name="serverIds">The server ids</param>
+        public Task<IEnumerable<ServerOperation>> ShutDown(IEnumerable<string> serverIds)
+        {
+            return ShutDown(serverIds, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to shutdown the servers.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>        
+        public Task<IEnumerable<ServerOperation>> ShutDown(IEnumerable<string> serverIds, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.ShutDownServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
+            return serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to start maintenance on the servers.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>                
+        public Task<IEnumerable<ServerOperation>> StartMaintenance(IEnumerable<string> serverIds)
+        {
+            return StartMaintenance(serverIds, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to start maintenance on the servers.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>        
+        public Task<IEnumerable<ServerOperation>> StartMaintenance(IEnumerable<string> serverIds, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.StartMaintenance, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
+            return serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken);           
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to stop maintenance on the servers.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>             
+        /// <param name="serverIds">The server ids</param>
+        public Task<IEnumerable<ServerOperation>> StopMaintenance(IEnumerable<string> serverIds)
+        {
+            return StopMaintenance(serverIds, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds a job to the queue to stop maintenance on the servers.        
+        /// It should be used in conjunction with the Queue GetStatus operation to check the result of the command.
+        /// </summary>        
+        public Task<IEnumerable<ServerOperation>> StopMaintenance(IEnumerable<string> serverIds, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.StopMaintenance, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
+            return serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken);
+        }
+        #endregion
+
         internal async Task<Server> GetServerByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
@@ -90,77 +254,28 @@ namespace CenturyLinkCloudSDK.Services
             return result;
         }
 
-        internal async Task<ServerCredential> GetServerCredentialsByLink(string uri, CancellationToken cancellationToken)
+        internal Task<ServerCredential> GetServerCredentialsByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
-            return await serviceInvoker.Invoke<ServerCredential>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            return serviceInvoker.Invoke<ServerCredential>(httpRequestMessage, cancellationToken);
         }
 
-        internal async Task<Statistics> GetServerStatisticsByLink(string uri, CancellationToken cancellationToken)
+        internal Task<Statistics> GetServerStatisticsByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
-            return await serviceInvoker.Invoke<Statistics>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            return serviceInvoker.Invoke<Statistics>(httpRequestMessage, cancellationToken);
         }
-        
-        internal async Task<IEnumerable<ServerOperation>> PauseServers(IEnumerable<string> serverIds, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PauseServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            return await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-        }
-
-        internal async Task<IEnumerable<ServerOperation>> PowerOnServers(IEnumerable<string> serverIds, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PowerOnServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            return await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-        }
-
-        internal async Task<IEnumerable<ServerOperation>> PowerOffServers(IEnumerable<string> serverIds, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.PowerOffServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            return await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-        }
-
-        internal async Task<IEnumerable<ServerOperation>> RebootServers(IEnumerable<string> serverIds, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.RebootServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            return await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-        }
-
-        internal async Task<IEnumerable<ServerOperation>> ShutDownServers(IEnumerable<string> serverIds, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.ShutDownServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            return await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-        }
-
-        internal async Task<IEnumerable<ServerOperation>> ResetServers(IEnumerable<string> serverIds, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.ResetServer, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            return await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-        }
-
-        internal async Task<IEnumerable<ServerOperation>> StartMaintenance(IEnumerable<string> serverIds, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.StartMaintenance, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            return await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-        }
-
-        internal async Task<IEnumerable<ServerOperation>> StopMaintenance(IEnumerable<string> serverIds, CancellationToken cancellationToken)
-        {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.StopMaintenance, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
-            return await serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-        }
-
-
-        internal async Task<Link> SetDisks(string serverId, IEnumerable<DiskPatchOperation> operations, CancellationToken cancellationToken)
+                 
+        internal Task<Link> SetDisks(string serverId, IEnumerable<DiskPatchOperation> operations, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(new HttpMethod("PATCH"), string.Format(Constants.ServiceUris.Server.UpdateResources, Configuration.BaseUri, authentication.AccountAlias, serverId), operations);
-            return await serviceInvoker.Invoke<Link>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            return serviceInvoker.Invoke<Link>(httpRequestMessage, cancellationToken);
         }
 
-        internal async Task<Link> SetCpuAndMemory(string serverId, IEnumerable<CpuMemoryPatchOperation> operations, CancellationToken cancellationToken)
+        internal Task<Link> SetCpuAndMemory(string serverId, IEnumerable<CpuMemoryPatchOperation> operations, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(new HttpMethod("PATCH"), string.Format(Constants.ServiceUris.Server.UpdateResources, Configuration.BaseUri, authentication.AccountAlias, serverId), operations);
-            return await serviceInvoker.Invoke<Link>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            return serviceInvoker.Invoke<Link>(httpRequestMessage, cancellationToken);
         }
         
         /*                

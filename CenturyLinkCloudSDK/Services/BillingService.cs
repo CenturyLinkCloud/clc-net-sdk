@@ -33,17 +33,17 @@ namespace CenturyLinkCloudSDK.Services
         /// Gets the total billing details for the account.
         /// </summary>
         /// <returns>The billing details for the account</returns>
-        public async Task<AccountBillingDetail> GetBillingDetails(CancellationToken cancellationToken)
+        public Task<AccountBillingDetail> GetBillingDetails(CancellationToken cancellationToken)
         {
             var uri = string.Format(Constants.ServiceUris.Billing.GetAccountBillingDetails, Configuration.BaseUri, authentication.AccountAlias);
-            return await GetBillingDetailsByLink(uri, cancellationToken).ConfigureAwait(false);
+            return GetBillingDetailsByLink(uri, cancellationToken);
         }
 
 
-        internal async Task<AccountBillingDetail> GetBillingDetailsByLink(string uri, CancellationToken cancellationToken)
+        internal Task<AccountBillingDetail> GetBillingDetailsByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
-            return await serviceInvoker.Invoke<AccountBillingDetail>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            return serviceInvoker.Invoke<AccountBillingDetail>(httpRequestMessage, cancellationToken);
         }
 
         /// <summary>
@@ -91,10 +91,10 @@ namespace CenturyLinkCloudSDK.Services
             return groupDetails.GetTotals();
         }
 
-        internal async Task<GroupBillingDetail> GetGroupBillingDetailsByLink(string uri, CancellationToken cancellationToken)
+        internal Task<GroupBillingDetail> GetGroupBillingDetailsByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
-            return await serviceInvoker.Invoke<GroupBillingDetail>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            return serviceInvoker.Invoke<GroupBillingDetail>(httpRequestMessage, cancellationToken);
         }
         /*
         

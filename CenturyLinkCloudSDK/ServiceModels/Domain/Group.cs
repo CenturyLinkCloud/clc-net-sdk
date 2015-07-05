@@ -1,5 +1,6 @@
 ﻿using CenturyLinkCloudSDK.Runtime;
 using CenturyLinkCloudSDK.Services;
+using CenturyLinkCloudSDK.Extensions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -102,7 +103,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
             ids.Add(Id);
             if(HasServers)
             {
-                ids.AddRange(ServerIds);
+                ids.AddRange(GetServerIds(includeSubGroups: false));
             }
             
             foreach(Group g in Groups)
@@ -110,42 +111,119 @@ namespace CenturyLinkCloudSDK.ServiceModels
                 g.AppendContainedGroupAndServerIds(ids);
             }
         }
-        
+       
         /// <summary>
-        /// Returns the ids of the servers in this group
-        /// </summary>
-        public IEnumerable<string> ServerIds
+        /// Returns the ids of the servers in this group and optionally all subgroups
+        /// </summary>        
+        /// <param name="includeSubGroups">Whether to include the servers from this group only or all sub groups</param>
+        public IEnumerable<string> GetServerIds(bool includeSubGroups)
         {
-            get
-            {
-                return
+            var serverIds =
+                new List<string>(
                     !HasServers ?
                         Enumerable.Empty<string>() :
                         serverLinks
                             .Value
                             .Select(l => l.Id)
-                            .ToList();
+                            .ToList());
+
+            if(includeSubGroups)
+            {
+                serverIds.AddRange(
+                    Groups
+                        .SelectMany(
+                            g => g.GetServerIds(includeSubGroups: true)));
             }
+
+            return serverIds;
         }
 
+        internal GroupService GroupService { get; set; }
         internal ServerService ServerService { get; set; }
         
         /// <summary>
         /// Gets the servers that belong to this group.
         /// </summary>
+        /// <param name="includeSubGroups">Whether to include servers in all subgroups or not</param>
         /// <returns>The servers in this group</returns>
-        public Task<IEnumerable<Server>> GetServers()
+        public Task<IEnumerable<Server>> GetServers(bool includeSubGroups)
         {
-            return GetServers(CancellationToken.None);
+            return GetServers(includeSubGroups, CancellationToken.None);
         }
 
         /// <summary>
         /// Gets the servers that belong to this group.
         /// </summary>        
+        /// <param name="includeSubGroups">Whether to include servers in all subgroups or not</param>
         /// <returns>The servers in this group</returns>
-        public Task<IEnumerable<Server>> GetServers(CancellationToken cancellationToken)
+        public Task<IEnumerable<Server>> GetServers(bool includeSubGroups, CancellationToken cancellationToken)
         {
-            return ServerService.GetServers(ServerIds, cancellationToken);
+            return ServerService.GetServers(GetServerIds(includeSubGroups), cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the total assets for the group.
+        /// </summary>
+        /// <returns>The total assets for all groups and subgroups</returns>
+        public Task<TotalAssets> GetTotalAssets()
+        {
+            return GetTotalAssets(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Gets the total assets for the group.
+        /// </summary>        
+        /// <returns>The total assets for all groups and subgroups</returns>
+        public async Task<TotalAssets> GetTotalAssets(CancellationToken cancellationToken)
+        {
+            var totalAssets = new TotalAssets();
+
+            var servers = await GetServers(includeSubGroups: true, cancellationToken: cancellationToken).ConfigureAwait(false);
+            totalAssets.Servers = servers.Count();
+
+            foreach (var s in servers)
+            {
+                if (s != null)
+                {
+                    if (s.Details != null)
+                    {
+                        totalAssets.Cpus += s.Details.Cpu;
+                        totalAssets.MemoryGB += s.Details.MemoryMB;
+                        totalAssets.StorageGB += s.Details.StorageGB;
+                    }
+                }
+            }
+
+            //The memory values we get for the servers is in MB so we need to convert to GB to display.
+            totalAssets.Memory = totalAssets.MemoryGB.ConvertAssetMeasure(Constants.Metrics.MegaBytes);
+
+            //Just in case we do that for StorageGB as well.
+            totalAssets.Storage = totalAssets.StorageGB.ConvertAssetMeasure(Constants.Metrics.GigaBytes);
+
+            return totalAssets;
+        }
+
+        /// <summary>
+        /// Get the default settings.
+        /// </summary>
+        /// <returns>The default settings</returns>
+        public Task<DefaultSettings> GetDefaultSettings()
+        {
+            return GetDefaultSettings(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Gets the default settings.
+        /// </summary>
+        /// <returns>The default settings</returns>
+        public Task<DefaultSettings> GetDefaultSettings(CancellationToken cancellationToken)
+        {
+            if (!HasDefaults)
+            {
+                return null;
+            }
+
+            return GroupService.GetDefaultSettingsByLink(string.Format("{0}{1}", Configuration.BaseUri, defaultsLink.Value.Href), cancellationToken);
         }
 
         /*
@@ -211,30 +289,6 @@ namespace CenturyLinkCloudSDK.ServiceModels
             return billingTotals;
         }
 
-        /// <summary>
-        /// Get the default settings.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<DefaultSettings> GetDefaultSettings()
-        {
-            return await GetDefaultSettings(CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets the default settings.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<DefaultSettings> GetDefaultSettings(CancellationToken cancellationToken)
-        {
-            if (!HasDefaults())
-            {
-                return null;
-            }
-
-            var dataCenterService = Configuration.ServiceResolver.Resolve<DataCenterService>(Authentication);
-            var defaultSettings = await dataCenterService.GetDefaultSettingsByLink(string.Format("{0}{1}", Configuration.BaseUri, defaultsLink.Value.Href), cancellationToken).ConfigureAwait(false);
-            return defaultSettings;
-        }*/
+        */
     }
 }

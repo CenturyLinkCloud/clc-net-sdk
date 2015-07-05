@@ -25,6 +25,7 @@ namespace CenturyLinkCloudSDK.Services
         void SetInternalGroupProperties(Group group)
         {
             group.ServerService = serverService;
+            group.GroupService = this;
         }
 
         /// <summary>
@@ -32,9 +33,9 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="groupId">The id of the group</param>
         /// <returns>The group</returns>
-        public async Task<Group> GetGroup(string groupId)
+        public Task<Group> GetGroup(string groupId)
         {
-            return await GetGroup(groupId, CancellationToken.None).ConfigureAwait(false);
+            return GetGroup(groupId, CancellationToken.None);
         }
 
         /// <summary>
@@ -42,10 +43,10 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="groupId">The id of the group</param>        
         /// <returns>The group</returns>
-        public async Task<Group> GetGroup(string groupId, CancellationToken cancellationToken)
+        public Task<Group> GetGroup(string groupId, CancellationToken cancellationToken)
         {
             var uri = string.Format(Constants.ServiceUris.Group.GetGroup, Configuration.BaseUri, authentication.AccountAlias, groupId);
-            return await GetGroupByLink(uri, cancellationToken).ConfigureAwait(false);
+            return GetGroupByLink(uri, cancellationToken);
         }
         
         internal async Task<Group> GetGroupByLink(string uri, CancellationToken cancellationToken)
@@ -55,6 +56,12 @@ namespace CenturyLinkCloudSDK.Services
             SetInternalGroupProperties(result);
 
             return result;
+        }
+
+        internal Task<DefaultSettings> GetDefaultSettingsByLink(string uri, CancellationToken cancellationToken)
+        {
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
+            return serviceInvoker.Invoke<DefaultSettings>(httpRequestMessage, cancellationToken);
         }
 
         /*
@@ -196,42 +203,7 @@ namespace CenturyLinkCloudSDK.Services
             return await GetTotalAssets(serverIds, CancellationToken.None).ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Gets the total assets for the group.
-        /// </summary>
-        /// <param name="serverIds"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<TotalAssets> GetTotalAssets(List<string> serverIds, CancellationToken cancellationToken)
-        {            
-            var totalAssets =  new TotalAssets();
-
-            totalAssets.Servers = serverIds.Count;
-
-            foreach(var serverId in serverIds)
-            {
-                var server = await serverService.GetServer(serverId, cancellationToken).ConfigureAwait(false);
-
-                if(server != null)
-                {
-                    if (server.Details != null)
-                    {
-                        totalAssets.Cpus += server.Details.Cpu;
-                        totalAssets.MemoryGB += server.Details.MemoryMB;
-                        totalAssets.StorageGB += server.Details.StorageGB;   
-                    }
-                }  
-            }
-
-            //The memory values we get for the servers is in MB so we need to convert to GB to display.
-            totalAssets.Memory = totalAssets.MemoryGB.ConvertAssetMeasure(Constants.Metrics.MegaBytes);
-
-            //Just in case we do that for StorageGB as well.
-            totalAssets.Storage = totalAssets.StorageGB.ConvertAssetMeasure(Constants.Metrics.GigaBytes);
-
-            return totalAssets;
-        }
-
+        
         /// <summary>
         /// Optioonally recursive method that gets the serverIds of the data center root group and all subgroups.
         /// </summary>

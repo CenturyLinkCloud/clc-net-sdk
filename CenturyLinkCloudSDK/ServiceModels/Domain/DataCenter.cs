@@ -194,7 +194,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
                 return null;
             }
 
-            return DataCenterService.GetDefaultSettingsByLink(string.Format("{0}{1}", Configuration.BaseUri, defaultsLink.Value.Href), cancellationToken);
+            return GroupService.GetDefaultSettingsByLink(string.Format("{0}{1}", Configuration.BaseUri, defaultsLink.Value.Href), cancellationToken);
         }
 
         /// <summary>

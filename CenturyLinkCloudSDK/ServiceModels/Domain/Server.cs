@@ -127,7 +127,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// </summary>        
         public async Task<ServerOperation> Pause(CancellationToken cancellationToken)
         {
-            var result = await ServerService.PauseServers(new[] { Id }, cancellationToken).ConfigureAwait(false);
+            var result = await ServerService.Pause(new[] { Id }, cancellationToken).ConfigureAwait(false);
             return result.Single();
         }
 
@@ -146,7 +146,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// </summary>        
         public async Task<ServerOperation> PowerOn(CancellationToken cancellationToken)
         {
-            var result = await ServerService.PowerOnServers(new[] { Id }, cancellationToken).ConfigureAwait(false);
+            var result = await ServerService.PowerOn(new[] { Id }, cancellationToken).ConfigureAwait(false);
             return result.Single();
         }
 
@@ -165,7 +165,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// </summary>        
         public async Task<ServerOperation> PowerOff(CancellationToken cancellationToken)
         {
-            var result = await ServerService.PowerOffServers(new[] { Id }, cancellationToken).ConfigureAwait(false);
+            var result = await ServerService.PowerOff(new[] { Id }, cancellationToken).ConfigureAwait(false);
             return result.Single();
         }
 
@@ -184,7 +184,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// </summary>        
         public async Task<ServerOperation> Reboot(CancellationToken cancellationToken)
         {
-            var result = await ServerService.RebootServers(new[] { Id }, cancellationToken).ConfigureAwait(false);
+            var result = await ServerService.Reboot(new[] { Id }, cancellationToken).ConfigureAwait(false);
             return result.Single();
         }
 
@@ -203,7 +203,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// </summary>        
         public async Task<ServerOperation> Reset(CancellationToken cancellationToken)
         {
-            var result = await ServerService.ResetServers(new[] { Id }, cancellationToken).ConfigureAwait(false);
+            var result = await ServerService.Reset(new[] { Id }, cancellationToken).ConfigureAwait(false);
             return result.Single();
         }
 
@@ -222,7 +222,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
         /// </summary>        
         public async Task<ServerOperation> ShutDown(CancellationToken cancellationToken)
         {
-            var result = await ServerService.ShutDownServers(new[] { Id }, cancellationToken).ConfigureAwait(false);
+            var result = await ServerService.ShutDown(new[] { Id }, cancellationToken).ConfigureAwait(false);
             return result.Single();
         }
 
