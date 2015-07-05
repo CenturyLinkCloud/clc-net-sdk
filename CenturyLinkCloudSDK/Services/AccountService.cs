@@ -213,50 +213,5 @@ namespace CenturyLinkCloudSDK.Services
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Account.GetRecentActivity, Configuration.BaseUri), requestModel);
             return serviceInvoker.Invoke<IEnumerable<Activity>>(httpRequestMessage, cancellationToken);
         }
-
-        /*
-        
-        /// <summary>
-        /// Gets the account total assets.
-        /// </summary>
-        /// <param name="dataCenterIds"></param>
-        /// <returns></returns>
-        public async Task<TotalAssets> GetAccountTotalAssets(IEnumerable<string> dataCenterIds)
-        {
-            return await GetAccountTotalAssets(dataCenterIds, CancellationToken.None).ConfigureAwait(false);
-        }
-
-
-        /// <summary>
-        /// Gets the account total assets.
-        /// </summary>
-        /// <param name="dataCenterIds"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<TotalAssets> GetAccountTotalAssets(IEnumerable<string> dataCenterIds, CancellationToken cancellationToken)
-        {
-            var totalAssets = new TotalAssets();
-            var tasks = new List<Task<DataCenter>>();
-            
-            foreach (var dataCenterId in dataCenterIds)
-            {
-                //tasks.Add(Task.Run(() => dataCenterService.GetDataCenterWithTotalAssets(dataCenterId, cancellationToken).Result));
-                tasks.Add(Task.Run(async () => await dataCenterService.GetDataCenterWithTotalAssets(dataCenterId, cancellationToken).ConfigureAwait(false)));
-            }
-
-            await Task.WhenAll(tasks);
-
-            foreach (var task in tasks)
-            {
-                totalAssets.Servers += task.Result.Totals.Servers;
-                totalAssets.Cpus += task.Result.Totals.Cpus;
-                totalAssets.MemoryGB += task.Result.Totals.MemoryGB;
-                totalAssets.StorageGB += task.Result.Totals.StorageGB;
-                totalAssets.Queue += task.Result.Totals.Queue;
-            }
-
-            return totalAssets;
-        }
-         */
     }
 }

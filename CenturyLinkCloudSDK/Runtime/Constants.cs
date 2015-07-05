@@ -41,8 +41,6 @@
                 internal static string GetDataCenter { get { return "{0}/v2/datacenters/{1}/{2}{3}"; } }
 
                 /*
-                internal static string GetRecentActivity { get { return Account.GetRecentActivity; } }
-
                 internal static string GetDeploymentCapabilities { get { return "{0}/v2/datacenters/{1}/{2}/deploymentCapabilities"; } }
                  */
             }
@@ -50,12 +48,6 @@
             internal static class Group
             {
                 internal static string GetGroup { get { return "{0}/v2/groups/{1}/{2}"; } }
-
-                /*
-                internal static string GetRecentActivity { get { return Account.GetRecentActivity; } }
-
-                internal static string GetDefaultSettings { get { return "{0}/v2/groups/{1}/{2}/defaults"; } }
-                 */
             }
             
             internal static class Queue
@@ -77,15 +69,6 @@
                 internal static string ResetServer { get { return "{0}/v2/operations/{1}/servers/reset"; } }
                 internal static string StartMaintenance { get { return "{0}/v2/operations/{1}/servers/startMaintenance"; } }
                 internal static string StopMaintenance { get { return "{0}/v2/operations/{1}/servers/stopMaintenance"; } }
-                /*
-                internal static string GetServerStatistics { get { return "{0}/v2/servers/{1}/{2}/statistics{3}"; } }
-
-                internal static string GetServerCredentials { get { return "{0}/v2/servers/{1}/{2}/credentials"; } }
-
-                internal static string AddPublicIpAddress { get { return "{0}/v2/servers/{1}/{2}/publicIPAddresses"; } }
-
-                internal static string RUDPublicIpAddress { get { return "{0}/v2/servers/{1}/{2}/publicIPAddresses/{3}"; } } 
-                */
                 internal static string UpdateResources { get { return "{0}/v2/servers/{1}/{2}"; } } 
             }            
             
@@ -94,9 +77,6 @@
                 internal const string IncludeGroupLinks = "?groupLinks=true";                
                 internal const string IncludeGroupLinksAndTotalAssets = "?groupLinks=true&totals=true";                
                 internal const string GetLatestStatistics = "?type=latest";
-                /*
-                internal const string IncludeTotalAssets = "?totals=true";
-                 */
             }  
             
         }

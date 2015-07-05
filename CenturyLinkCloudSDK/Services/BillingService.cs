@@ -149,59 +149,5 @@ namespace CenturyLinkCloudSDK.Services
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.Billing.GetServerResourceUnitPricing, Configuration.BaseUri, authentication.AccountAlias, serverId));
             return serviceInvoker.Invoke<ServerPricing>(httpRequestMessage, cancellationToken);
         }
-
-        /*
-        
-
-        
-        /// <summary>
-        /// Gets the total billing details for the account.
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <returns></returns>
-        internal async Task<AccountBillingDetail> GetAccountBillingDetailsByLink(string uri)
-        {
-            return await GetAccountBillingDetailsByLink(uri, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        
-
-        
-
-        /// <summary>
-        /// Gets the billing details for a group.
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <returns></returns>
-        internal async Task<BillingDetail> GetGroupBillingTotalsByLink(string uri)
-        {
-            return await GetGroupBillingTotalsByLink(uri, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets the billing details for a group.
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        internal async Task<BillingDetail> GetGroupBillingTotalsByLink(string uri, CancellationToken cancellationToken)
-        {
-            var billingDetail = new BillingDetail();
-
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
-            var result = await serviceInvoker.Invoke<GroupBillingDetail>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            foreach (var group in result.Groups)
-            {
-                foreach (var server in group.Value.Servers)
-                {
-                    billingDetail.MonthlyEstimate += server.Value.MonthlyEstimate;
-                    billingDetail.CurrentHour += server.Value.CurrentHour;
-                    billingDetail.MonthToDate += server.Value.MonthToDate;
-                }
-            }
-
-            return billingDetail;
-        }*/
     }
 }
