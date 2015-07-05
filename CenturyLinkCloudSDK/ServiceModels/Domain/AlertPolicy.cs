@@ -12,7 +12,7 @@ namespace CenturyLinkCloudSDK.ServiceModels
     public class AlertPolicy
     {
         private Lazy<IEnumerable<Link>> serverLinks;
-        private Lazy<Link> selfLink;
+        internal Lazy<Link> selfLink;
 
         [JsonPropertyAttribute]
         private IEnumerable<Link> Links { get; set; }

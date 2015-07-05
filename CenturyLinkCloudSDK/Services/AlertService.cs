@@ -167,57 +167,47 @@ namespace CenturyLinkCloudSDK.Services
             return alert;
         }
 
-        /*
-       
         /// <summary>
         /// Gets the alerts for a particular server.
         /// </summary>
-        /// <param name="serverId"></param>
-        /// <param name="alertPolicies"></param>
-        /// <param name="statistics"></param>
-        /// <returns></returns>
-        public async Task<List<Alert>> GetServerAlerts(string serverId, IEnumerable<AlertPolicy> alertPolicies, Statistics statistics)
+        /// <param name="server">The server</param>
+        /// <returns>The alerts for the indicated server</returns>
+        public Task<List<Alert>> GetServerAlerts(Server server)
         {
-            return await GetServerAlerts(serverId, alertPolicies, statistics, CancellationToken.None).ConfigureAwait(false);
+            return GetServerAlerts(server, CancellationToken.None);
         }
 
         /// <summary>
         /// Gets the alerts for a particular server.
         /// </summary>
-        /// <param name="serverId"></param>
-        /// <param name="alertPolicies"></param>
-        /// <param name="statistics"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<List<Alert>> GetServerAlerts(string serverId, IEnumerable<AlertPolicy> alertPolicies, Statistics statistics, CancellationToken cancellationToken)
+        /// <param name="server">The server</param>
+        /// <returns>The alerts for the indicated server</returns>
+        public async Task<List<Alert>> GetServerAlerts(Server server, CancellationToken cancellationToken)
         {
-            var alerts = await ScanAlertPoliciesForAlerts(serverId, alertPolicies, statistics).ConfigureAwait(false);
-            return alerts;
+            var statisticsTask = server.GetStatistics(cancellationToken);
+            var alertPoliciesTasks =
+                server
+                    .Details
+                    .AlertPolicies
+                    .Select(
+                        a =>
+                            GetAlertPolicyByLink(string.Format("{0}{1}", Configuration.BaseUri, a.selfLink.Value.Href), cancellationToken));
+            await Task.WhenAll(alertPoliciesTasks).ConfigureAwait(false);
+            var statistics = await statisticsTask.ConfigureAwait(false);
+            var alertPolicies = alertPoliciesTasks.Select(a => a.Result);
+
+            return await ScanAlertPoliciesForAlerts(server, alertPolicies, statistics).ConfigureAwait(false);            
         }
 
-        
-        /// <summary>
-        /// Gets the triggers for an alert policy.
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <returns></returns>
-        internal async Task<IEnumerable<AlertTrigger>> GetTriggersByAlertPolicyLink(string uri)
-        {
-            return await GetTriggersByAlertPolicyLink(uri, CancellationToken.None).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Gets the triggers for an alert policy.
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        internal async Task<IEnumerable<AlertTrigger>> GetTriggersByAlertPolicyLink(string uri, CancellationToken cancellationToken)
+        async Task<AlertPolicy> GetAlertPolicyByLink(string uri, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
-            var alertPolicy = await serviceInvoker.Invoke<AlertPolicy>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return alertPolicy.Triggers;
+            var result = await serviceInvoker.Invoke<AlertPolicy>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
+            if (result != null)
+            {
+                SetInternalAlertPolicyProperties(result);
+            }
+            return result;
         }
 
         /// <summary>
@@ -227,7 +217,7 @@ namespace CenturyLinkCloudSDK.Services
         /// <param name="alertPolicies"></param>
         /// <param name="statistics"></param>
         /// <returns></returns>
-        private async Task<List<Alert>> ScanAlertPoliciesForAlerts(string serverId, IEnumerable<AlertPolicy> alertPolicies, Statistics statistics)
+        private async Task<List<Alert>> ScanAlertPoliciesForAlerts(Server server, IEnumerable<AlertPolicy> alertPolicies, Statistics statistics)
         {
             var alerts = new List<Alert>();
 
@@ -237,16 +227,14 @@ namespace CenturyLinkCloudSDK.Services
 
                 if (statistic != null)
                 {
-                    alertPolicy.Authentication = authentication;
-                    var triggers = await alertPolicy.GetTriggers().ConfigureAwait(false);
-
+                    var triggers = alertPolicy.Triggers;
                     if (triggers != null)
                     {
                         foreach (var trigger in triggers)
                         {
                             try
                             {
-                                var alert = GetServerAlert(alertPolicy, trigger, statistic, serverId);
+                                var alert = GetServerAlert(alertPolicy, trigger, statistic, server.Id);
 
                                 if (alert != null)
                                 {
@@ -264,11 +252,6 @@ namespace CenturyLinkCloudSDK.Services
             }
 
             return alerts;
-        }
-
-
-
-        /// <summary>
-       */
+        }        
     }
 }
