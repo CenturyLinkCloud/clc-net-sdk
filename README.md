@@ -53,8 +53,8 @@ As shown here, the Client is initialized passing in the authenticationInfo retri
 
 ```
 var client = new Client(authenticationInfo);
-var group = await client.Groups.GetGroup (server.GroupId);
-var billingDetails = await group.GetBillingDetails ();
+var group = await client.Groups.GetGroup (groupId);
+var billingDetails = await client.Billing.GetBillingDetailsFor(group);
 ```
 
 This example shows how to retrieve a domain model (Group) and then use the linked method to get the group billing details.
