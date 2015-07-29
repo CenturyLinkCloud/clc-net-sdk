@@ -10,5 +10,7 @@ namespace CenturyLinkCloudSDK.IntegrationTests
     {
         public static string Username = "";
         public static string Password = "";
+        public static string ObjectStorageAccessKeyId = "";
+        public static string ObjectStorageSecretAccessKey = "";
     }
 }
