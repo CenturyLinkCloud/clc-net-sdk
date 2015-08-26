@@ -219,7 +219,9 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>        
         public Task<IEnumerable<ServerOperation>> StartMaintenance(IEnumerable<string> serverIds, CancellationToken cancellationToken)
         {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.StartMaintenance, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
+            //The API currently has an issue that requires the server ids to be in all caps or else this won't work
+            var ids = serverIds.Select(i => i.ToUpper()).ToArray();
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.StartMaintenance, Configuration.BaseUri, authentication.AccountAlias), ids);
             return serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken);           
         }
 
@@ -239,7 +241,9 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>        
         public Task<IEnumerable<ServerOperation>> StopMaintenance(IEnumerable<string> serverIds, CancellationToken cancellationToken)
         {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.StopMaintenance, Configuration.BaseUri, authentication.AccountAlias), serverIds.ToArray());
+            //The API currently has an issue that requires the server ids to be in all caps or else this won't work
+            var ids = serverIds.Select(i => i.ToUpper()).ToArray();
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.StopMaintenance, Configuration.BaseUri, authentication.AccountAlias), ids);
             return serviceInvoker.Invoke<IEnumerable<ServerOperation>>(httpRequestMessage, cancellationToken);
         }
         #endregion

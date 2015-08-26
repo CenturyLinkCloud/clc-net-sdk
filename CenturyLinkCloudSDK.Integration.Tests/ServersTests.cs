@@ -140,7 +140,7 @@ namespace CenturyLinkCloudSDK.IntegrationTests
         [TestMethod]
         public async Task StartMaintenanceServersReturnOperationIsQueuedIfValidState()
         {
-            var server = await client.Servers.GetServer("CA1P2O2DF2TST01");
+            var server = await client.Servers.GetServer("ca1p2o2df2tst01");
             var response = await server.StartMaintenance();
 
             if (string.IsNullOrEmpty(response.ErrorMessage))
@@ -153,7 +153,7 @@ namespace CenturyLinkCloudSDK.IntegrationTests
         [TestMethod]
         public async Task StopMaintenaceServersReturnOperationIsQueuedIfValidState()
         {
-            var server = await client.Servers.GetServer("CA1P2O2DF2TST01");
+            var server = await client.Servers.GetServer("ca1p2o2df2tst01");
             var response = await server.StopMaintenance();
 
             if (string.IsNullOrEmpty(response.ErrorMessage))
