@@ -27,9 +27,9 @@ namespace CenturyLinkCloudSDK.IntegrationTests
 
         [TestMethod]
         public async Task GetServerAlerts()
-        {
+        {            
             var alerts = await client.Alerts.GetAllServerAlerts().ConfigureAwait(false);
-            Assert.IsTrue(alerts.ToList().Count > 0);
+            Assert.IsTrue(alerts.ToList().Count > 0);           
         }
 
         [TestMethod]

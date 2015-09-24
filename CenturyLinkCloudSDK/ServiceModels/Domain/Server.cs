@@ -33,6 +33,19 @@ namespace CenturyLinkCloudSDK.ServiceModels
             });
         }
 
+        internal class ByIdEqualityComparer : EqualityComparer<Server>
+        {
+            public override bool Equals(Server x, Server y)
+            {
+                return x.Id == y.Id;
+            }
+
+            public override int GetHashCode(Server obj)
+            {
+                return obj.Id.GetHashCode();
+            }
+        }
+
         public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

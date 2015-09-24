@@ -39,6 +39,14 @@ namespace CenturyLinkCloudSDK.IntegrationTests
         }
 
         [TestMethod]
+        public async Task GetGroupServersIncludingSubGroupsReturnsValidData()
+        {
+            var result = await client.Groups.GetGroup("a726bd9f7d9be411877f005056882d41").ConfigureAwait(false);            
+            var servers = await result.GetServers(includeSubGroups: true).ConfigureAwait(false);
+            Assert.IsTrue(servers.ToList().Count > 0);            
+        }
+
+        [TestMethod]
         public async Task GetGroupDefaultSettingsReturnValidData()
         {
             var group = await client.Groups.GetGroup("a726bd9f7d9be411877f005056882d41").ConfigureAwait(false);

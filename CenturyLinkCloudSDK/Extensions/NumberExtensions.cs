@@ -5,25 +5,6 @@ using System;
 
 namespace CenturyLinkCloudSDK.Extensions
 {
-    /// <summary>
-    /// This class contains extension methods.
-    /// </summary>
-    internal static class StringExtensions
-    {
-        internal static JObject TryParseJson(this String jsonString)
-        {
-            try
-            {
-                var jsonObject = JObject.Parse(jsonString);
-                return jsonObject;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-    }
-
     internal static class NumberExtensions
     {
         internal static string RoundNumberToNearestUpperLimit(this int? number)

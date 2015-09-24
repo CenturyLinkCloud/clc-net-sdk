@@ -30,5 +30,16 @@ namespace CenturyLinkCloudSDK
 
         private static IHttpMessageFormatter httpMessageFormatter = new DefaultHttpMessageFormatter();
         internal static IHttpMessageFormatter HttpMessageFormatter { get { return httpMessageFormatter; } }
+
+        private static int maxConcurrentBulkHttpRequests = 2;
+        /// <summary>
+        /// Controls the maximum number of simultaneous requests used when performing bulk fetching operations.
+        /// Currently GetServers and GetAlerts utilize this feature.  The default is 2.
+        /// </summary>
+        public static int MaxConcurrentBulkHttpRequests
+        {
+            get { return maxConcurrentBulkHttpRequests; }
+            set { maxConcurrentBulkHttpRequests = value; }
+        }
     }
 }

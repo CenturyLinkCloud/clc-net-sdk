@@ -1,4 +1,5 @@
-﻿using CenturyLinkCloudSDK.Runtime;
+﻿using CenturyLinkCloudSDK.Extensions;
+using CenturyLinkCloudSDK.Runtime;
 using CenturyLinkCloudSDK.ServiceModels;
 using System;
 using System.Collections.Generic;
@@ -45,25 +46,44 @@ namespace CenturyLinkCloudSDK.Services
 
             var alertPolicies = await GetAlertPoliciesByLink(cancellationToken).ConfigureAwait(false);
 
-            //TODO: fetch concurrently
-            foreach (var alertPolicy in alertPolicies.Items)
-            {
-                var servers = await alertPolicy.GetServers().ConfigureAwait(false);
-
-                foreach (var server in servers)
-                {                    
-                    var statistics = await server.GetStatistics().ConfigureAwait(false);
-                    if (statistics != null)
-                    {
-                        var statistic = statistics.Stats.FirstOrDefault();
-
-                        if (statistic != null)
+            var policyAndServers =
+                await alertPolicies.Items
+                    .SelectEachAsync(
+                        async a =>
                         {
-                            foreach (var trigger in alertPolicy.Triggers)
+                            var s = await a.GetServers().ConfigureAwait(false);
+                            return new { Policy = a, Servers = s };
+                        }, cancellationToken)
+                    .ConfigureAwait(false);
+
+            var statsForServer =
+                await policyAndServers
+                    .SelectMany(p => p.Servers)
+                    .Distinct(new Server.ByIdEqualityComparer())
+                    .SelectEachAsync(
+                        async s =>
+                        {
+                            var stat = await s.GetStatistics().ConfigureAwait(false);
+                            return new { ServerId = s.Id, Stats = stat };
+                        }, cancellationToken)
+                    .ConfigureAwait(false);
+
+            var statsByServer = statsForServer.ToDictionary(s => s.ServerId, s => s.Stats);      
+            
+            foreach(var alertPolicy in policyAndServers)
+            {
+                foreach(var server in alertPolicy.Servers)
+                {
+                    if(statsByServer.ContainsKey(server.Id) && (statsByServer[server.Id] != null))
+                    {
+                        var statistic = statsByServer[server.Id].Stats.FirstOrDefault();
+                        if(statistic != null)
+                        {
+                            foreach(var trigger in alertPolicy.Policy.Triggers)
                             {
                                 try
                                 {
-                                    var alert = GetServerAlert(alertPolicy, trigger, statistic, server.Id);
+                                    var alert = GetServerAlert(alertPolicy.Policy, trigger, statistic, server.Id);
 
                                     if (alert != null)
                                     {

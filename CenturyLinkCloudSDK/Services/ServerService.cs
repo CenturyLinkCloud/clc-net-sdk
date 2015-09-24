@@ -10,6 +10,8 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
+using CenturyLinkCloudSDK.Extensions;
+
 namespace CenturyLinkCloudSDK.Services
 {
     /// <summary>
@@ -68,16 +70,9 @@ namespace CenturyLinkCloudSDK.Services
         /// </summary>
         /// <param name="serverIds">The list of servers to load</param>
         /// <returns></returns>
-        public async Task<IEnumerable<Server>> GetServers(IEnumerable<string> serverIds, CancellationToken cancellationToken)
-        {
-            //TODO: fetch concurrently
-            var servers = new List<Server>();
-            foreach(var s in serverIds)
-            {
-                servers.Add(await GetServer(s, cancellationToken));
-            }
-
-            return servers;
+        public Task<IEnumerable<Server>> GetServers(IEnumerable<string> serverIds, CancellationToken cancellationToken)
+        {            
+            return serverIds.SelectEachAsync(GetServer, cancellationToken);
         }
 
         #region Power operations

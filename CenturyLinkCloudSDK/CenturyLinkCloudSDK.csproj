@@ -35,7 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\NumberExtensions.cs" />
     <Compile Include="CenturyLinkCloudServiceException.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Configuration.cs" />
