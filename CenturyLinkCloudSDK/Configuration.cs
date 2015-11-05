@@ -3,6 +3,7 @@ using CenturyLinkCloudSDK.ServiceModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,6 +41,12 @@ namespace CenturyLinkCloudSDK
         {
             get { return maxConcurrentBulkHttpRequests; }
             set { maxConcurrentBulkHttpRequests = value; }
+        }
+
+        private static List<ProductInfoHeaderValue> _additionalUserAgentValues = new List<ProductInfoHeaderValue>();
+        public static List<ProductInfoHeaderValue> AdditionalUserAgentValues
+        {
+            get { return _additionalUserAgentValues; }
         }
     }
 }

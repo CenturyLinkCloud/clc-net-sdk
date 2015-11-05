@@ -20,6 +20,9 @@ namespace CenturyLinkCloudSDK.Runtime
             {
                 httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authentication.BearerToken);
             }
+            
+            httpRequestMessage.Headers.UserAgent.Add(new ProductInfoHeaderValue("clc-net-sdk", AssemblyInfo.Version));
+            foreach (var v in Configuration.AdditionalUserAgentValues) httpRequestMessage.Headers.UserAgent.Add(v);
 
             if (content != null)
             {
