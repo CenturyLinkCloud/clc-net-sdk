@@ -92,6 +92,7 @@
     <Compile Include="ServiceModels\Domain\TotalAssets.cs" />
     <Compile Include="ServiceModels\Requests\Account\GetRecentActivityRequest.cs" />
     <Compile Include="ServiceModels\Requests\Authentication\LoginRequest.cs" />
+    <Compile Include="ServiceModels\Requests\Group\CreateGroupRequest.cs" />
     <Compile Include="ServiceModels\Requests\Group\GetRecentActivityRequest.cs" />
     <Compile Include="ServiceModels\Requests\Server\CreateServerRequest.cs" />
     <Compile Include="ServiceModels\Responses\Servers\CreateServerResponse.cs" />

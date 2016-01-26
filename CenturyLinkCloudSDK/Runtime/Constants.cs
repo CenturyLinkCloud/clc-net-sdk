@@ -48,6 +48,7 @@
             internal static class Group
             {
                 internal static string GetGroup { get { return "{0}/v2/groups/{1}/{2}"; } }
+                internal static string CreateGroup { get { return "{0}/v2/groups/{1}"; } }
             }
             
             internal static class Queue

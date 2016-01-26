@@ -32,7 +32,7 @@ namespace CenturyLinkCloudSDK.Runtime
                 ex.RequestContent = request.Content.ReadAsStringAsync().Result;
             }
 
-            if (response.Content != null)
+            if ((response != null) && (response.Content != null))
             {
                 ex.ResponseContent = response.Content.ReadAsStringAsync().Result;
             }
