@@ -39,10 +39,6 @@
             {
                 internal static string GetDataCenters { get { return "{0}/v2/datacenters/{1}{2}"; } }
                 internal static string GetDataCenter { get { return "{0}/v2/datacenters/{1}/{2}{3}"; } }
-
-                /*
-                internal static string GetDeploymentCapabilities { get { return "{0}/v2/datacenters/{1}/{2}/deploymentCapabilities"; } }
-                 */
             }
             
             internal static class Group
@@ -59,9 +55,8 @@
             internal static class Server
             {
                 internal static string GetServer { get { return "{0}/v2/servers/{1}/{2}"; } }
-/*
                 internal static string CreateServer { get { return "{0}/v2/servers/{1}"; } }   
-                */
+                
                 internal static string PauseServer { get { return "{0}/v2/operations/{1}/servers/pause"; } }
                 internal static string PowerOnServer { get { return "{0}/v2/operations/{1}/servers/powerOn"; } }
                 internal static string PowerOffServer { get { return "{0}/v2/operations/{1}/servers/powerOff"; } }

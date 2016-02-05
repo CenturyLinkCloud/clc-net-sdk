@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using CenturyLinkCloudSDK.ServiceModels.Requests.Server;
 
 namespace CenturyLinkCloudSDK.IntegrationTests
 {
@@ -56,6 +57,23 @@ namespace CenturyLinkCloudSDK.IntegrationTests
             var result = await server.GetStatistics();
 
             Assert.IsNotNull(result);
+        }
+
+        [Ignore]
+        [TestMethod]
+        public async Task CanCreateServer()
+        {
+            var dc = await client.DataCenters.GetDataCenter("ca1", includeTotalAssets: false);
+            var capabilities = await dc.GetDeploymentCapabilities();
+            
+            var result =
+                await client.Servers.CreateServer(
+                    new CreateStandardServerRequest("mstest", "a726bd9f7d9be411877f005056882d41", capabilities.Templates.First().Name, 1, 1)
+                    {
+                        Description = "A server created by the automated test suite"
+                    });
+
+            Assert.IsTrue(result.IsQueued);
         }
         
         [Ignore]

@@ -182,30 +182,11 @@ namespace CenturyLinkCloudSDK.Services
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
             return serviceInvoker.Invoke<NetworkLimits>(httpRequestMessage, cancellationToken);
         } 
-        /*              
-        /// <summary>
-        /// Gets the deployment capabilities.
-        /// </summary>
-        /// <param name="dataCenterId"></param>
-        /// <returns></returns>
-        public async Task<DataCenterDeploymentCapability> GetDeploymentCapabilities(string dataCenterId)
-        {
-            return await GetDeploymentCapabilities(dataCenterId, CancellationToken.None).ConfigureAwait(false);
-        }
 
-        /// <summary>
-        /// Gets the deployment capabilities.
-        /// </summary>
-        /// <param name="dataCenterId"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<DataCenterDeploymentCapability> GetDeploymentCapabilities(string dataCenterId, CancellationToken cancellationToken)
+        internal Task<DataCenterDeploymentCapability> GetDeploymentCapabilitiesByLink(string uri, CancellationToken cancellationToken)
         {
-            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, string.Format(Constants.ServiceUris.DataCenter.GetDeploymentCapabilities, Configuration.BaseUri, authentication.AccountAlias, dataCenterId));
-            var result = await serviceInvoker.Invoke<DataCenterDeploymentCapability>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
- 
-            return result;
-        }
-*/
+            var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Get, uri);
+            return serviceInvoker.Invoke<DataCenterDeploymentCapability>(httpRequestMessage, cancellationToken);
+        }        
     }
 }

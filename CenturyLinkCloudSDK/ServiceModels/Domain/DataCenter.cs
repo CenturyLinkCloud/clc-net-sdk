@@ -16,7 +16,8 @@ namespace CenturyLinkCloudSDK.ServiceModels
         Lazy<Link> billingLink;
         Lazy<Link> rootGroupLink;
         Lazy<Link> defaultsLink;       
-        Lazy<Link> createServerLink;        
+        Lazy<Link> createServerLink;
+        Lazy<Link> deploymentCapabilitiesLink;   
 
         /// <summary>
         /// Default constructor.
@@ -51,6 +52,11 @@ namespace CenturyLinkCloudSDK.ServiceModels
             createServerLink = new Lazy<Link>(() =>
             {
                 return Links.FirstOrDefault(l => String.Equals(l.Rel, "createServer", StringComparison.CurrentCultureIgnoreCase));
+            });
+
+            deploymentCapabilitiesLink = new Lazy<Link>(() =>
+            {
+                return Links.FirstOrDefault(l => String.Equals(l.Rel, "deploymentCapabilities", StringComparison.CurrentCultureIgnoreCase));
             });
         }
 
@@ -122,6 +128,14 @@ namespace CenturyLinkCloudSDK.ServiceModels
             get { return createServerLink.Value != null; }
         }
         
+        /// <summary>
+        /// Determines if this data center has deployment capabilities available
+        /// </summary>
+        public bool HasDeploymentCapabilities
+        {
+            get { return deploymentCapabilitiesLink.Value != null; }
+        }
+
         public string RootGroupId
         {
             get { return HasRootGroup ? rootGroupLink.Value.Id : null; }            
@@ -218,6 +232,21 @@ namespace CenturyLinkCloudSDK.ServiceModels
             }
 
             return DataCenterService.GetNetworkLimitsByLink(string.Format("{0}{1}", Configuration.BaseUri, networkLimitsLink.Value.Href), cancellationToken);
+        }
+
+        public Task<DataCenterDeploymentCapability> GetDeploymentCapabilities()
+        {
+            return GetDeploymentCapabilities(CancellationToken.None);
+        }
+
+        public Task<DataCenterDeploymentCapability> GetDeploymentCapabilities(CancellationToken cancellationToken)
+        {
+            if(!HasDeploymentCapabilities)
+            {
+                return null;
+            }
+
+            return DataCenterService.GetDeploymentCapabilitiesByLink(string.Format("{0}{1}", Configuration.BaseUri, deploymentCapabilitiesLink.Value.Href), cancellationToken);
         }
     }
 }
