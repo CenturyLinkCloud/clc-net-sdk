@@ -95,16 +95,15 @@ namespace CenturyLinkCloudSDK.IntegrationTests
             Assert.IsTrue(dataCenterOverview.RecentActivity.Count() > 0);
             Assert.IsTrue(dataCenterOverview.NetworkLimits.Networks.Value > 0);
         }
-
-        /*
+        
         [TestMethod]
         public async Task GetDataCenterDeploymentCapabilities()
         {
-            var result = await client.DataCenters.GetDeploymentCapabilities("ca1").ConfigureAwait(false);
+            var dc = await client.DataCenters.GetDataCenter("ca1", includeTotalAssets: false).ConfigureAwait(false);
+            var result = await dc.GetDeploymentCapabilities().ConfigureAwait(false);
 
             Assert.IsTrue(result.DataCenterEnabled);
             Assert.IsTrue(result.Templates.Count() > 0);
-        }
-         */
+        }         
     }
 }

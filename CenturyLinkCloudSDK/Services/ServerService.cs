@@ -276,31 +276,27 @@ namespace CenturyLinkCloudSDK.Services
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(new HttpMethod("PATCH"), string.Format(Constants.ServiceUris.Server.UpdateResources, Configuration.BaseUri, authentication.AccountAlias, serverId), operations);
             return serviceInvoker.Invoke<Link>(httpRequestMessage, cancellationToken);
         }
-        
-        /*                
+                           
         /// <summary>
         /// Creates a server.
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public async Task<CreateServerResponse> CreateServer(CreateServerRequest request)
+        /// <param name="request">The details of the server to create</param>
+        /// <returns>The response details</returns>
+        public Task<CreateServerResponse> CreateServer(CreateServerRequest request)
         {
-            return await CreateServer(request, CancellationToken.None).ConfigureAwait(false); ;
+            return CreateServer(request, CancellationToken.None);
         }
 
         /// <summary>
         /// Creates a server.
         /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public async Task<CreateServerResponse> CreateServer(CreateServerRequest request, CancellationToken cancellationToken)
+        /// <param name="request">The details of the server to create</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The response details</returns>
+        public Task<CreateServerResponse> CreateServer(CreateServerRequest request, CancellationToken cancellationToken)
         {
             var httpRequestMessage = CreateAuthorizedHttpRequestMessage(HttpMethod.Post, string.Format(Constants.ServiceUris.Server.CreateServer, Configuration.BaseUri, authentication.AccountAlias), request);
-            var result = await serviceInvoker.Invoke<CreateServerResponse>(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-
-            return result;
-        }
-        */
+            return serviceInvoker.Invoke<CreateServerResponse>(httpRequestMessage, cancellationToken);            
+        }        
     }
 }
