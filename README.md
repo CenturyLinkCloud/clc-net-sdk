@@ -58,3 +58,16 @@ var billingDetails = await client.Billing.GetBillingDetailsFor(group);
 ```
 
 This example shows how to retrieve a domain model (Group) and then use the linked method to get the group billing details.
+
+## Creating Nu-Get Package
+This is still a work in progress and so the steps are manual. This will be automated in the future. 
+
+To build and make available a new package do the following:
+
+1. Build the solution (update the version number in the AssemblyInfo.cs for CenturyLinkCloudSdk). 
+2. Open command prompt and navigate to <ProjectRoot>\CenturyLinkCloudSDK
+3. Run the following command:
+```
+    ..\tools\nuget.exe pack CenturyLinkCloud.csproj -properties Configuration=Release
+```
+4. Upload the resulting CenturyLink.Cloud.SDK.*.*.*.*.nupkg file to nuget
