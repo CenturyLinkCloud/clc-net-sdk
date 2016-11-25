@@ -68,6 +68,6 @@ To build and make available a new package do the following:
 2. Open command prompt and navigate to <ProjectRoot>\CenturyLinkCloudSDK
 3. Run the following command:
 ```
-    ..\tools\nuget.exe pack CenturyLinkCloud.csproj
+    ..\tools\nuget.exe pack CenturyLinkCloud.csproj -properties Configuration=Release
 ```
 4. Upload the resulting CenturyLink.Cloud.SDK.*.*.*.*.nupkg file to nuget
