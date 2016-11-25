@@ -7,11 +7,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("CenturyLinkCloudSDK")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription(".NET SDK for CenturyLink Cloud")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("CenturyLink Cloud,rpierry,richardcase")]
 [assembly: AssemblyProduct("CenturyLinkCloudSDK")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("Apache 2.0 License")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]
