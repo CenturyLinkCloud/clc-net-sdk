@@ -59,11 +59,12 @@ Task("Run-Unit-Tests")
     });
 });
 
-Task("Pack")
+Task("Package")
     .IsDependentOn("Build")
     .Does(() => {
         NuGetPack("./src/CenturyLinkCloudSDK/CenturyLinkCloudSDK.csproj", new NuGetPackSettings {
-            OutputDirectory = buildDir
+            OutputDirectory = buildDir,
+            BasePath = buildDir
         });
     });
 
@@ -73,7 +74,7 @@ Task("Pack")
 
 Task("Default")
     .IsDependentOn("Run-Unit-Tests")
-    .IsDependentOn("Pack");
+    .IsDependentOn("Package");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
