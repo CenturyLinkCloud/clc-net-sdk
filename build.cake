@@ -20,7 +20,10 @@ var buildDir = Directory("./src/CenturyLinkCloudSDK/bin") + Directory(configurat
 Task("Clean")
     .Does(() =>
 {
-    CleanDirectory(buildDir);
+    CleanDirectories(string.Format("./src/**/obj/{0}",
+      configuration));
+    CleanDirectories(string.Format("./src/**/bin/{0}",
+      configuration));
 });
 
 Task("Restore-NuGet-Packages")
@@ -56,12 +59,21 @@ Task("Run-Unit-Tests")
     });
 });
 
+Task("Pack")
+    .IsDependentOn("Build")
+    .Does(() => {
+        NuGetPack("./src/CenturyLinkCloudSDK/CenturyLinkCloudSDK.csproj", new NuGetPackSettings {
+            OutputDirectory = buildDir
+        });
+    });
+
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
 
 Task("Default")
-    .IsDependentOn("Run-Unit-Tests");
+    .IsDependentOn("Run-Unit-Tests")
+    .IsDependentOn("Pack");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
