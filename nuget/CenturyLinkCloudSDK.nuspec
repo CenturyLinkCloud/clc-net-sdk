@@ -2,22 +2,26 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>CenturyLink.Cloud.SDK</id>
-        <version>$version$</version>
         <title>CenturyLink.Cloud.SDK</title>
-        <authors>$author$</authors>
-        <owners>$author$</owners>
+        <version>$version$</version>
+        <authors>CenturyLink Cloud</authors>
+        <owners>CenturyLink Cloud</owners>
         <licenseUrl>https://github.com/CenturyLinkCloud/clc-net-sdk/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/CenturyLinkCloud/clc-net-sdk</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>$description$</description>
-        <copyright>$copyright$</copyright>
+        <description>.NET SDK for CenturyLink Cloud</description>
+        <summary>A SDK for .NET that you can interact with CenturyLink Cloud</summary>
+        <copyright>Apache 2.0 License</copyright>
         <language>en-US</language>
+        <tags>centurylink clc cloud sdk</tags>
         <dependencies>
             <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" />
             <dependency id="modernhttpclient" version="2.4.2" />
         </dependencies>
     </metadata>
     <files>
-        <file src="bin\$configuration$\CenturyLinkCloudSDK.dll" target="lib\portable45-net45+win8+wp8+wpa81\CenturyLinkCloudSDK.dll" />
+        <file src="LICENSE" />
+        <file src="bin/net-4.5/CenturyLinkCloudSDK.dll" target="lib/net45" />
+        <file src="bin/portable/CenturyLinkCloudSDK.dll" target="lib/portable45-net45+win8+wp8+wpa81" />
     </files>
 </package>

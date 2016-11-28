@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{97C04A3B-CB00-471A-9F78-1AFC1939AD8B}</ProjectGuid>
+    <ProjectGuid>{45EDE1FC-CE6B-4CA3-9A14-961B8C9B80ED}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CenturyLinkCloudSDK.IntegrationTests</RootNamespace>
@@ -16,21 +16,22 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
+    <IntermediateOutputPath>obj\$(Configuration)\net-4.5\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>..\..\bin\Debug\net-4.5\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NET_4_5;PARALLEL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <OutputPath>..\..\bin\Release\net-4.5\</OutputPath>
+    <DefineConstants>TRACE;NET_4_5;PARALLEL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -45,6 +46,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CenturyLinkCloudSDK\CenturyLinkCloudSDK-4.5.csproj">
+      <Project>{34A99886-B593-46D5-847A-B919FA1E2AD5}</Project>
+      <Name>CenturyLinkCloudSDK</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -69,12 +76,6 @@
     <Compile Include="AlertTests.cs" />
     <Compile Include="BillingTests.cs" />
     <Compile Include="AccountTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CenturyLinkCloudSDK\CenturyLinkCloudSdk.csproj">
-      <Project>{2c618193-0304-4ec6-b27e-e712f505c5ae}</Project>
-      <Name>CenturyLinkCloudSdk</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
