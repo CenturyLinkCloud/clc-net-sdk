@@ -1,12 +1,10 @@
-#CenturyLinkCloud-.NET-SDK
+#CenturyLink Cloud SDK for .NET
 
-##SDK Release Notes
+##Overview
 
-###Overview
+The CenturyLink Cloud SDK for .NET is Portable Class Library designed to provide an easy way to interact with the CenturyLink Cloud API to .NET based applications. It handles all the inner workings of initializing HTTP Requests, serializing and deserializing HTTP Responses into and from strongly typed .NET classes, handling API exceptions etc.
 
-The CenturyLink Cloud SDK for .NET is  Portable Class Library designed to provide an easy way to interact with the CenturyLink Cloud API to .NET based applications. It handles all the inner workings of initializing HTTP Requests, serializing and deserializing HTTP Responses into and from strongly typed .NET classes, handling API exceptions etc.
-
-###API Access
+##API Access
 
 The SDK provides access to the following API areas:
 * Authentication
@@ -18,18 +16,20 @@ The SDK provides access to the following API areas:
 
 Access to these areas is provided through a Facade class that organizes the above areas into Service class properties. This Facade class is the Client class and it is the main point of interaction between the consumers of the API and the SDK.
 
-###Domain Model
+##Domain Model
 
 Since the SDK handles all serialization/deserialization operations, it provides access to more than 50 domain classes. This saves time to consumers of the SDK because they no longer have to develop all these classes themselves.
 
-###Role-Based Links
+##Role-Based Links
 The SDK also simplifies access to certain linked API methods that depend on Role Based Access. If a domain model contains a certain Link to another resource it is extracted into a method as part of the domain model. (Note that only some links - those related to core mobile application features - have been coded. The pattern is there to be replicated for other links as needed.)
 
-###Alert Calculations
+##Alert Calculations
 The SDK simplifies Alert related operations, since it provides methods that combine several API calls in order to determine if Servers are violating associated Alert Policies. This makes it very easy to retrieve alerts either through the Alert Policies or through individual Servers.
 
-###Simple to Use
+##Simple to Use
 The SDK simplifies coding against API endpoints since it encapsulates all the “plumbing-code” and organizes API areas into Service classes. Examples shown below:
+
+## Examples
 
 ###Example 1: Logging In
 
@@ -59,15 +59,11 @@ var billingDetails = await client.Billing.GetBillingDetailsFor(group);
 
 This example shows how to retrieve a domain model (Group) and then use the linked method to get the group billing details.
 
-## Creating Nu-Get Package
-This is still a work in progress and so the steps are manual. This will be automated in the future. 
+## Installing the SDK
+The SDK can be installed via [NuGet](https://www.nuget.org/packages/CenturyLink.Cloud.SDK/).
 
-To build and make available a new package do the following:
+## Building the SDK
+If you want to build the SDK manually then see the build guide [here](BUILDING.md)
 
-1. Build the solution (update the version number in the AssemblyInfo.cs for CenturyLinkCloudSdk). 
-2. Open command prompt and navigate to <ProjectRoot>\CenturyLinkCloudSDK
-3. Run the following command:
-```
-    ..\tools\nuget.exe pack CenturyLinkCloud.csproj -properties Configuration=Release
-```
-4. Upload the resulting CenturyLink.Cloud.SDK.*.*.*.*.nupkg file to nuget
+## Contributing to the SDK
+Firstly thanks for considering to contribute. Please read the [contributing guide](CONTRIBUTING.md).
