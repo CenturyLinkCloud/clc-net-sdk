@@ -15,7 +15,7 @@ var ErrorDetail = new List<string>();
 // SET PACKAGE VERSION
 //////////////////////////////////////////////////////////////////////
 
-var version = "0.9.1";
+var version = "0.9.2";
 var modifier = "";
 
 var isAppveyor = BuildSystem.IsRunningOnAppVeyor;
@@ -318,8 +318,8 @@ Task("UploadArtifacts")
     .IsDependentOn("Package")
     .Does(() =>
     {
-        //UploadArtifacts(PACKAGE_DIR, "*.nupkg");
-        //UploadArtifacts(PACKAGE_DIR, "*.zip");
+        UploadArtifacts(PACKAGE_DIR, "*.nupkg");
+        UploadArtifacts(PACKAGE_DIR, "*.zip");
 });
 
 //////////////////////////////////////////////////////////////////////

@@ -16,6 +16,6 @@ using System.Security;
 [assembly: AssemblyCulture("")]
 //[assembly: CLSCompliant(true)]
 
-#if !PORTABLE
-[assembly: AllowPartiallyTrustedCallers]
-#endif
+//#if !PORTABLE
+//[assembly: AllowPartiallyTrustedCallers]
+//#endif
