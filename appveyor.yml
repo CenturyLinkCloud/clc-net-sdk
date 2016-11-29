@@ -1,6 +1,6 @@
 branches:
   except:
-- /travis-.*/
+    - /travis-.*/
 
 build_script:
 - ps: .\build.ps1 -Target Appveyor
