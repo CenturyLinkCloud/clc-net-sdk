@@ -384,7 +384,7 @@ void BuildProject(string projectPath, string configuration)
 {
     DotNetBuild(projectPath, settings =>
         settings.SetConfiguration(configuration)
-        .SetVerbosity(Verbosity.Normal)
+        .SetVerbosity(Verbosity.Minimal)
         .WithTarget("Build")
         .WithProperty("NodeReuse", "false"));
 }
