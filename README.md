@@ -1,4 +1,5 @@
 #CenturyLink Cloud SDK for .NET
+[![Build status](https://ci.appveyor.com/api/projects/status/id4syoiv6oq891a3/branch/master?svg=true)](https://ci.appveyor.com/project/richardcase/clc-net-sdk/branch/master)
 
 ##Overview
 
