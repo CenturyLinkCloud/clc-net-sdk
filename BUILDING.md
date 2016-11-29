@@ -2,6 +2,16 @@
 
 There are two ways to build the SDK: using the solution file in an IDE or through the build script.
 
+## Version Updatdate
+
+Versioning of the solution should follow [semeantic versioning](http://semver.org/). When you update the
+version number you need to update the versin number in the following files:
+    * build.cake 
+    * SDKVersion.cs
+When updating the AssemblyVersion and AssemblyFileVersion attributes in SDKVersion.cs make sure that you
+you use this the semantic version appended with '.0. For example, if the sematic version is 1.1.0 then
+the AssemblyFileVersion and AssemblyVersion attributes should be set to 1.1.0.0.
+
 ## Solution Build
 
 The SDK is built using a single Visual Studio solution (CenturyLinkCloudSDK.sln on Windows
@@ -47,6 +57,22 @@ important top-level tasks to use are listed here:
 ```
 
 For a full list of tasks, run `build.cmd -ShowDescription`.
+
+## Creating Nu-Get Package
+ 
+To build and make available a new package do the following:
+
+* Ensure the version numbers have been updated
+* Build the solution using the build script:
+```
+    .\buils.ps1 -t Build
+``` 
+* Package the resulting build using this command:
+```
+    .\build.ps1 -t Package
+```
+* The NuGet package file will be save to the **package** folder.
+* Upload the resulting CenturyLink.Cloud.SDK.*.*.*.*.nupkg file to NuGet
 
 ### Notes:
  1. By design, the Package target does not depend on Build. This is to allow re-packaging
