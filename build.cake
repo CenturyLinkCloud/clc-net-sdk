@@ -29,11 +29,11 @@ var packageVersion = version + modifier + dbgSuffix;
 var WindowsFrameworks = new string[] {
     "net-4.5", "portable" };
 
-//var LinuxFrameworks = new string[] {
-//    "net-4.5" };
+var LinuxFrameworks = new string[] {
+    "net-4.5" };
 
-//var AllFrameworks = IsRunningOnWindows() ? WindowsFrameworks : LinuxFrameworks;
-var AllFrameworks = WindowsFrameworks;
+var AllFrameworks = IsRunningOnWindows() ? WindowsFrameworks : LinuxFrameworks;
+//var AllFrameworks = WindowsFrameworks;
 
 //////////////////////////////////////////////////////////////////////
 // DEFINE RUN CONSTANTS
@@ -44,10 +44,10 @@ var PACKAGE_DIR = PROJECT_DIR + "package/";
 var BIN_DIR = PROJECT_DIR + "bin/" + configuration + "/";
 var IMAGE_DIR = PROJECT_DIR + "images/";
 
-//var SOLUTION_FILE = IsRunningOnWindows()
-//    ? "./CenturyLinkCloudSDK.sln"
-//    : "./CenturyLinkCloudSDK.linux.sln";
-var SOLUTION_FILE = "./CenturyLinkCloudSDK.sln";
+var SOLUTION_FILE = IsRunningOnWindows()
+    ? "./CenturyLinkCloudSDK.sln"
+    : "./CenturyLinkCloudSDK.linux.sln";
+//var SOLUTION_FILE = "./CenturyLinkCloudSDK.sln";
 
 // Package sources for nuget restore
 var PACKAGE_SOURCE = new string[]
@@ -173,8 +173,11 @@ Task("Build45")
     .Does(() =>
     {
         BuildProject("src/CenturyLinkCloudSDK/CenturyLinkCloudSDK-4.5.csproj", configuration);
-        BuildProject("src/CenturyLinkCloudSDK.Tests/CenturyLinkCloudSDK.Tests-4.5.csproj", configuration);
-        BuildProject("src/CenturyLinkCloudSDK.Integration.Tests/CenturyLinkCloudSDK.IntegrationTests-4.5.csproj", configuration);
+        if (IsRunningOnWindows())
+        {
+            BuildProject("src/CenturyLinkCloudSDK.Tests/CenturyLinkCloudSDK.Tests-4.5.csproj", configuration);
+            BuildProject("src/CenturyLinkCloudSDK.Integration.Tests/CenturyLinkCloudSDK.IntegrationTests-4.5.csproj", configuration);
+        }
 });
 
 Task("BuildPortable")
