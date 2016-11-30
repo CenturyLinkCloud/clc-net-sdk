@@ -20,6 +20,7 @@ tools/packages.config.md5sum
 *.suo
 *.user
 *.sln.docstates
+*.userprefs
 
 # Build results
 
