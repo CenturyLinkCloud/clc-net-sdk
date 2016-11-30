@@ -3,6 +3,7 @@
 
 [![Build history](https://buildstats.info/appveyor/chart/richardcase/clc-net-sdk)](https://ci.appveyor.com/project/richardcase/clc-net-sdk/history)
 
+
 ##Overview
 
 The CenturyLink Cloud SDK for .NET is Portable Class Library designed to provide an easy way to interact with the CenturyLink Cloud API to .NET based applications. It handles all the inner workings of initializing HTTP Requests, serializing and deserializing HTTP Responses into and from strongly typed .NET classes, handling API exceptions etc.
