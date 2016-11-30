@@ -1,5 +1,5 @@
 #CenturyLink Cloud SDK for .NET
-[![Build status](https://ci.appveyor.com/api/projects/status/uex68spl31b6jvks?svg=true)](https://ci.appveyor.com/project/richardcase/clc-net-sdk)[![NuGet Badge](https://buildstats.info/nuget/CenturyLink.Cloud.SDK)](https://www.nuget.org/packages/CenturyLink.Cloud.SDK/)
+[![Build status](https://ci.appveyor.com/api/projects/status/uex68spl31b6jvks?svg=true)](https://ci.appveyor.com/project/richardcase/clc-net-sdk)[![Build Status](https://travis-ci.org/CenturyLinkCloud/clc-net-sdk.svg?branch=master)](https://travis-ci.org/CenturyLinkCloud/clc-net-sdk)[![NuGet Badge](https://buildstats.info/nuget/CenturyLink.Cloud.SDK)](https://www.nuget.org/packages/CenturyLink.Cloud.SDK/)
 
 [![Build history](https://buildstats.info/appveyor/chart/richardcase/clc-net-sdk)](https://ci.appveyor.com/project/richardcase/clc-net-sdk/history)
 
